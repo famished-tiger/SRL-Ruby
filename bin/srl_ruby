@@ -1,0 +1,58 @@
+#!/usr/bin/env ruby
+require_relative '../lib/srl_ruby/tokenizer'
+require_relative '../lib/srl_ruby/grammar'
+require_relative '../lib/srl_ruby/ast_builder'
+
+def print_title(aTitle)
+  puts aTitle
+  puts '=' * aTitle.size
+end
+
+# Parse the input expression in command-line
+if ARGV.empty?
+  my_name = File.basename(__FILE__)
+  msg = <<-END_MSG
+Simple Regex Language parser:
+- Parses a subset of the SRL language and displays the parse tree
+
+Command-line syntax:
+  ruby #{my_name} "SRL expression"
+  where:
+    the SRL expression is enclosed between double quotes (")
+
+  Examples:
+  ruby #{my_name} "letter from a to f exactly 4 times"
+  ruby #{my_name} "uppercase letter between 2 and 3 times"
+  ruby #{my_name} "digit from 0 to 7 once or more"
+END_MSG
+  puts msg
+  exit(1)
+end
+puts 'SRL input: ' + ARGV[0]
+
+# Create a Rley facade object
+engine = Rley::Engine.new
+
+########################################
+# Step 1. Load a grammar for calculator
+engine.use_grammar(SrlRuby::Grammar)
+
+lexer = SrlRuby::Tokenizer.new(ARGV[0])
+result = engine.parse(lexer.tokens)
+
+unless result.success?
+  # Stop if the parse failed...
+  puts "Parsing of '#{ARGV[0]}' failed"
+  puts "Reason: #{result.failure_reason.message}"
+  exit(1)
+end
+
+# Generate an abstract syntax tree (AST) from the parse result
+engine.configuration.repr_builder = SrlRuby::ASTBuilder
+ast_ptree = engine.convert(result)
+
+# Now output the regexp literal
+root = ast_ptree.root
+puts "Resulting Regexp: /#{root.to_str}/" # Output the expression result
+
+# End of file
