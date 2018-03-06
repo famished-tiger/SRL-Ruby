@@ -1,6 +1,7 @@
 # SrlRuby
+[![Build Status](https://travis-ci.org/famished-tiger/SRL-Ruby.svg?branch=master)](https://travis-ci.org/famished-tiger/SRL-Ruby)
 
-This project contains a Ruby implementation of the [Simple Regex Language](https://simple-regex.com)
+This project implements a [Simple Regex Language](https://simple-regex.com) interpreter in Ruby.
 
 ## What is SRL?
 SRL is a small language lets you write regular expressions
