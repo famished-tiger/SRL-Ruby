@@ -3,6 +3,33 @@ lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'srl_ruby/version'
 
+module PkgExtending
+  def self.pkg_files(aPackage)
+    file_list = Dir[
+      '.rubocop.yml',
+      '.rspec',
+      '.yardopts',
+      'Gemfile',
+      'Rakefile',
+      'CHANGELOG.md',
+      'LICENSE.txt',
+      'README.md',
+      'srl_ruby.gemspec',
+      'lib/*.*',
+      'lib/**/*.rb',
+      'spec/**/*.rb'
+    ]
+    aPackage.files = file_list
+    aPackage.test_files = Dir['spec/**/*_spec.rb']
+    aPackage.require_path = 'lib'
+  end
+
+  def self.pkg_documentation(aPackage)
+    aPackage.rdoc_options << '--charset=UTF-8 --exclude="examples|features|spec"'
+    aPackage.extra_rdoc_files = ['README.md']
+  end
+end # module
+
 Gem::Specification.new do |spec|
   spec.name          = 'srl_ruby'
   spec.version       = SrlRuby::VERSION
@@ -14,12 +41,11 @@ Gem::Specification.new do |spec|
   spec.homepage      = 'https://github.com/famished-tiger/SRL-Ruby'
   spec.license       = 'MIT'
 
-  # spec.files = `git ls-files -z`.split('\x0').reject do |f|
-    # f.match(%r{^(test|spec|features)/})
-  # end
   spec.bindir = 'bin'
   spec.executables << 'srl_ruby'
   spec.require_paths = ['lib']
+  PkgExtending::pkg_files(spec)
+  PkgExtending::pkg_documentation(spec)
 
   # Runtime dependencies
   spec.add_dependency 'rley', '~> 0.6.00'
