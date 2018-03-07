@@ -12,7 +12,7 @@
 - File `appveyor.yml`. Configuration file for the AppVeyor CI (automated builds on Windows)
 
 ### Changed
-- File `README.md` added badge (Gem version)
+- File `README.md` added badges (Appveyor build status, Gem version, license)
 
 ## [0.0.1] - 2018-03-06
 ### Added

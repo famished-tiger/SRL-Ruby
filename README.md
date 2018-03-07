@@ -1,6 +1,9 @@
 # srl_ruby
 [![Linux Build Status](https://travis-ci.org/famished-tiger/SRL-Ruby.svg?branch=master)](https://travis-ci.org/famished-tiger/SRL-Ruby)
+[![Build status](https://ci.appveyor.com/api/projects/status/l5adgcbfo128rvo9?svg=true)](https://ci.appveyor.com/project/famished-tiger/srl-ruby)
 [![Gem Version](https://badge.fury.io/rb/srl_ruby.svg)](https://badge.fury.io/rb/srl_ruby)
+[![License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](https://github.com/famished-tiger/SRL-Ruby/blob/master/LICENSE.txt)
+
 
 This project implements a [Simple Regex Language](https://simple-regex.com) parser and interpreter in Ruby.
 
