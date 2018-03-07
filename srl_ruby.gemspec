@@ -9,6 +9,7 @@ module PkgExtending
       '.rubocop.yml',
       '.rspec',
       '.yardopts',
+      'appveyor.yml',
       'Gemfile',
       'Rakefile',
       'CHANGELOG.md',
@@ -36,8 +37,11 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Dimitri Geshef']
   spec.email         = ['famished.tiger@yahoo.com']
 
-  spec.summary       = %q(Ruby implementation of the Simple Regex Language)
-  spec.description   = %q(Ruby implementation of the Simple Regex Language)
+  spec.summary       = %q(A parser for the Simple Regex Language, written in Ruby.)
+  spec.description   = <<-END_DESCR
+srl_ruby is a Ruby gem implementing a parser for Simple Regex Language (SRL).
+It reads then converts SRL input into Ruby Strings or Regexp. 
+END_DESCR
   spec.homepage      = 'https://github.com/famished-tiger/SRL-Ruby'
   spec.license       = 'MIT'
 

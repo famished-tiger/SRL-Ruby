@@ -1,7 +1,8 @@
-# SrlRuby
-[![Build Status](https://travis-ci.org/famished-tiger/SRL-Ruby.svg?branch=master)](https://travis-ci.org/famished-tiger/SRL-Ruby)
+# srl_ruby
+[![Linux Build Status](https://travis-ci.org/famished-tiger/SRL-Ruby.svg?branch=master)](https://travis-ci.org/famished-tiger/SRL-Ruby)
+[![Gem Version](https://badge.fury.io/rb/srl_ruby.svg)](https://badge.fury.io/rb/srl_ruby)
 
-This project implements a [Simple Regex Language](https://simple-regex.com) interpreter in Ruby.
+This project implements a [Simple Regex Language](https://simple-regex.com) parser and interpreter in Ruby.
 
 ## What is SRL?
 SRL is a small language lets you write regular expressions
@@ -47,10 +48,6 @@ And then execute:
 Or install it yourself as:
 
     $ gem install srl_ruby
-
-## Usage
-
-TODO: Write usage instructions here
 
 
 ## Contributing
