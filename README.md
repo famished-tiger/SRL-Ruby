@@ -69,6 +69,7 @@ And there is the equivalent regex found by `srl_ruby`:
 The following snippet...  
 
 ```ruby
+require 'srl_ruby' # Load srl_ruby library
 
 
 # Here is a multiline SRL expression that matches dates
