@@ -1,12 +1,6 @@
 #!/usr/bin/env ruby
-require_relative '../lib/srl_ruby/tokenizer'
-require_relative '../lib/srl_ruby/grammar'
-require_relative '../lib/srl_ruby/ast_builder'
+require_relative '../lib/srl_ruby/srl_ruby'
 
-def print_title(aTitle)
-  puts aTitle
-  puts '=' * aTitle.size
-end
 
 # Parse the input expression in command-line
 if ARGV.empty?
@@ -29,30 +23,6 @@ END_MSG
   exit(1)
 end
 puts 'SRL input: ' + ARGV[0]
-
-# Create a Rley facade object
-engine = Rley::Engine.new
-
-########################################
-# Step 1. Load a grammar for calculator
-engine.use_grammar(SrlRuby::Grammar)
-
-lexer = SrlRuby::Tokenizer.new(ARGV[0])
-result = engine.parse(lexer.tokens)
-
-unless result.success?
-  # Stop if the parse failed...
-  puts "Parsing of '#{ARGV[0]}' failed"
-  puts "Reason: #{result.failure_reason.message}"
-  exit(1)
-end
-
-# Generate an abstract syntax tree (AST) from the parse result
-engine.configuration.repr_builder = SrlRuby::ASTBuilder
-ast_ptree = engine.convert(result)
-
-# Now output the regexp literal
-root = ast_ptree.root
-puts "Resulting Regexp: /#{root.to_str}/" # Output the expression result
+puts 'Resulting Regexp: /' + SrlRuby.parse(ARGV[0]) + '/'
 
 # End of file

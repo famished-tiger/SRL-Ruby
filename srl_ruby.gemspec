@@ -26,7 +26,7 @@ module PkgExtending
   end
 
   def self.pkg_documentation(aPackage)
-    aPackage.rdoc_options << '--charset=UTF-8 --exclude="examples|features|spec"'
+    aPackage.rdoc_options << '--charset=UTF-8 --exclude="examples|spec"'
     aPackage.extra_rdoc_files = ['README.md']
   end
 end # module
@@ -37,10 +37,11 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Dimitri Geshef']
   spec.email         = ['famished.tiger@yahoo.com']
 
-  spec.summary       = %q(A parser for the Simple Regex Language, written in Ruby.)
-  spec.description   = <<-END_DESCR
-srl_ruby is a Ruby gem implementing a parser for Simple Regex Language (SRL).
-It reads then converts SRL input into Ruby Strings or Regexp. 
+  spec.description   = %q(A parser for the Simple Regex Language (SRL).)
+  spec.summary   = <<-END_DESCR
+srl_ruby is a gem implementing a parser for Simple Regex Language (SRL).
+It translates patterns expressed in SRL into plain Ruby Regexp objects 
+or regex literals. 
 END_DESCR
   spec.homepage      = 'https://github.com/famished-tiger/SRL-Ruby'
   spec.license       = 'MIT'
