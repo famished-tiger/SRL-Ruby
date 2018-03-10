@@ -30,7 +30,7 @@ module SrlRuby # This module is used as a namespace
 
     unless result.success?
       # Stop if the parse failed...
-      line1 = "Parsing of '#{source}' failed\n"
+      line1 = "Parsing failed\n"
       line2 = "Reason: #{result.failure_reason.message}"
       raise StandardError, line1 + line2
     end

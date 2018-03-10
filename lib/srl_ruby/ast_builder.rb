@@ -23,9 +23,10 @@ module SrlRuby
     # Overriding method.
     # Factory method for creating a node object for the given
     # input token.
-    # @param aTerminal [Terminal] Terminal symbol associated with the token
+    # @param _production [Rley::Syntax::Production]
+    # @param _terminal [Rley::Syntax::Terminal] Terminal symbol associated with the token
     # @param aTokenPosition [Integer] Position of token in the input stream
-    # @param aToken [Token] The input token
+    # @param aToken [Rley::Lexical::Token] The input token
     def new_leaf_node(_production, _terminal, aTokenPosition, aToken)
       node = Rley::PTree::TerminalNode.new(aToken, aTokenPosition)
 

@@ -1,7 +1,8 @@
 # File: srl_tokenizer.rb
 # Tokenizer for SRL (Simple Regex Language)
 require 'strscan'
-require 'rley' # Load the Rley gem
+require_relative 'srl_token'
+
 
 module SrlRuby
   # The tokenizer should recognize:
@@ -15,6 +16,7 @@ module SrlRuby
     attr_reader(:scanner)
     attr_reader(:lineno)
     attr_reader(:line_start)
+    attr_reader(:column)
 
     @@lexeme2name = {
       '(' => 'LPAREN',
@@ -80,6 +82,7 @@ module SrlRuby
     def initialize(source)
       @scanner = StringScanner.new(source)
       @lineno = 1
+      @line_start = 0
     end
 
     def tokens()
@@ -131,7 +134,9 @@ module SrlRuby
 
     def build_token(aSymbolName, aLexeme)
       begin
-        token = Rley::Lexical::Token.new(aLexeme, aSymbolName)
+        col = scanner.pos - aLexeme.size - @line_start + 1
+        pos = Position.new(@lineno, col)
+        token = SrlToken.new(aLexeme, aSymbolName, pos)
       rescue StandardError
         puts "Failing with '#{aSymbolName}' and '#{aLexeme}'"
         raise ex
@@ -141,7 +146,34 @@ module SrlRuby
     end
 
     def skip_whitespaces()
-      scanner.scan(/[ \t\f\n\r]+/)
+      pre_pos = scanner.pos
+
+      begin
+        ws_found = false
+        found = scanner.skip(/[ \t\f]+/)
+        ws_found = true if found
+        found = scanner.skip(/(?:\r\n)|\r|\n/)
+        if found
+          ws_found = true
+          @lineno += 1
+          @line_start = scanner.pos
+        end
+      end while ws_found
+
+      curr_pos = scanner.pos
+      return if curr_pos == pre_pos
+      # skipped = scanner.string.slice(Range.new(pre_pos, curr_pos))
+      # triplet = skipped.rpartition(/\n|\r/)
+      # @column = 1 unless triplet[1].empty?
+      
+      # Correction for the tabs
+      # tab_count = triplet[2].chars.count { |ch| ch =~ /\t/ }
+      # @column += triplet[2].size + tab_count * (tab_size - 1) - 1    
     end
+
+    def tab_size()
+      2
+    end
+
   end # class
 end # module
