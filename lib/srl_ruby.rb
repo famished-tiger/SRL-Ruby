@@ -5,9 +5,9 @@ require_relative './srl_ruby/ast_builder'
 
 module SrlRuby # This module is used as a namespace
   # Load the SRL expression contained in filename. 
-  # Returns the literal regular expression representation 
-  # as a Ruby String.
+  # Returns an equivalent Regexp object. 
   # @param filename [String] file name to parse.
+  # @return [Regexp]
   def self.load_file(filename)
     source = nil
     File.open(filename, 'r') { |f| source = f.read }
@@ -16,8 +16,9 @@ module SrlRuby # This module is used as a namespace
     return parse(source)
   end
   
-  # Parse the SRL expression into its literal regexp and return it.
+  # Parse the SRL expression into its Regexp equivalent.
   # @param source [String] the SRL source to parse and convert.
+  # @return [Regexp]  
   def self.parse(source)
     # Create a Rley facade object
     engine = Rley::Engine.new
@@ -41,6 +42,6 @@ module SrlRuby # This module is used as a namespace
 
     # Now output the regexp literal
     root = ast_ptree.root
-    return root.to_str
+    return Regexp.new(root.to_str)
   end
 end # module

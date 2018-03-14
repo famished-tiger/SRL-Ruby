@@ -1,10 +1,11 @@
-# File: srl_tokenizer.rb
-# Tokenizer for SRL (Simple Regex Language)
+# File: rule_tokenizer.rb
+# Tokenizer for SimpleRegex Test-Rule files
+# [File format](https://github.com/SimpleRegex/Test-Rules/blob/master/README.md)
 require 'strscan'
-require_relative 'srl_token'
+require 'pp'
+require_relative 'rule_file_token'
 
-
-module SrlRuby
+module Acceptance
   # The tokenizer should recognize:
   # Keywords: as, capture, letter
   # Integer literals including single digit
@@ -12,70 +13,27 @@ module SrlRuby
   # Single character literal
   # Delimiters: parentheses '(' and ')'
   # Separators: comma (optional)
-  class Tokenizer
+  class RuleFileTokenizer
     attr_reader(:scanner)
     attr_reader(:lineno)
     attr_reader(:line_start)
-    # attr_reader(:column)
+
+    # Can be :default, :expecting_srl
+    attr_reader(:state)
 
     @@lexeme2name = {
-      '(' => 'LPAREN',
-      ')' => 'RPAREN',
-      ',' => 'COMMA'
+      ':' => 'COLON',
+      '-' => 'DASH'
     }.freeze
 
-    # Here are all the SRL keywords (in uppercase)
+    # Here are all the Rule file keywords
     @@keywords = %w[
-      ALL
-      ALREADY
-      AND
-      ANY
-      ANYTHING
-      AS
-      AT
-      BACKSLASH
-      BEGIN
-      BETWEEN
-      BY
-      CAPTURE
-      CASE
-      CHARACTER
-      DIGIT
-      END
-      EXACTLY
-      FOLLOWED
-      FROM
-      HAD
-      IF
-      INSENSITIVE
-      LAZY
-      LEAST
-      LETTER
-      LINE
-      LITERALLY
-      MORE
-      MULTI
-      MUST
-      NEVER
-      NEW
-      NO
-      NOT
-      NUMBER
-      OF
-      ONCE
-      ONE
-      OPTIONAL
-      OR
-      STARTS
-      TAB
-      TIMES
-      TO
-      TWICE
-      UNTIL
-      UPPERCASE
-      WHITESPACE
-      WITH
-    ].map { |x| [x, x] } .to_h
+      capture
+      for
+      match:
+      no
+      srl:
+    ].map { |x| [x, x.upcase] }.to_h
 
     class ScanError < StandardError; end
 
@@ -83,6 +41,7 @@ module SrlRuby
       @scanner = StringScanner.new(source)
       @lineno = 1
       @line_start = 0
+      @state = :default
     end
 
     def tokens()
@@ -98,29 +57,38 @@ module SrlRuby
     private
 
     def _next_token()
-      skip_whitespaces
+      skip_noise
       curr_ch = scanner.peek(1)
       return nil if curr_ch.nil? || curr_ch.empty?
 
+      token = if state == :default
+        default_mode
+      else
+        expecting_srl
+      end
+
+      return token
+    end
+
+    def default_mode()
+      curr_ch = scanner.peek(1)
       token = nil
 
-      if '(),'.include? curr_ch
+
+      if '-:'.include? curr_ch
         # Delimiters, separators => single character token
         token = build_token(@@lexeme2name[curr_ch], scanner.getch)
-      elsif (lexeme = scanner.scan(/[0-9]{2,}/))
-        token = build_token('INTEGER', lexeme) # An integer has 2..* digits
-      elsif (lexeme = scanner.scan(/[0-9]/))
-        token = build_token('DIGIT_LIT', lexeme)
-      elsif (lexeme = scanner.scan(/[a-zA-Z]{2,}/))
-        token = build_token(@@keywords[lexeme.upcase], lexeme)
-        # TODO: handle case unknown identifier
-      elsif (lexeme = scanner.scan(/[a-zA-Z]((?=\s)|$)/))
-        token = build_token('LETTER_LIT', lexeme)
+      elsif (lexeme = scanner.scan(/[0-9]+/))
+        token = build_token('INTEGER', lexeme)
+      elsif (lexeme = scanner.scan(/srl:|match:/))
+        token = build_token(@@keywords[lexeme], lexeme)
+        @state = :expecting_srl if lexeme == 'srl:'
+      elsif (lexeme = scanner.scan(/[a-zA-Z_][a-zA-Z0-9_]*/))
+        keyw = @@keywords[lexeme]
+        token_type = keyw ? keyw : 'IDENTIFIER'
+        token = build_token(token_type, lexeme)
       elsif (lexeme = scanner.scan(/"([^"]|\\")*"/)) # Double quotes literal?
         unquoted = lexeme.gsub(/(^")|("$)/, '')
-        token = build_token('STRING_LIT', unquoted)
-      elsif (lexeme = scanner.scan(/'([^']|\\')*'/)) # Single quotes literal?
-        unquoted = lexeme.gsub(/(^')|('$)/, '')
         token = build_token('STRING_LIT', unquoted)
       else # Unknown token
         erroneous = curr_ch.nil? ? '' : curr_ch
@@ -132,17 +100,32 @@ module SrlRuby
       return token
     end
 
+    def expecting_srl()
+      scanner.skip(/^:/)
+      lexeme = scanner.scan(/[^\r\n]*/)
+      @state = :default
+      build_token('SRL_SOURCE', lexeme)
+    end
+
     def build_token(aSymbolName, aLexeme)
       begin
         col = scanner.pos - aLexeme.size - @line_start + 1
         pos = Position.new(@lineno, col)
-        token = SrlToken.new(aLexeme, aSymbolName, pos)
-      rescue StandardError
+        token = RuleFileToken.new(aLexeme, aSymbolName, pos)
+      rescue StandardError => exc
         puts "Failing with '#{aSymbolName}' and '#{aLexeme}'"
-        raise ex
+        raise exc
       end
 
       return token
+    end
+
+    def skip_noise()
+      begin
+        noise_found = false
+        noise_found = true if skip_whitespaces
+        noise_found = true if skip_comment
+      end while noise_found
     end
 
     def skip_whitespaces()
@@ -161,18 +144,11 @@ module SrlRuby
       end while ws_found
 
       curr_pos = scanner.pos
-      return if curr_pos == pre_pos
-      # skipped = scanner.string.slice(Range.new(pre_pos, curr_pos))
-      # triplet = skipped.rpartition(/\n|\r/)
-      # @column = 1 unless triplet[1].empty?
-      
-      # Correction for the tabs
-      # tab_count = triplet[2].chars.count { |ch| ch =~ /\t/ }
-      # @column += triplet[2].size + tab_count * (tab_size - 1) - 1    
+      return !(curr_pos == pre_pos)
     end
 
-    def tab_size()
-      2
+    def skip_comment()
+      scanner.skip(/#[^\n\r]+/)
     end
   end # class
 end # module

@@ -23,6 +23,12 @@ literally " ",
 one of "AP", literally "M"
 ```
 
+### Learn more about Simple Regex Language
+Here are a couple of hyperlinks of interest:  
+[Main SRL website](https://simple-regex.com)  
+[SRL libraries](https://github.com/SimpleRegex)
+
+
 ## Why SRL?
 Even without knowing SRL, a reader can easily grasp the details of the above SRL expression.
 This is where SRL shines over the traditional regular expressions: high readability.
@@ -57,16 +63,16 @@ one of "AP", literally "M"
 ```
 
 And there is the equivalent regex found by `srl_ruby`:  
+```
 /(?:(?:0?\d)|(?:1[01])):[0-5]\d [AP]M/
-
-### More about Simple Regex Language syntax and examples
-    Here are a couple of hyperlinks of interest:  
-    [Main SRL website](https://simple-regex.com)  
-    [SRL libraries](https://github.com/SimpleRegex)
+```
 
 
 ## Usage
-The following snippet...  
+
+The method `SrlRuby#parse` accepts a Simple Regex Language string as input, and returns the corresponding regular expression.
+
+For instance, the following snippet...  
 
 ```ruby
 require 'srl_ruby' # Load srl_ruby library

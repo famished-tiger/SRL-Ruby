@@ -262,7 +262,8 @@ module SrlRuby
 
     # rule('special_char' => 'BACKSLASH').as 'backslash'
     def reduce_backslash(_production, _range, _tokens, _children)
-      Regex::Character.new('\\')
+      # Double the basckslash (because of escaping)
+      string_literal("\\", true)
     end
 
     # rule('special_char' => %w[NEW LINE]).as 'new_line'

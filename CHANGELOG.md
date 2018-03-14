@@ -6,6 +6,18 @@
 ### Fixed
 ### Security
 
+## [0.2.0] - 2018-03-14
+### Added
+- Added `spec/acceptance/support` directory. It contains test harness to use the .rule files from standard SRL test suite. 
+- Added `acceptance/srl_test_suite_spec.rb`file. Spec file designed to standard SRL test suite. At this date, SrlRuby passes 3 tests out of 15 tests in total.
+
+### Changed
+- API Change. Method SrlRuby#parse returns a Regexp instance (previously it was a String)
+- API Change. Method SrlRuby#load_file returns a Regexp instance (previously it was a String)
+
+### Fixed
+- SRL 'backslash' produces now 4 consecutive backslashes (required by the conversion into Regexp)
+
 ## [0.1.1] - 2018-03-10
 ### Changed
 - Parse error location is now given in line number, column number position.

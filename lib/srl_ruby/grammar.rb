@@ -2,9 +2,7 @@
 require 'rley' # Load the gem
 module SrlRuby
   ########################################
-  # Work in progress.
-  # This is a very partial grammar of SRL.
-  # It will be expanded with the coming versions of Rley
+  # SRL grammar
   builder = Rley::Syntax::GrammarBuilder.new do
     add_terminals('LPAREN', 'RPAREN', 'COMMA')
     add_terminals('DIGIT_LIT', 'INTEGER', 'LETTER_LIT')

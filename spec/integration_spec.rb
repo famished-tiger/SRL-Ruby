@@ -173,7 +173,7 @@ module SrlRuby
         expect(result).to be_success
 
         regexp = regexp_repr(result)
-        expect(regexp.to_str).to eq('\\')
+        expect(regexp.to_str).to eq('\\\\')
       end
 
       it "should parse 'new line' syntax" do
