@@ -42,6 +42,8 @@ module SrlRuby # This module is used as a namespace
 
     # Now output the regexp literal
     root = ast_ptree.root
+    # puts root.to_str # TODO remove this line
+    # pp root
     return Regexp.new(root.to_str)
   end
 end # module

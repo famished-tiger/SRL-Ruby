@@ -6,7 +6,20 @@
 ### Fixed
 ### Security
 
+## [0.2.1] - 2018-03-15
+SrlRuby passes 7 tests out of 15 standard SRL tests in total.  
+### Changed
+- File `acceptance/srl_test_suite_spec.rb`. More examples in spec file.
+- File `ast_builder.rb` updates to reflect grammar changes.
+
+### Fixed
+- SRL grammar now accepts a comma before 'must end' anchor
+- SRL grammar now accepts a comma before an option
+- Class `Tokenizer#_next_token` now recognizes correctly escaped quotes within string literal
+- File `ast_builder.rb` fixed anchor implementation.
+
 ## [0.2.0] - 2018-03-14
+SrlRuby passes 3 standard out of 15 standard SRL tests in total.
 ### Added
 - Added `spec/acceptance/support` directory. It contains test harness to use the .rule files from standard SRL test suite. 
 - Added `acceptance/srl_test_suite_spec.rb`file. Spec file designed to standard SRL test suite. At this date, SrlRuby passes 3 tests out of 15 tests in total.

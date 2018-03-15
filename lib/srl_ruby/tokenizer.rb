@@ -116,10 +116,10 @@ module SrlRuby
         # TODO: handle case unknown identifier
       elsif (lexeme = scanner.scan(/[a-zA-Z]((?=\s)|$)/))
         token = build_token('LETTER_LIT', lexeme)
-      elsif (lexeme = scanner.scan(/"([^"]|\\")*"/)) # Double quotes literal?
+      elsif (lexeme = scanner.scan(/"(?:\\"|[^"])*"/)) # Double quotes literal?
         unquoted = lexeme.gsub(/(^")|("$)/, '')
         token = build_token('STRING_LIT', unquoted)
-      elsif (lexeme = scanner.scan(/'([^']|\\')*'/)) # Single quotes literal?
+      elsif (lexeme = scanner.scan(/'(?:\\'|[^'])*'/)) # Single quotes literal?
         unquoted = lexeme.gsub(/(^')|('$)/, '')
         token = build_token('STRING_LIT', unquoted)
       else # Unknown token
@@ -137,9 +137,9 @@ module SrlRuby
         col = scanner.pos - aLexeme.size - @line_start + 1
         pos = Position.new(@lineno, col)
         token = SrlToken.new(aLexeme, aSymbolName, pos)
-      rescue StandardError
+      rescue StandardError => exc
         puts "Failing with '#{aSymbolName}' and '#{aLexeme}'"
-        raise ex
+        raise exc
       end
 
       return token

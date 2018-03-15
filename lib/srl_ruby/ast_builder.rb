@@ -15,7 +15,7 @@ module SrlRuby
     attr_reader :options
 
     protected
-    
+
     def terminal2node()
       Terminal2NodeClass
     end
@@ -80,14 +80,14 @@ module SrlRuby
     def repetition(expressionToRepeat, aMultiplicity)
       return Regex::Repetition.new(expressionToRepeat, aMultiplicity)
     end
-    
+
     def begin_anchor
       return Regex::Anchor.new('^')
     end
-    
-    # rule('expression' => %w[pattern separator flags]).as 'flagged_expr'
+
+    # rule('expression' => %w[pattern flags]).as 'flagged_expr'
     def reduce_flagged_expr(_production, aRange, theTokens, theChildren)
-      @options = theChildren[2] if theChildren[2]
+      @options = theChildren[1] if theChildren[1]
       return_first_child(aRange, theTokens, theChildren)
     end
 
@@ -99,6 +99,11 @@ module SrlRuby
     # rule('flags' => %[flags separator single_flag]).as 'flag_sequence'
     def reduce_flag_sequence(_production, _range, _tokens, theChildren)
       theChildren[0] << theChildren[2]
+    end
+    
+    # rule('flags' => %w[separator single_flag]).as 'flag_simple'
+    def reduce_flag_simple(_production, _range, _tokens, theChildren)
+      [theChildren.last]
     end
 
     # rule('single_flag' => %w[CASE INSENSITIVE]).as 'case_insensitive'
@@ -118,21 +123,17 @@ module SrlRuby
 
     # rule 'quantifiable' => %w[begin_anchor anchorable end_anchor]
     def reduce_pinned_quantifiable(_production, _range, _tokens, theChildren)
-      theChildren[1].begin_anchor = theChildren[0]
-      theChildren[1].end_anchor = theChildren[2]
-      return theChildren[1]
+      return Regex::Concatenation.new(*theChildren)
     end
 
     # rule 'quantifiable' => %w[begin_anchor anchorable]
     def reduce_begin_anchor_quantifiable(_production, _range, _tokens, theChildren)
-      theChildren[1].begin_anchor = theChildren[0]
-      return theChildren[1]
+      return Regex::Concatenation.new(*theChildren)
     end
 
     # rule 'quantifiable' => %w[anchorable end_anchor]
     def reduce_end_anchor_quantifiable(_production, _range, _tokens, theChildren)
-      theChildren[0].end_anchor = theChildren[1]
-      return theChildren[0]
+      return Regex::Concatenation.new(*theChildren)
     end
 
     # rule 'begin_anchor' => %w[STARTS WITH]
@@ -140,12 +141,12 @@ module SrlRuby
       begin_anchor
     end
 
-    # rule 'begin_anchor' => %w[BEGIN WITH]  
+    # rule 'begin_anchor' => %w[BEGIN WITH]
     def reduce_begin_with(_production, _range, _tokens, _children)
       begin_anchor
-    end  
+    end
 
-    # rule 'end_anchor' => %w[MUST END].as 'end_anchor'
+    # rule('end_anchor' => %w[separator MUST END]).as 'end_anchor'
     def reduce_end_anchor(_production, _range, _tokens, _children)
       return Regex::Anchor.new('$')
     end
@@ -312,30 +313,30 @@ module SrlRuby
       return Regex::Concatenation.new(group, theChildren[3])
     end
 
-    # rule('capturing_group' => %w[CAPTURE assertable AS var_name]).as 
+    # rule('capturing_group' => %w[CAPTURE assertable AS var_name]).as
     #   'named_capture'
     def reduce_named_capture(_production, _range, _tokens, theChildren)
       name = theChildren[3].token.lexeme.dup
       return Regex::CapturingGroup.new(theChildren[1], name)
     end
 
-    # rule('capturing_group' => %w[CAPTURE assertable AS var_name 
+    # rule('capturing_group' => %w[CAPTURE assertable AS var_name
     #   UNTIL assertable]).as 'named_capture_until'
     def reduce_named_capture_until(_production, _range, _tokens, theChildren)
       name = theChildren[3].token.lexeme.dup
       group = Regex::CapturingGroup.new(theChildren[1], name)
       return Regex::Concatenation.new(group, theChildren[5])
     end
-    
+
     # rule('quantifier' => 'ONCE').as 'once'
     def reduce_once(_production, _range, _tokens, _children)
       multiplicity(1, 1)
     end
-    
+
     # rule('quantifier' => 'TWICE').as 'twice'
     def reduce_twice(_production, _range, _tokens, _children)
       multiplicity(2, 2)
-    end  
+    end
 
     # rule('quantifier' => %w[EXACTLY count TIMES]).as 'exactly'
     def reduce_exactly(_production, _range, _tokens, theChildren)
@@ -350,7 +351,7 @@ module SrlRuby
       upper = theChildren[3].token.lexeme.to_i
       multiplicity(lower, upper)
     end
-    
+
     # rule('quantifier' => 'OPTIONAL').as 'optional'
     def reduce_optional(_production, _range, _tokens, _children)
       multiplicity(0, 1)
@@ -360,27 +361,27 @@ module SrlRuby
     def reduce_once_or_more(_production, _range, _tokens, _children)
       multiplicity(1, :more)
     end
-    
+
     # rule('quantifier' => %w[NEVER OR MORE]).as 'never_or_more'
     def reduce_never_or_more(_production, _range, _tokens, _children)
       multiplicity(0, :more)
     end
-    
-    # rule('quantifier' => %w[AT LEAST count TIMES]).as 'at_least' 
+
+    # rule('quantifier' => %w[AT LEAST count TIMES]).as 'at_least'
     def reduce_at_least(_production, _range, _tokens, theChildren)
       count = theChildren[2].token.lexeme.to_i
       multiplicity(count, :more)
-    end 
-    
+    end
+
     # rule('times_suffix' => 'TIMES').as 'times_keyword'
     def reduce_times_keyword(_production, _range, _tokens, _children)
       return nil
     end
-    
+
     # rule('times_suffix' => []).as 'times_dropped'
     def reduce_times_dropped(_production, _range, _tokens, _children)
       return nil
-    end  
+    end
   end # class
 end # module
 # End of file

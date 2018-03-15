@@ -39,19 +39,37 @@ RSpec.describe Acceptance do
   end
 
   it 'should match a backslash' do
-    puts __FILE__
     rule_file_repr = load_file('backslash.rule')
     test_rule_file(rule_file_repr)
   end
   
+  it 'should support named capture group' do
+    rule_file_repr = load_file('basename_capture_group.rule')
+    test_rule_file(rule_file_repr)
+  end
+  
+  it 'should match uppercase letter(s)' do
+    rule_file_repr = load_file('issue_17_uppercase_letter.rule')
+    test_rule_file(rule_file_repr)
+  end 
+  
   it 'should not trim literal strings' do
     rule_file_repr = load_file('literally_spaces.rule')
     test_rule_file(rule_file_repr)
-  end  
+  end 
+
+  it 'should match a tab' do
+    rule_file_repr = load_file('tab.rule')
+    test_rule_file(rule_file_repr)
+  end
+
+  it 'should match mail address' do
+    rule_file_repr = load_file('website_example_email.rule')
+    test_rule_file(rule_file_repr)
+  end
 
   it 'should support lookahead' do
     rule_file_repr = load_file('website_example_lookahead.rule')
     test_rule_file(rule_file_repr)
   end
-    
 end
