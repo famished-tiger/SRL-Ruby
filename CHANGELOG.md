@@ -6,6 +6,10 @@
 ### Fixed
 ### Security
 
+## [0.2.2] - 2018-03-15
+### Fixed
+- Fixed rley version dependency
+
 ## [0.2.1] - 2018-03-15
 SrlRuby passes 7 tests out of 15 standard SRL tests in total.  
 ### Changed

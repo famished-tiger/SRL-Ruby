@@ -18,7 +18,8 @@ module PkgExtending
       'srl_ruby.gemspec',
       'lib/*.*',
       'lib/**/*.rb',
-      'spec/**/*.rb'
+      'spec/**/*.rb',
+      'srl_test/**/*.*'
     ]
     aPackage.files = file_list
     aPackage.test_files = Dir['spec/**/*_spec.rb']
@@ -54,7 +55,7 @@ END_DESCR
   spec.required_ruby_version = '>= 2.1.0'
   
   # Runtime dependencies
-  spec.add_dependency 'rley', '~> 0.6.00'
+  spec.add_dependency 'rley', '~> 0.6.03'
 
   # Development dependencies
   spec.add_development_dependency 'bundler', '~> 1.16'
