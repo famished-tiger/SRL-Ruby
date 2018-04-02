@@ -6,7 +6,7 @@ module SrlRuby
   builder = Rley::Syntax::GrammarBuilder.new do
     add_terminals('LPAREN', 'RPAREN', 'COMMA')
     add_terminals('DIGIT_LIT', 'INTEGER', 'LETTER_LIT')
-    add_terminals('LITERALLY', 'STRING_LIT')
+    add_terminals('LITERALLY', 'STRING_LIT', 'IDENTIFIER')
     add_terminals('BEGIN', 'STARTS', 'WITH')
     add_terminals('MUST', 'END')
     add_terminals('UPPERCASE', 'LETTER', 'FROM', 'TO')
@@ -26,8 +26,10 @@ module SrlRuby
     rule('srl' => 'expression').as 'start_rule'
     rule('expression' => %w[pattern flags]).as 'flagged_expr'
     rule('expression' => 'pattern').as 'simple_expr'
-    rule('pattern' => %w[pattern separator quantifiable]).as 'pattern_sequence'
-    rule('pattern' => 'quantifiable').as 'basic_pattern'
+    rule('pattern' => %w[pattern separator sub_pattern]).as 'pattern_sequence'
+    rule('pattern' => 'sub_pattern').as 'basic_pattern'
+    rule('sub_pattern' => 'quantifiable').as 'quantifiable_sub_pattern'
+    rule('sub_pattern' => 'assertion').as 'assertion_sub_pattern'
     rule('separator' => 'COMMA').as 'comma_separator'
     rule('separator' => []).as 'void_separator'
     rule('flags' => %w[flags separator single_flag]).as 'flag_sequence'
@@ -43,7 +45,6 @@ module SrlRuby
     rule('begin_anchor' => %w[BEGIN WITH]).as 'begin_with'
     rule('end_anchor' => %w[separator MUST END]).as 'end_anchor'
     rule('anchorable' => 'assertable').as 'simple_anchorable'
-    rule('anchorable' => %w[assertable assertion]).as 'asserted_anchorable'
     rule('assertion' => %w[IF FOLLOWED BY assertable]).as 'if_followed'
     rule('assertion' => %w[IF NOT FOLLOWED BY assertable]).as 'if_not_followed'
     rule('assertion' => %w[IF ALREADY HAD assertable]).as 'if_had'
@@ -64,9 +65,10 @@ module SrlRuby
     rule('letter_range' => 'LETTER').as 'any_lowercase'
     rule('letter_range' => %w[UPPERCASE LETTER]).as 'any_uppercase'
     rule('digit_range' => %w[digit_or_number FROM DIGIT_LIT TO DIGIT_LIT]).as 'digits_from_to'
-    rule('digit_range' => 'digit_or_number').as 'simple_digit_range'
     rule('character_class' => %w[ANY CHARACTER]).as 'any_character'
     rule('character_class' => %w[NO CHARACTER]).as 'no_character'
+    rule('character_class' => 'digit_or_number').as 'digit'    
+    rule('character_class' => %w[NO DIGIT]).as 'non_digit'    
     rule('character_class' => 'WHITESPACE').as 'whitespace'
     rule('character_class' => %w[NO WHITESPACE]).as 'no_whitespace'
     rule('character_class' => 'ANYTHING').as 'anything'
@@ -84,6 +86,7 @@ module SrlRuby
     rule('capturing_group' => %w[CAPTURE assertable AS var_name]).as 'named_capture'
     rule('capturing_group' => %w[CAPTURE assertable AS var_name UNTIL assertable]).as 'named_capture_until'
     rule('var_name' => 'STRING_LIT').as 'var_name'
+    rule('var_name' => 'IDENTIFIER').as 'var_ident' # capture name not enclosed between quotes
     rule('quantifier' => 'ONCE').as 'once'
     rule('quantifier' => 'TWICE').as 'twice'
     rule('quantifier' => %w[EXACTLY count TIMES]).as 'exactly'

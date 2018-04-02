@@ -6,6 +6,21 @@
 ### Fixed
 ### Security
 
+## [0.2.4] - 2018-04-02
+SrlRuby passes 10 tests out of 15 standard SRL tests in total. 
+### Changed
+- File `lib/srl_ruby/grammar.rb` grammar refactoring. Added support for new 'no digit' SRL expression.
+- Class `SrlRuby::ASTBuilder` updates to reflect changes in the grammar.
+- Class `Regex::Lookaround` refactored: now inherits from `Regex::MonadicExpression`
+- File `spec/integration_spec` renamed to `spec/srl_ruby_spec.rb`, ssytematic use of the API of SrlRuby module.
+
+### Fixed
+- Method `SrlRuby::ASTBuilder#reduce_one_of` now escapes character inside a character class.
+
+## [0.2.3] - 2018-03-15
+### Fixed
+- Fixed a number of Yard warnings.
+
 ## [0.2.2] - 2018-03-15
 ### Fixed
 - Fixed rley version dependency

@@ -21,7 +21,7 @@ module SrlRuby # This module is used as a namespace
   # @return [Regexp]  
   def self.parse(source)
     # Create a Rley facade object
-    engine = Rley::Engine.new
+    engine = Rley::Engine.new { |cfg| cfg.diagnose = true }
 
     # Step 1. Load SRL grammar
     engine.use_grammar(SrlRuby::Grammar)

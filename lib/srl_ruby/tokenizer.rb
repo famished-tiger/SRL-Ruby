@@ -111,9 +111,10 @@ module SrlRuby
         token = build_token('INTEGER', lexeme) # An integer has 2..* digits
       elsif (lexeme = scanner.scan(/[0-9]/))
         token = build_token('DIGIT_LIT', lexeme)
-      elsif (lexeme = scanner.scan(/[a-zA-Z]{2,}/))
-        token = build_token(@@keywords[lexeme.upcase], lexeme)
-        # TODO: handle case unknown identifier
+      elsif (lexeme = scanner.scan(/[a-zA-Z_][a-zA-Z0-9_]+/))
+        keyw = @@keywords[lexeme.upcase]
+        tok_type = keyw ? keyw : 'IDENTIFIER'
+        token = build_token(tok_type, lexeme)
       elsif (lexeme = scanner.scan(/[a-zA-Z]((?=\s)|$)/))
         token = build_token('LETTER_LIT', lexeme)
       elsif (lexeme = scanner.scan(/"(?:\\"|[^"])*"/)) # Double quotes literal?
@@ -126,7 +127,7 @@ module SrlRuby
         erroneous = curr_ch.nil? ? '' : curr_ch
         sequel = scanner.scan(/.{1,20}/)
         erroneous += sequel unless sequel.nil?
-        raise ScanError.new("Unknown token #{erroneous}")
+        raise ScanError.new("Unknown token #{erroneous} on line #{lineno}")
       end
 
       return token
@@ -137,7 +138,7 @@ module SrlRuby
         col = scanner.pos - aLexeme.size - @line_start + 1
         pos = Position.new(@lineno, col)
         token = SrlToken.new(aLexeme, aSymbolName, pos)
-      rescue StandardError => exc
+      rescue Exception => exc
         puts "Failing with '#{aSymbolName}' and '#{aLexeme}'"
         raise exc
       end

@@ -91,16 +91,26 @@ module SrlRuby
       return_first_child(aRange, theTokens, theChildren)
     end
 
-    # rule('pattern' => %w[pattern separator quantifiable]).as 'pattern_sequence'
+    # rule('pattern' => %w[pattern separator sub_pattern]).as 'pattern_sequence'
     def reduce_pattern_sequence(_production, _range, _tokens, theChildren)
       return Regex::Concatenation.new(theChildren[0], theChildren[2])
+    end
+
+    # rule('pattern' => 'sub_pattern').as 'basic_pattern'
+    def reduce_basic_pattern(_production, aRange, theTokens, theChildren)
+      return_first_child(aRange, theTokens, theChildren)
+    end
+
+    # rule('sub_pattern' => 'assertion').as 'assertion_sub_pattern'
+    def reduce_assertion_sub_pattern(_production, aRange, theTokens, theChildren)
+      return_first_child(aRange, theTokens, theChildren)
     end
 
     # rule('flags' => %[flags separator single_flag]).as 'flag_sequence'
     def reduce_flag_sequence(_production, _range, _tokens, theChildren)
       theChildren[0] << theChildren[2]
     end
-    
+
     # rule('flags' => %w[separator single_flag]).as 'flag_simple'
     def reduce_flag_simple(_production, _range, _tokens, theChildren)
       [theChildren.last]
@@ -149,13 +159,6 @@ module SrlRuby
     # rule('end_anchor' => %w[separator MUST END]).as 'end_anchor'
     def reduce_end_anchor(_production, _range, _tokens, _children)
       return Regex::Anchor.new('$')
-    end
-
-    # rule('anchorable' => %w[assertable assertion]).as 'asserted_anchorable'
-    def reduce_asserted_anchorable(_production, _range, _tokens, theChildren)
-      assertion = theChildren.last
-      assertion.children.unshift(theChildren[0])
-      return assertion
     end
 
     # rule('assertion' => %w[IF FOLLOWED BY assertable]).as 'if_followed'
@@ -218,11 +221,6 @@ module SrlRuby
       reduce_lowercase_from_to(aProduction, aRange, theTokens, theChildren)
     end
 
-    # rule('digit_range' => 'digit_or_number').as 'simple_digit_range'
-    def reduce_simple_digit_range(_production, _range, _tokens, _children)
-      char_shorthand('d')
-    end
-
     # rule('character_class' => %w[ANY CHARACTER]).as 'any_character'
     def reduce_any_character(_production, _range, _tokens, _children)
       char_shorthand('w')
@@ -231,6 +229,16 @@ module SrlRuby
     # rule('character_class' => %w[NO CHARACTER]).as 'no_character'
     def reduce_no_character(_production, _range, _tokens, _children)
       char_shorthand('W')
+    end
+
+    # rule('character_class' => 'digit_or_number').as 'digit'
+    def reduce_digit(_production, _range, _tokens, _children)
+      char_shorthand('d')
+    end
+
+    # rule('character_class' => %w[NO DIGIT]).as 'non_digit'
+    def reduce_non_digit(_production, _range, _tokens, _children)
+      char_shorthand('D')
     end
 
     # rule('character_class' => 'WHITESPACE').as 'whitespace'
@@ -248,10 +256,18 @@ module SrlRuby
       wildcard
     end
 
-    # rule('alternation' => %w[ANY OF LPAREN alternatives RPAREN]).as 'any_of'
+    # rule('character_class' => %w[ONE OF STRING_LIT]).as 'one_of'
     def reduce_one_of(_production, _range, _tokens, theChildren)
       raw_literal = theChildren[-1].token.lexeme.dup
-      alternatives = raw_literal.chars.map { |ch| Regex::Character.new(ch) }
+      alternatives = raw_literal.chars.map do |ch|
+        if Regex::Character::MetaCharsInClass.include?(ch)
+          chars = [Regex::Character.new("\\"), Regex::Character.new(ch)]
+          Regex::Concatenation.new(*chars)
+        else
+          Regex::Character.new(ch)
+        end
+      end
+
       # TODO check other implementations
       return Regex::CharClass.new(false, *alternatives)
     end
@@ -263,7 +279,7 @@ module SrlRuby
 
     # rule('special_char' => 'BACKSLASH').as 'backslash'
     def reduce_backslash(_production, _range, _tokens, _children)
-      # Double the basckslash (because of escaping)
+      # Double the backslash (because of escaping)
       string_literal("\\", true)
     end
 
@@ -283,7 +299,17 @@ module SrlRuby
 
     # rule('alternation' => %w[ANY OF LPAREN alternatives RPAREN]).as 'any_of'
     def reduce_any_of(_production, _range, _tokens, theChildren)
-      return Regex::Alternation.new(*theChildren[3])
+      first_alternative = theChildren[3].first
+      result = nil
+
+      # Ugly: in SRL, comma is a dummy separator except in any of construct...
+      if theChildren[3].size == 1 && first_alternative.kind_of?(Regex::Concatenation)
+        result = Regex::Alternation.new(*first_alternative.children)
+      else
+        result = Regex::Alternation.new(*theChildren[3])
+      end
+
+      return result
     end
 
     # rule('alternatives' => %w[alternatives separator quantifiable]).as 'alternative_list'

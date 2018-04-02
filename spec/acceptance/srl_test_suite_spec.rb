@@ -3,8 +3,12 @@ require_relative './support/rule_file_parser'
 require_relative '../../lib/srl_ruby'
 
 ##############################
-# Understand how parser fails when first rule begins with %[...] instead of %w[...]
-##############################
+# Some rule files contain undocumented and unsupportd SRL expression:
+# | File name        | unrecognized input |
+# | no_word.rule     | 'no word'          |
+# | none_of.rule     | 'none of abcd'     |
+# | word.rule        | '(word)'           |
+
 
 RSpec.describe Acceptance do
   def rule_path
@@ -17,10 +21,10 @@ RSpec.describe Acceptance do
 
   def test_rule_file(aRuleFileRepr)
     regex = SrlRuby::parse(aRuleFileRepr.srl.value)
-    expect(regex).not_to be_nil
-     
+    expect(regex).to be_kind_of(Regexp)
+
     aRuleFileRepr.match_tests.each do |test|
-      expect(regex.match(test.test_string.value)).not_to be_nil
+      expect(test.test_string.value).to match(regex)
     end
     aRuleFileRepr.no_match_tests.each do |test|
       expect(regex.match(test.test_string.value)).to be_nil
@@ -42,21 +46,26 @@ RSpec.describe Acceptance do
     rule_file_repr = load_file('backslash.rule')
     test_rule_file(rule_file_repr)
   end
-  
+
   it 'should support named capture group' do
     rule_file_repr = load_file('basename_capture_group.rule')
     test_rule_file(rule_file_repr)
   end
-  
+
   it 'should match uppercase letter(s)' do
     rule_file_repr = load_file('issue_17_uppercase_letter.rule')
     test_rule_file(rule_file_repr)
-  end 
-  
+  end
+
   it 'should not trim literal strings' do
     rule_file_repr = load_file('literally_spaces.rule')
     test_rule_file(rule_file_repr)
-  end 
+  end
+
+  it 'should match non digit pattern' do
+    rule_file_repr = load_file('nondigit.rule')
+    test_rule_file(rule_file_repr)
+  end
 
   it 'should match a tab' do
     rule_file_repr = load_file('tab.rule')
@@ -70,6 +79,16 @@ RSpec.describe Acceptance do
 
   it 'should support lookahead' do
     rule_file_repr = load_file('website_example_lookahead.rule')
+    test_rule_file(rule_file_repr)
+  end
+
+  it 'should not trim literal strings' do
+    rule_file_repr = load_file('website_example_password.rule')
+    test_rule_file(rule_file_repr)
+  end
+
+  it 'should' do
+    rule_file_repr = load_file('website_example_url.rule')
     test_rule_file(rule_file_repr)
   end
 end

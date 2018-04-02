@@ -5,7 +5,7 @@
 ########################
 
 
-require_relative 'polyadic_expression' # Access the superclass
+require_relative 'monadic_expression' # Access the superclass
 
 module Regex # This module is used as a namespace
   # Lookaround is a zero-width assertion just like the start and end of line
@@ -14,7 +14,7 @@ module Regex # This module is used as a namespace
   # return the result of the match: match or no match.
   # That is why they are called "assertions". They do not consume characters
   # from the subject, but only assert whether a match is possible or not.
-  class Lookaround < PolyadicExpression
+  class Lookaround < MonadicExpression
     # The "direction" of the lookaround. Can be ahead or behind. It specifies
     # the relative position of the expression to match compared to
     # the current 'position' in the subject text.
@@ -30,7 +30,7 @@ module Regex # This module is used as a namespace
     # [theDir]  One of the following values: [ :ahead, :behind ]
     # [theKind] One of the following values: [ :positive, :negative ]
     def initialize(assertedExpression, theDir, theKind)
-      super([assertedExpression])
+      super(assertedExpression)
       @dir = theDir
       @kind = theKind
     end
@@ -38,10 +38,9 @@ module Regex # This module is used as a namespace
     # Conversion method re-definition.
     # Purpose: Return the String representation of the captured expression.
     def to_str()
-      result = children[0].to_str
       dir_syntax = (dir == :ahead) ? '' : '<'
       kind_syntax = (kind == :positive) ? '=' : '!'
-      result << '(?' + dir_syntax + kind_syntax + children[1].to_str + ')'
+      result = '(?' + dir_syntax + kind_syntax + child.to_str + ')'
       return result
     end
   end # class
