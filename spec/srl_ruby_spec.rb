@@ -100,6 +100,11 @@ describe SrlRuby do
       regexp = SrlRuby.parse('tab')
       expect(regexp.source).to eq('\t')
     end
+    
+    it "should parse 'vertical tab' syntax" do
+      regexp = SrlRuby.parse('vertical tab')
+      expect(regexp.source).to eq('\v')
+    end
 
     it "should parse 'backslash' syntax" do
       regexp = SrlRuby.parse('backslash')
@@ -110,6 +115,21 @@ describe SrlRuby do
       regexp = SrlRuby.parse('new line')
       expect(regexp.source).to eq('\n')
     end
+    
+    it "should parse 'carriage return' syntax" do
+      regexp = SrlRuby.parse('carriage return')
+      expect(regexp.source).to eq('\r')
+    end 
+
+    it "should parse 'word' syntax" do
+      regexp = SrlRuby.parse('word, literally "is"')
+      expect(regexp.source).to eq('\bis')
+    end 
+
+    it "should parse 'no word' syntax" do
+      regexp = SrlRuby.parse('no word, literally "is"')
+      expect(regexp.source).to eq('\Bis')
+    end    
   end # context
 
   context 'Parsing alternations:' do

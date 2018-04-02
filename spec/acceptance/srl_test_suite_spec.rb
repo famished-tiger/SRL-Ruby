@@ -61,6 +61,11 @@ RSpec.describe Acceptance do
     rule_file_repr = load_file('literally_spaces.rule')
     test_rule_file(rule_file_repr)
   end
+  
+  it 'should support non word boundary' do
+    rule_file_repr = load_file('no_word.rule')
+    test_rule_file(rule_file_repr)
+  end
 
   it 'should match non digit pattern' do
     rule_file_repr = load_file('nondigit.rule')
@@ -87,8 +92,13 @@ RSpec.describe Acceptance do
     test_rule_file(rule_file_repr)
   end
 
-  it 'should' do
+  it 'should process an URL' do
     rule_file_repr = load_file('website_example_url.rule')
     test_rule_file(rule_file_repr)
   end
+  
+  it 'should match a word boundary' do
+    rule_file_repr = load_file('word.rule')
+    test_rule_file(rule_file_repr)
+  end  
 end

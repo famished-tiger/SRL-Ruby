@@ -12,8 +12,8 @@ module SrlRuby
     add_terminals('UPPERCASE', 'LETTER', 'FROM', 'TO')
     add_terminals('DIGIT', 'NUMBER', 'ANY', 'NO')
     add_terminals('CHARACTER', 'WHITESPACE', 'ANYTHING')
-    add_terminals('TAB', 'BACKSLASH', 'NEW', 'LINE')
-    add_terminals('OF', 'ONE')
+    add_terminals('TAB', 'BACKSLASH', 'NEW', 'LINE', 'WORD')
+    add_terminals('CARRIAGE', 'RETURN', 'VERTICAL', 'OF', 'ONE')
     add_terminals('EXACTLY', 'TIMES', 'ONCE', 'TWICE')
     add_terminals('BETWEEN', 'AND', 'OPTIONAL', 'OR')
     add_terminals('MORE', 'NEVER', 'AT', 'LEAST')
@@ -74,8 +74,12 @@ module SrlRuby
     rule('character_class' => 'ANYTHING').as 'anything'
     rule('character_class' => %w[ONE OF STRING_LIT]).as 'one_of'
     rule('special_char' => 'TAB').as 'tab'
+    rule('special_char' => 'VERTICAL TAB').as 'vtab'
     rule('special_char' => 'BACKSLASH').as 'backslash'
     rule('special_char' => %w[NEW LINE]).as 'new_line'
+    rule('special_char' => %w[CARRIAGE RETURN]).as 'carriage_return'
+    rule('special_char' => %w[WORD]).as 'word'
+    rule('special_char' => %w[NO WORD]).as 'no_word'
     rule('literal' => %w[LITERALLY STRING_LIT]).as 'literally'
     rule('alternation' => %w[ANY OF LPAREN alternatives RPAREN]).as 'any_of'
     rule('alternatives' => %w[alternatives separator quantifiable]).as 'alternative_list'

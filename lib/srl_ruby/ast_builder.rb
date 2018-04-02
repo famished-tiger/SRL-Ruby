@@ -276,6 +276,11 @@ module SrlRuby
     def reduce_tab(_production, _range, _tokens, _children)
       Regex::Character.new('\t')
     end
+    
+    # rule('special_char' => ' VERTICAL TAB').as 'vtab'
+    def reduce_vtab(_production, _range, _tokens, _children)
+      Regex::Character.new('\v')
+    end    
 
     # rule('special_char' => 'BACKSLASH').as 'backslash'
     def reduce_backslash(_production, _range, _tokens, _children)
@@ -288,6 +293,21 @@ module SrlRuby
       # TODO: control portability
       Regex::Character.new('\n')
     end
+    
+    # rule('special_char' => %w[CARRIAGE RETURN]).as 'carriage_return'
+    def reduce_carriage_return(_production, _range, _tokens, _children)
+      Regex::Character.new('\r')
+    end
+
+    # rule('special_char' => %w[WORD]).as 'word'
+    def reduce_word(_production, _range, _tokens, _children)
+      Regex::Anchor.new('\b')
+    end
+    
+    # rule('special_char' => %w[NO WORD]).as 'no word'
+    def reduce_no_word(_production, _range, _tokens, _children)
+      Regex::Anchor.new('\B')
+    end    
 
     # rule('literal' => %w[LITERALLY STRING_LIT]).as 'literally'
     def reduce_literally(_production, _range, _tokens, theChildren)

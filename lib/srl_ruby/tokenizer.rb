@@ -38,6 +38,7 @@ module SrlRuby
       BETWEEN
       BY
       CAPTURE
+      CARRIAGE
       CASE
       CHARACTER
       DIGIT
@@ -66,6 +67,7 @@ module SrlRuby
       ONE
       OPTIONAL
       OR
+      RETURN
       STARTS
       TAB
       TIMES
@@ -73,8 +75,10 @@ module SrlRuby
       TWICE
       UNTIL
       UPPERCASE
+      VERTICAL
       WHITESPACE
       WITH
+      WORD
     ].map { |x| [x, x] } .to_h
 
     class ScanError < StandardError; end
