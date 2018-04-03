@@ -44,6 +44,11 @@ describe SrlRuby do
       regexp = SrlRuby.parse("literally '.'")
       expect(regexp.source).to eq('\.')
     end
+    
+    it 'should parse single quotes literal string' do
+      regexp = SrlRuby.parse('literally "an", whitespace, raw "[a-zA-Z]"')
+      expect(regexp.source).to eq('an\s[a-zA-Z]')
+    end
   end # context
 
   context 'Parsing character classes:' do
@@ -93,6 +98,41 @@ describe SrlRuby do
       # (escapes more characters than required)
       expect(regexp.source).to eq('[._%+\-]')
     end
+    
+    it "should parse 'one of' with unquoted character class syntax" do
+      # Case of digit sequence
+      regexp = SrlRuby.parse('one of 13579, must end')
+      expect(regexp.source).to eq('[13579]$')
+      
+      # Case of identifier-like character class
+      regexp = SrlRuby.parse('one of abcd, must end')
+      expect(regexp.source).to eq('[abcd]$')
+
+      # Case of arbitrary character class
+      regexp = SrlRuby.parse('one of 12hms:, must end')
+      expect(regexp.source).to eq('[12hms:]$')       
+    end    
+    
+    it "should parse 'none of' syntax" do
+      regexp = SrlRuby.parse('none of "._%+-"')
+      # Remark: reference implementation less readable
+      # (escapes more characters than required)
+      expect(regexp.source).to eq('[^._%+\-]')
+    end 
+
+    it "should parse 'none of' with unquoted character class syntax" do
+      # Case of digit sequence
+      regexp = SrlRuby.parse('none of 13579, must end')
+      expect(regexp.source).to eq('[^13579]$')
+      
+      # Case of identifier-like character class
+      regexp = SrlRuby.parse('none of abcd, must end')
+      expect(regexp.source).to eq('[^abcd]$')
+
+      # Case of arbitrary character class
+      regexp = SrlRuby.parse('none of 12hms:^, must end')
+      expect(regexp.source).to eq('[^12hms:\^]$')       
+    end    
   end # context
 
   context 'Parsing special character declarations:' do
@@ -135,6 +175,12 @@ describe SrlRuby do
   context 'Parsing alternations:' do
     it "should parse 'any of' syntax" do
       source = 'any of (any character, one of "._%-+")'
+      regexp = SrlRuby.parse(source)
+      expect(regexp.source).to eq('(?:\w|[._%\-+])')
+    end 
+
+    it "should parse 'either of' syntax" do
+      source = 'either of (any character, one of "._%-+")'
       regexp = SrlRuby.parse(source)
       expect(regexp.source).to eq('(?:\w|[._%\-+])')
     end    

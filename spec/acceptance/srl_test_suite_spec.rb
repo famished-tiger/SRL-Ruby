@@ -71,6 +71,11 @@ RSpec.describe Acceptance do
     rule_file_repr = load_file('nondigit.rule')
     test_rule_file(rule_file_repr)
   end
+  
+  it 'should support negative character class' do
+    rule_file_repr = load_file('none_of.rule')
+    test_rule_file(rule_file_repr)
+  end
 
   it 'should match a tab' do
     rule_file_repr = load_file('tab.rule')

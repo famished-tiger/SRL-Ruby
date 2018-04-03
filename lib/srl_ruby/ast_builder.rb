@@ -272,15 +272,24 @@ module SrlRuby
       return Regex::CharClass.new(false, *alternatives)
     end
 
+    # rule('character_class' => %w[NONE OF STRING_LIT]).as 'none_of'
+    def reduce_none_of(_production, _range, _tokens, theChildren)
+      raw_literal = theChildren[-1].token.lexeme.dup
+      chars = raw_literal.chars.map do |ch|
+        Regex::Character.new(ch)
+      end
+      Regex::CharClass.new(true, *chars)
+    end
+
     # rule('special_char' => 'TAB').as 'tab'
     def reduce_tab(_production, _range, _tokens, _children)
       Regex::Character.new('\t')
     end
-    
+
     # rule('special_char' => ' VERTICAL TAB').as 'vtab'
     def reduce_vtab(_production, _range, _tokens, _children)
       Regex::Character.new('\v')
-    end    
+    end
 
     # rule('special_char' => 'BACKSLASH').as 'backslash'
     def reduce_backslash(_production, _range, _tokens, _children)
@@ -293,7 +302,7 @@ module SrlRuby
       # TODO: control portability
       Regex::Character.new('\n')
     end
-    
+
     # rule('special_char' => %w[CARRIAGE RETURN]).as 'carriage_return'
     def reduce_carriage_return(_production, _range, _tokens, _children)
       Regex::Character.new('\r')
@@ -303,11 +312,11 @@ module SrlRuby
     def reduce_word(_production, _range, _tokens, _children)
       Regex::Anchor.new('\b')
     end
-    
+
     # rule('special_char' => %w[NO WORD]).as 'no word'
     def reduce_no_word(_production, _range, _tokens, _children)
       Regex::Anchor.new('\B')
-    end    
+    end
 
     # rule('literal' => %w[LITERALLY STRING_LIT]).as 'literally'
     def reduce_literally(_production, _range, _tokens, theChildren)
@@ -315,6 +324,12 @@ module SrlRuby
 
       raw_literal = theChildren[-1].token.lexeme.dup
       return string_literal(raw_literal)
+    end
+
+    # rule('raw' => %w[RAW STRING_LIT]).as 'raw_literal'
+    def reduce_raw_literal(_production, _range, _tokens, theChildren)
+      raw_literal = theChildren[-1].token.lexeme.dup
+      return Regex::RawExpression.new(raw_literal)
     end
 
     # rule('alternation' => %w[ANY OF LPAREN alternatives RPAREN]).as 'any_of'

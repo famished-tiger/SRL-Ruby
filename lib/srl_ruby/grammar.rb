@@ -4,17 +4,22 @@ module SrlRuby
   ########################################
   # SRL grammar
   builder = Rley::Syntax::GrammarBuilder.new do
+    # Separators...
     add_terminals('LPAREN', 'RPAREN', 'COMMA')
-    add_terminals('DIGIT_LIT', 'INTEGER', 'LETTER_LIT')
+    
+    # Literal values...
+    add_terminals('DIGIT_LIT', 'INTEGER', 'LETTER_LIT', 'CHAR_CLASS')
     add_terminals('LITERALLY', 'STRING_LIT', 'IDENTIFIER')
+    
+    # Keywords...
     add_terminals('BEGIN', 'STARTS', 'WITH')
-    add_terminals('MUST', 'END')
+    add_terminals('MUST', 'END', 'RAW')
     add_terminals('UPPERCASE', 'LETTER', 'FROM', 'TO')
-    add_terminals('DIGIT', 'NUMBER', 'ANY', 'NO')
+    add_terminals('DIGIT', 'NUMBER', 'ANY', 'EITHER', 'NO')
     add_terminals('CHARACTER', 'WHITESPACE', 'ANYTHING')
     add_terminals('TAB', 'BACKSLASH', 'NEW', 'LINE', 'WORD')
-    add_terminals('CARRIAGE', 'RETURN', 'VERTICAL', 'OF', 'ONE')
-    add_terminals('EXACTLY', 'TIMES', 'ONCE', 'TWICE')
+    add_terminals('CARRIAGE', 'RETURN', 'VERTICAL', 'OF', 'NONE')
+    add_terminals('ONE', 'EXACTLY', 'TIMES', 'ONCE', 'TWICE')
     add_terminals('BETWEEN', 'AND', 'OPTIONAL', 'OR')
     add_terminals('MORE', 'NEVER', 'AT', 'LEAST')
     add_terminals('IF', 'FOLLOWED', 'BY', 'NOT')
@@ -23,6 +28,7 @@ module SrlRuby
     add_terminals('CASE', 'INSENSITIVE', 'MULTI', 'ALL')
     add_terminals('LAZY')
 
+    # Grammar rules...
     rule('srl' => 'expression').as 'start_rule'
     rule('expression' => %w[pattern flags]).as 'flagged_expr'
     rule('expression' => 'pattern').as 'simple_expr'
@@ -60,6 +66,7 @@ module SrlRuby
     rule('atom' => 'character_class').as 'character_class_atom'
     rule('atom' => 'special_char').as 'special_char_atom'
     rule('atom' => 'literal').as 'literal_atom'
+    rule('atom' => 'raw').as 'raw_atom'
     rule('letter_range' => %w[LETTER FROM LETTER_LIT TO LETTER_LIT]).as 'lowercase_from_to'
     rule('letter_range' => %w[UPPERCASE LETTER FROM LETTER_LIT TO LETTER_LIT]).as 'uppercase_from_to'
     rule('letter_range' => 'LETTER').as 'any_lowercase'
@@ -72,7 +79,12 @@ module SrlRuby
     rule('character_class' => 'WHITESPACE').as 'whitespace'
     rule('character_class' => %w[NO WHITESPACE]).as 'no_whitespace'
     rule('character_class' => 'ANYTHING').as 'anything'
-    rule('character_class' => %w[ONE OF STRING_LIT]).as 'one_of'
+    rule('character_class' => %w[ONE OF cclass]).as 'one_of'
+    rule('character_class' => %w[NONE OF cclass]).as 'none_of'
+    rule('cclass' => 'STRING_LIT').as 'quoted_cclass' # Preferred syntax
+    rule('cclass' => 'INTEGER').as 'digits_cclass'
+    rule('cclass' => 'IDENTIFIER').as 'identifier_cclass'
+    rule('cclass' => 'CHAR_CLASS').as 'unquoted_cclass'
     rule('special_char' => 'TAB').as 'tab'
     rule('special_char' => 'VERTICAL TAB').as 'vtab'
     rule('special_char' => 'BACKSLASH').as 'backslash'
@@ -81,9 +93,12 @@ module SrlRuby
     rule('special_char' => %w[WORD]).as 'word'
     rule('special_char' => %w[NO WORD]).as 'no_word'
     rule('literal' => %w[LITERALLY STRING_LIT]).as 'literally'
-    rule('alternation' => %w[ANY OF LPAREN alternatives RPAREN]).as 'any_of'
+    rule('raw' => 'RAW STRING_LIT').as 'raw_literal'
+    rule('alternation' => %w[any_or_either OF LPAREN alternatives RPAREN]).as 'any_of'
     rule('alternatives' => %w[alternatives separator quantifiable]).as 'alternative_list'
     rule('alternatives' => 'quantifiable').as 'simple_alternative'
+    rule('any_or_either' => 'ANY').as 'any_keyword'
+    rule('any_or_either' => 'EITHER').as 'either_keyword'
     rule('grouping' => %w[LPAREN pattern RPAREN]).as 'grouping_parenthenses'
     rule('capturing_group' => %w[CAPTURE assertable]).as 'capture'
     rule('capturing_group' => %w[CAPTURE assertable UNTIL assertable]).as 'capture_until'

@@ -42,6 +42,7 @@ module SrlRuby
       CASE
       CHARACTER
       DIGIT
+      EITHER
       END
       EXACTLY
       FOLLOWED
@@ -60,6 +61,7 @@ module SrlRuby
       NEVER
       NEW
       NO
+      NONE
       NOT
       NUMBER
       OF
@@ -67,6 +69,7 @@ module SrlRuby
       ONE
       OPTIONAL
       OR
+      RAW
       RETURN
       STARTS
       TAB
@@ -111,22 +114,24 @@ module SrlRuby
       if '(),'.include? curr_ch
         # Delimiters, separators => single character token
         token = build_token(@@lexeme2name[curr_ch], scanner.getch)
-      elsif (lexeme = scanner.scan(/[0-9]{2,}/))
+      elsif (lexeme = scanner.scan(/[0-9]{2,}((?=\s)|$)/))
         token = build_token('INTEGER', lexeme) # An integer has 2..* digits
-      elsif (lexeme = scanner.scan(/[0-9]/))
+      elsif (lexeme = scanner.scan(/[0-9]((?=\s)|$)/))
         token = build_token('DIGIT_LIT', lexeme)
-      elsif (lexeme = scanner.scan(/[a-zA-Z_][a-zA-Z0-9_]+/))
-        keyw = @@keywords[lexeme.upcase]
-        tok_type = keyw ? keyw : 'IDENTIFIER'
-        token = build_token(tok_type, lexeme)
-      elsif (lexeme = scanner.scan(/[a-zA-Z]((?=\s)|$)/))
-        token = build_token('LETTER_LIT', lexeme)
       elsif (lexeme = scanner.scan(/"(?:\\"|[^"])*"/)) # Double quotes literal?
         unquoted = lexeme.gsub(/(^")|("$)/, '')
         token = build_token('STRING_LIT', unquoted)
       elsif (lexeme = scanner.scan(/'(?:\\'|[^'])*'/)) # Single quotes literal?
         unquoted = lexeme.gsub(/(^')|('$)/, '')
         token = build_token('STRING_LIT', unquoted)
+      elsif (lexeme = scanner.scan(/[a-zA-Z]((?=\s)|$)/))        
+        token = build_token('LETTER_LIT', lexeme)
+      elsif (lexeme = scanner.scan(/[a-zA-Z_][a-zA-Z0-9_]+/))
+        keyw = @@keywords[lexeme.upcase]
+        tok_type = keyw ? keyw : 'IDENTIFIER'
+        token = build_token(tok_type, lexeme)       
+      elsif (lexeme = scanner.scan(/[^,"\s]{2,}/))
+        token = build_token('CHAR_CLASS', lexeme)
       else # Unknown token
         erroneous = curr_ch.nil? ? '' : curr_ch
         sequel = scanner.scan(/.{1,20}/)

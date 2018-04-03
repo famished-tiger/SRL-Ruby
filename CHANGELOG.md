@@ -1,5 +1,14 @@
+## [0.2.6] - 2018-04-03
+SrlRuby passes 13 tests out of 15 from standard SRL test suite. 
+### Changed
+- Class `SrlRuby#Tokenizer` added CHAR_CLASS literal and keywords EITHER, NONE, EITHER,
+- Grammar expanded to support 'CARRIAGE RETURN', 'VERTICAL TAB', 'WORD', 'NO WORD' expressions
+- Class `SrlRuby::ASTBuilder` updates to reflect changes in the grammar.
+- File `acceptance/srl_test_suite_spec.rb`. 13 test files from official test suite are passing.
+
+
 ## [0.2.5] - 2018-04-02
-SrlRuby passes 12 tests out of 15 standard SRL tests in total. 
+SrlRuby passes 12 tests out of 15 from standard SRL test suite. 
 ### Changed
 - Class `SrlRuby#Tokenizer` added keywords CARRIAGE, RETURN, VERTICAL, WORD
 - Grammar expanded to support 'CARRIAGE RETURN', 'VERTICAL TAB', 'WORD', 'NO WORD' expressions
@@ -8,7 +17,7 @@ SrlRuby passes 12 tests out of 15 standard SRL tests in total.
 
 
 ## [0.2.4] - 2018-04-02
-SrlRuby passes 10 tests out of 15 standard SRL tests in total. 
+SrlRuby passes 10 tests out of 15 from standard SRL test suite. 
 ### Changed
 - File `lib/srl_ruby/grammar.rb` grammar refactoring. Added support for new 'no digit' SRL expression.
 - Class `SrlRuby::ASTBuilder` updates to reflect changes in the grammar.
@@ -27,7 +36,7 @@ SrlRuby passes 10 tests out of 15 standard SRL tests in total.
 - Fixed rley version dependency
 
 ## [0.2.1] - 2018-03-15
-SrlRuby passes 7 tests out of 15 standard SRL tests in total.  
+SrlRuby passes 7 tests out of 15 from standard SRL test suite.  
 ### Changed
 - File `acceptance/srl_test_suite_spec.rb`. More examples in spec file.
 - File `ast_builder.rb` updates to reflect grammar changes.
@@ -39,7 +48,7 @@ SrlRuby passes 7 tests out of 15 standard SRL tests in total.
 - File `ast_builder.rb` fixed anchor implementation.
 
 ## [0.2.0] - 2018-03-14
-SrlRuby passes 3 standard out of 15 standard SRL tests in total.
+SrlRuby passes 3 tests out of 15 from standard SRL test suite.
 ### Added
 - Added `spec/acceptance/support` directory. It contains test harness to use the .rule files from standard SRL test suite. 
 - Added `acceptance/srl_test_suite_spec.rb`file. Spec file designed to standard SRL test suite. At this date, SrlRuby passes 3 tests out of 15 tests in total.
