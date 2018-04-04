@@ -10,7 +10,7 @@ require_relative '../../lib/srl_ruby'
 # | word.rule        | '(word)'           |
 
 
-RSpec.describe Acceptance do
+RSpec.describe SrlRuby do
   def rule_path
     __FILE__.sub(/spec\/.+$/, 'srl_test/Test-Rules/')
   end
@@ -19,8 +19,12 @@ RSpec.describe Acceptance do
     return Acceptance::RuleFileParser.load_file(rule_path + aFilename)
   end
 
+#   
+#   CaptureTest = Struct.new(:test_string, :expectations)
+   
   def test_rule_file(aRuleFileRepr)
     regex = SrlRuby::parse(aRuleFileRepr.srl.value)
+    puts regex.source
     expect(regex).to be_kind_of(Regexp)
 
     aRuleFileRepr.match_tests.each do |test|
@@ -29,16 +33,39 @@ RSpec.describe Acceptance do
     aRuleFileRepr.no_match_tests.each do |test|
       expect(regex.match(test.test_string.value)).to be_nil
     end
-    aRuleFileRepr.capture_tests.each do |test|
-      matching = regex.match(test.test_string.value)
-      expect(matching).not_to be_nil
-      test.expectations do |exp|
-        var = exp.var_name.value.to_s
-        captured = exp.captured_text.value
-        name_index = matching.names.index(var)
-        expect(name_index).not_to be_nil
-        expect(matching.captures[name_index]).to eq(captured)
+    aRuleFileRepr.capture_tests.each do |cp_test|
+      test_string = cp_test.test_string.value
+      expect(test_string).to match(regex)
+      if regex.names.empty?
+        indices = cp_test.expectations.map { |exp| exp.result_index.value.to_s }
+        actual_names = indices.uniq.sort
+      else
+        actual_names = regex.names
       end
+      
+      # CaptureExpectation = Struct.new(:result_index, :var_name, :captured_text)
+      # Compare actual vs. expected capture names
+      cp_test.expectations.each do |expec|
+        expected_name = expec.var_name.value.to_s
+        unless actual_names.empty?
+          expect(actual_names).to be_include(expected_name)
+        end
+      end
+      
+      scan_results = test_string.scan(regex)
+      actual_captures = scan_results.map do |capture_tuples|
+        actual_names.zip(capture_tuples).to_h
+      end
+      
+      # Compare actual vs. expected captured texts
+      cp_test.expectations.each do |expec|
+        index =  expec.result_index.value
+        var_name = expec.var_name.value.to_s
+        expected_capture = expec.captured_text.value
+        names2val = actual_captures[index]
+        actual = names2val[var_name].nil? ? "" : names2val[var_name]
+        expect(actual).to eq(expected_capture )
+      end      
     end
   end
 
@@ -76,6 +103,11 @@ RSpec.describe Acceptance do
     rule_file_repr = load_file('none_of.rule')
     test_rule_file(rule_file_repr)
   end
+  
+  it 'should support negative character class' do
+    rule_file_repr = load_file('sample_capture.rule')
+    test_rule_file(rule_file_repr)
+  end
 
   it 'should match a tab' do
     rule_file_repr = load_file('tab.rule')
@@ -87,6 +119,11 @@ RSpec.describe Acceptance do
     test_rule_file(rule_file_repr)
   end
 
+  it 'should match mail address' do
+    rule_file_repr = load_file('website_example_email_capture.rule')
+    test_rule_file(rule_file_repr)
+  end  
+ 
   it 'should support lookahead' do
     rule_file_repr = load_file('website_example_lookahead.rule')
     test_rule_file(rule_file_repr)
@@ -106,4 +143,4 @@ RSpec.describe Acceptance do
     rule_file_repr = load_file('word.rule')
     test_rule_file(rule_file_repr)
   end  
-end
+end # describe

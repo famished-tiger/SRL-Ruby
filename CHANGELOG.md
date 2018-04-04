@@ -1,3 +1,13 @@
+## [0.3.0] - 2018-04-04
+Version bump: SrlRuby passes the complete official SRL test suite! 
+### Changed
+- File `acceptance/srl_test_suite_spec.rb`. 15 test files from official test suite are passing.
+
+### Fixed
+- Class `SrlRuby::ASTBuilder` Fixing the capture...until semantic.
+  If last captured subexpression is a repetition, then it is made lazy (instead of greedy).
+
+
 ## [0.2.6] - 2018-04-03
 SrlRuby passes 13 tests out of 15 from standard SRL test suite. 
 ### Changed

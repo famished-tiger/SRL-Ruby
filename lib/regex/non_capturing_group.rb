@@ -7,10 +7,12 @@ module Regex # This module is used as a namespace
   # of sub-expressions
   class NonCapturingGroup < MonadicExpression
     # Constructor.
-    # [aChildExpression]  A sub-expression to match. When successful
+    # [aChild]  A sub-expression to match. When successful
     # the matching text is assigned to the capture variable.
-    def initialize(aChildExpression)
-      super(aChildExpression)
+    def initialize(aChild)
+      # If necessary get rid of nested non-capturing groups
+      effective_child = aChild.kind_of?(self.class) ? aChild.child : aChild
+      super(effective_child)
     end
 
     protected

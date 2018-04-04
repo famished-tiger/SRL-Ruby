@@ -367,9 +367,31 @@ module SrlRuby
       return Regex::CapturingGroup.new(theChildren[1])
     end
 
+    # If the rightmost (sub)expression is a repetition, then make it lazy
+    def make_last_repetition_lazy(anExpr)
+      sub_expr = anExpr
+      loop do
+        if sub_expr.is_a?(Regex::Repetition)
+            # Make repetition lazy
+            cardinality = sub_expr.multiplicity
+            cardinality.instance_variable_set(:@policy, :lazy)
+            break
+        elsif sub_expr.kind_of?(Regex::PolyadicExpression)
+          sub_expr = sub_expr.children.last
+        elsif sub_expr.kind_of?(Regex::MonadicExpression)
+          sub_expr = sub_expr.child
+        elsif sub_expr.kind_of?(Regex::AtomicExpression)
+          break
+        end
+      end
+    end
+
     # rule('capturing_group' => %w[CAPTURE assertable UNTIL assertable]).as
     #   'capture_until'
     def reduce_capture_until(_production, _range, _tokens, theChildren)
+      # Until semantic requires that the last pattern in capture to be lazy
+      make_last_repetition_lazy(theChildren[1])
+
       group = Regex::CapturingGroup.new(theChildren[1])
       return Regex::Concatenation.new(group, theChildren[3])
     end
@@ -384,6 +406,9 @@ module SrlRuby
     # rule('capturing_group' => %w[CAPTURE assertable AS var_name
     #   UNTIL assertable]).as 'named_capture_until'
     def reduce_named_capture_until(_production, _range, _tokens, theChildren)
+      # Until semantic requires that the last pattern in capture to be lazy
+      make_last_repetition_lazy(theChildren[1])
+
       name = theChildren[3].token.lexeme.dup
       group = Regex::CapturingGroup.new(theChildren[1], name)
       return Regex::Concatenation.new(group, theChildren[5])

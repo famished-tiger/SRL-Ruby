@@ -304,7 +304,7 @@ END_SRL
 
     it 'should parse simple anonymous until capturing group' do
       regexp = SrlRuby.parse('capture anything once or more until literally "!"')
-      expect(regexp.source).to eq('(.+)!')
+      expect(regexp.source).to eq('(.+?)!')
     end
 
     it 'should parse unquoted named capturing group' do
@@ -335,7 +335,7 @@ END_SRL
     it 'should parse complex named until capturing group' do
       source = 'capture (anything once or more) as "foo" until literally "m"'
       regexp = SrlRuby.parse(source)
-      expect(regexp.source).to eq('(?<foo>.+)m')
+      expect(regexp.source).to eq('(?<foo>.+?)m')
     end
   end # context
 
