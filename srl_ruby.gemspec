@@ -56,7 +56,7 @@ END_DESCR
   spec.required_ruby_version = '>= 2.1.0'
   
   # Runtime dependencies
-  spec.add_dependency 'rley', '~> 0.6.05'
+  spec.add_dependency 'rley', '~> 0.6.06'
 
   # Development dependencies
   spec.add_development_dependency 'bundler', '~> 1.16'
