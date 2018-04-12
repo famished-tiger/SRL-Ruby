@@ -22,6 +22,19 @@ module Regex # This module is used as a namespace
 
       return self
     end
+    
+    def done!()
+      children.each(&:done!)
+      children.each_with_index do |child, index|
+        break if index == children.size - 1
+        next_child = children[index+1]
+        if next_child.kind_of?(Lookaround) && next_child.dir == :behind
+          # Swap children: lookbehind regex must precede pattern
+          @children[index+1] = child
+          @children[index] = next_child
+        end
+      end
+    end
 
     # Build a depth-first in-order children visitor.
     # The visitor is implemented as an Enumerator.

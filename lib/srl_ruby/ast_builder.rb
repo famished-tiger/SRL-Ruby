@@ -59,7 +59,6 @@ module SrlRuby
     end
 
     def char_range(lowerBound, upperBound)
-      # TODO fix module nesting
       lower = Regex::Character.new(lowerBound)
       upper = Regex::Character.new(upperBound)
       return Regex::CharRange.new(lower, upper)
@@ -189,18 +188,18 @@ module SrlRuby
     end
 
     # rule('letter_range' => %w[LETTER FROM LETTER_LIT TO LETTER_LIT]).as 'lowercase_from_to'
-    def reduce_lowercase_from_to(_production, _range, _tokens, theChildren)
-      lower = theChildren[2].token.lexeme
-      upper =  theChildren[4].token.lexeme
-      ch_range = char_range(lower, upper)
+    def reduce_lowercase_from_to(_production, _range, _tokens, theChildren) 
+      raw_range = [theChildren[2].token.lexeme, theChildren[4].token.lexeme]
+      range_sorted = raw_range.sort
+      ch_range = char_range(range_sorted[0], range_sorted[1])
       char_class(false, ch_range)
     end
 
     # rule('letter_range' => %w[UPPERCASE LETTER FROM LETTER_LIT TO LETTER_LIT]).as 'uppercase_from_to'
     def reduce_uppercase_from_to(_production, _range, _tokens, theChildren)
-      lower = theChildren[3].token.lexeme
-      upper =  theChildren[5].token.lexeme
-      ch_range = char_range(lower.upcase, upper.upcase)
+      raw_range = [theChildren[3].token.lexeme, theChildren[5].token.lexeme]
+      range_sorted = raw_range.sort
+      ch_range = char_range(range_sorted[0], range_sorted[1])
       char_class(false, ch_range)
     end
 
@@ -218,7 +217,10 @@ module SrlRuby
 
     # rule('digit_range' => %w[digit_or_number FROM DIGIT_LIT TO DIGIT_LIT]).as 'digits_from_to'
     def reduce_digits_from_to(aProduction, aRange, theTokens, theChildren)
-      reduce_lowercase_from_to(aProduction, aRange, theTokens, theChildren)
+      raw_range = [theChildren[2].token.lexeme, theChildren[4].token.lexeme]
+      range_sorted = raw_range.map(&:to_i).sort
+      ch_range = char_range(range_sorted[0].to_s, range_sorted[1].to_s)
+      char_class(false, ch_range)
     end
 
     # rule('character_class' => %w[ANY CHARACTER]).as 'any_character'

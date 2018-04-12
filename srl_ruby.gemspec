@@ -38,11 +38,12 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Dimitri Geshef']
   spec.email         = ['famished.tiger@yahoo.com']
 
-  spec.description   = %q(A parser for the Simple Regex Language (SRL).)
+  spec.description   = %Q(Build easily regular expressions thanks to Simple Regex Language)
   spec.summary   = <<-END_DESCR
-srl_ruby is a gem implementing a parser for Simple Regex Language (SRL).
+A parser for the [Simple Regex Language](https://simple-regex.com/).
 It translates patterns expressed in SRL into plain Ruby Regexp objects 
-or regex literals. 
+or in regex literals. Use self-documenting, human readable, SRL expressions
+to craft your new awesome regular expressions.
 END_DESCR
   spec.homepage      = 'https://github.com/famished-tiger/SRL-Ruby'
   spec.license       = 'MIT'
@@ -59,6 +60,7 @@ END_DESCR
 
   # Development dependencies
   spec.add_development_dependency 'bundler', '~> 1.16'
+  spec.add_development_dependency 'cucumber', '>= 2.2.0'  
   spec.add_development_dependency 'rake', '~> 10.0'
   spec.add_development_dependency 'rspec', '~> 3.0'
 end

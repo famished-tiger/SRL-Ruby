@@ -281,12 +281,12 @@ END_SRL
 
     it 'should parse positive lookbehind' do
       regexp = SrlRuby.parse('literally "bar" if already had literally "foo"')
-      expect(regexp.source).to eq('bar(?<=foo)')
+      expect(regexp.source).to eq('(?<=foo)bar')
     end
 
     it 'should parse negative lookbehind' do
       regexp = SrlRuby.parse('literally "bar" if not already had literally "foo"')
-      expect(regexp.source).to eq('bar(?<!foo)')
+      expect(regexp.source).to eq('(?<!foo)bar')
     end
   end # context
 

@@ -14,6 +14,10 @@ module Regex # This module is used as a namespace
       super(childExpressionToRepeat)
       @multiplicity = aMultiplicity
     end
+    
+    def done!()
+      child.done!
+    end
 
     protected
 

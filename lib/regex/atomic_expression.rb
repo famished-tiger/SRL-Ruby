@@ -10,6 +10,10 @@ module Regex # This module is used as a namespace
     def atomic?
       return true
     end
+    
+    def done!()
+      # Do nothing
+    end
   end # class
 end # module
 

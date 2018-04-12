@@ -1,5 +1,6 @@
 require 'bundler/gem_tasks'
-require 'rspec/core/rake_task'
+require 'rspec/core/rake_task' # Rspec as testing tool
+require 'cucumber/rake/task' # Cucumber as testing tool
 
 desc 'Run RSpec'
 RSpec::Core::RakeTask.new do |spec|
@@ -7,10 +8,12 @@ RSpec::Core::RakeTask.new do |spec|
 end
 
 
-# Combine RSpec tests
-desc 'Run tests, with RSpec'
-task test: [:spec]
+Cucumber::Rake::Task.new do |_|
+end
 
+# Combine RSpec and Cucumber tests
+desc 'Run tests, with RSpec and Cucumber'
+task test: [:spec, :cucumber]
 
 # Default rake task
 task default: :test

@@ -1,0 +1,4 @@
+default: --strict -v -b  --format progress features
+
+
+

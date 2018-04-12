@@ -14,6 +14,10 @@ module Regex # This module is used as a namespace
       super()
       @child = theChild
     end
+    
+    def done!()
+      # Do nothing
+    end    
 
     protected
   

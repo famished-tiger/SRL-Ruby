@@ -18,13 +18,10 @@ RSpec.describe SrlRuby do
   def load_file(aFilename)
     return Acceptance::RuleFileParser.load_file(rule_path + aFilename)
   end
-
-#   
-#   CaptureTest = Struct.new(:test_string, :expectations)
    
   def test_rule_file(aRuleFileRepr)
     regex = SrlRuby::parse(aRuleFileRepr.srl.value)
-    puts regex.source
+    # puts regex.source
     expect(regex).to be_kind_of(Regexp)
 
     aRuleFileRepr.match_tests.each do |test|
