@@ -10,6 +10,7 @@ module PkgExtending
       '.rspec',
       '.yardopts',
       'appveyor.yml',
+      'cucumber.yml',
       'Gemfile',
       'Rakefile',
       'CHANGELOG.md',
@@ -19,6 +20,9 @@ module PkgExtending
       'lib/*.*',
       'lib/**/*.rb',
       'spec/**/*.rb',
+      'features/*.*',
+      'features/**/*.*',
+      'features/**/**/*.features',
       'srl_test/**/*.*'
     ]
     aPackage.files = file_list
