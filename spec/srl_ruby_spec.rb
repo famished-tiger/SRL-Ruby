@@ -44,7 +44,7 @@ describe SrlRuby do
       regexp = SrlRuby.parse("literally '.'")
       expect(regexp.source).to eq('\.')
     end
-    
+
     it 'should parse single quotes literal string' do
       regexp = SrlRuby.parse('literally "an", whitespace, raw "[a-zA-Z]"')
       expect(regexp.source).to eq('an\s[a-zA-Z]')
@@ -61,7 +61,7 @@ describe SrlRuby do
       regexp = SrlRuby.parse('number')
       expect(regexp.source).to eq('\d')
     end
-    
+
     it "should parse 'no digit' syntax" do
       regexp = SrlRuby.parse('no digit')
       expect(regexp.source).to eq('\D')
@@ -98,41 +98,41 @@ describe SrlRuby do
       # (escapes more characters than required)
       expect(regexp.source).to eq('[._%+\-]')
     end
-    
+
     it "should parse 'one of' with unquoted character class syntax" do
       # Case of digit sequence
       regexp = SrlRuby.parse('one of 13579, must end')
       expect(regexp.source).to eq('[13579]$')
-      
+
       # Case of identifier-like character class
       regexp = SrlRuby.parse('one of abcd, must end')
       expect(regexp.source).to eq('[abcd]$')
 
       # Case of arbitrary character class
       regexp = SrlRuby.parse('one of 12hms:, must end')
-      expect(regexp.source).to eq('[12hms:]$')       
-    end    
-    
+      expect(regexp.source).to eq('[12hms:]$')
+    end
+
     it "should parse 'none of' syntax" do
       regexp = SrlRuby.parse('none of "._%+-"')
       # Remark: reference implementation less readable
       # (escapes more characters than required)
       expect(regexp.source).to eq('[^._%+\-]')
-    end 
+    end
 
     it "should parse 'none of' with unquoted character class syntax" do
       # Case of digit sequence
       regexp = SrlRuby.parse('none of 13579, must end')
       expect(regexp.source).to eq('[^13579]$')
-      
+
       # Case of identifier-like character class
       regexp = SrlRuby.parse('none of abcd, must end')
       expect(regexp.source).to eq('[^abcd]$')
 
       # Case of arbitrary character class
       regexp = SrlRuby.parse('none of 12hms:^, must end')
-      expect(regexp.source).to eq('[^12hms:\^]$')       
-    end    
+      expect(regexp.source).to eq('[^12hms:\^]$')
+    end
   end # context
 
   context 'Parsing special character declarations:' do
@@ -140,7 +140,7 @@ describe SrlRuby do
       regexp = SrlRuby.parse('tab')
       expect(regexp.source).to eq('\t')
     end
-    
+
     it "should parse 'vertical tab' syntax" do
       regexp = SrlRuby.parse('vertical tab')
       expect(regexp.source).to eq('\v')
@@ -155,21 +155,21 @@ describe SrlRuby do
       regexp = SrlRuby.parse('new line')
       expect(regexp.source).to eq('\n')
     end
-    
+
     it "should parse 'carriage return' syntax" do
       regexp = SrlRuby.parse('carriage return')
       expect(regexp.source).to eq('\r')
-    end 
+    end
 
     it "should parse 'word' syntax" do
       regexp = SrlRuby.parse('word, literally "is"')
       expect(regexp.source).to eq('\bis')
-    end 
+    end
 
     it "should parse 'no word' syntax" do
       regexp = SrlRuby.parse('no word, literally "is"')
       expect(regexp.source).to eq('\Bis')
-    end    
+    end
   end # context
 
   context 'Parsing alternations:' do
@@ -177,25 +177,25 @@ describe SrlRuby do
       source = 'any of (any character, one of "._%-+")'
       regexp = SrlRuby.parse(source)
       expect(regexp.source).to eq('(?:\w|[._%\-+])')
-    end 
+    end
 
     it "should parse 'either of' syntax" do
       source = 'either of (any character, one of "._%-+")'
       regexp = SrlRuby.parse(source)
       expect(regexp.source).to eq('(?:\w|[._%\-+])')
-    end    
-    
+    end
+
     it 'should anchor as alternative' do
       regexp = SrlRuby.parse('any of (literally "?", must end)')
       expect(regexp.source).to eq('(?:\\?|$)')
-    end    
+    end
   end # context
 
   context 'Parsing concatenation:' do
     it 'should reject dangling comma' do
       source = 'literally "a",'
       err = StandardError
-      msg_pattern = /Premature end of input after ',' at position line 1, column 14/      
+      msg_pattern = /Premature end of input after ',' at position line 1, column 14/
       expect { SrlRuby.parse(source) }.to raise_error(err, msg_pattern)
     end
 
@@ -205,13 +205,13 @@ describe SrlRuby do
     end
 
     it 'should parse a long sequence of patterns' do
-      source = <<-END_SRL
+      source = <<-SRL
       any of (any character, one of "._%-+") once or more,
       literally "@",
       any of (digit, letter, one of ".-") once or more,
       literally ".",
       letter at least 2 times
-END_SRL
+SRL
 
       regexp = SrlRuby.parse(source)
       # SRL: (?:\w|[\._%\-\+])+(?:@)(?:[0-9]|[a-z]|[\.\-])+(?:\.)[a-z]{2,}
@@ -246,9 +246,9 @@ END_SRL
     it "should parse 'between ... and ... times' syntax" do
       regexp = SrlRuby.parse(prefix + 'between 2 and 4 times')
       expect(regexp.source).to eq('[p-t]{2,4}')
-      
+
       # Dropping 'times' keyword is a shorter alternative syntax
-      regexp = SrlRuby.parse(prefix + 'between 2 and 4') 
+      regexp = SrlRuby.parse(prefix + 'between 2 and 4')
       expect(regexp.source).to eq('[p-t]{2,4}')
     end
 
@@ -312,22 +312,22 @@ END_SRL
       regexp = SrlRuby.parse(source)
       expect(regexp.source).to eq('(?<first>.+)$')
     end
-    
+
     it 'should parse complex named capturing group' do
-      source = <<-END_SRL
-capture(any of (literally "sample", (digit once or more)))
+      source = <<-SRL
+  capture(any of (literally "sample", (digit once or more)))
   as "foo"
-END_SRL
+SRL
       regexp = SrlRuby.parse(source)
       expect(regexp.source).to eq('(?<foo>(?:sample|(?:\d+)))')
     end
 
     it 'should parse a sequence with named capturing groups' do
-      source = <<-END_SRL
+      source = <<-SRL
       capture (anything once or more) as "first",
       literally " - ",
       capture literally "second part" as "second"
-END_SRL
+SRL
       regexp = SrlRuby.parse(source)
       expect(regexp.source).to eq('(?<first>.+) - (?<second>second part)')
     end
@@ -361,16 +361,16 @@ END_SRL
     end
 
     it 'should accept anchor with a sequence of patterns' do
-      source = <<-END_SRL
+      source = <<-SRL
       begin with any of (digit, letter, one of ".-") once or more,
       literally ".",
       letter at least 2 times must end
-END_SRL
+SRL
 
       regexp = SrlRuby.parse(source)
       # SRL: (?:\w|[\._%\-\+])+(?:@)(?:[0-9]|[a-z]|[\.\-])+(?:\.)[a-z]{2,}
       expect(regexp.source).to eq('^(?:\d|[a-z]|[.\-])+\.[a-z]{2,}$')
-    end        
+    end
   end # context
 end # describe
 # End of file

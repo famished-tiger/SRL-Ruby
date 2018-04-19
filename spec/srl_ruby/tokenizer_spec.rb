@@ -10,9 +10,9 @@ module SrlRuby
         expect(token.lexeme).to eq(lexeme)
       end
     end
-  
-    subject { Tokenizer.new('') }    
-    
+
+    subject { Tokenizer.new('') }
+
     context 'Initialization:' do
       it 'should be initialized with a text to tokenize and a grammar' do
         expect { Tokenizer.new('anything') }.not_to raise_error
@@ -31,7 +31,7 @@ module SrlRuby
         expect(token.terminal).to eq('COMMA')
         expect(token.lexeme).to eq(',')
       end
-      
+
       it 'should tokenize keywords' do
         sample = 'between Exactly oncE optional TWICE'
         subject.scanner.string = sample
@@ -40,14 +40,14 @@ module SrlRuby
           expect(tok.terminal).to eq(tok.lexeme.upcase)
         end
       end
-      
+
       it 'should tokenize integer values' do
         subject.scanner.string = ' 123 '
         token = subject.tokens.first
         expect(token).to be_kind_of(Rley::Lexical::Token)
         expect(token.terminal).to eq('INTEGER')
         expect(token.lexeme).to eq('123')
-      end 
+      end
 
       it 'should tokenize single digits' do
         subject.scanner.string = ' 1 '
@@ -55,9 +55,9 @@ module SrlRuby
         expect(token).to be_kind_of(Rley::Lexical::Token)
         expect(token.terminal).to eq('DIGIT_LIT')
         expect(token.lexeme).to eq('1')
-      end       
+      end
     end # context
-    
+
     context 'String literal tokenization:' do
       it "should recognize 'literally ...'" do
         input = 'literally "hello"'
@@ -67,9 +67,9 @@ module SrlRuby
           %w[STRING_LIT hello]
         ]
         match_expectations(subject, expectations)
-      end    
-    end # context    
-    
+      end
+    end # context
+
     context 'Character range tokenization:' do
       it "should recognize 'letter from ... to ...'" do
         input = 'letter a to f'
@@ -81,9 +81,9 @@ module SrlRuby
           %w[LETTER_LIT f]
         ]
         match_expectations(subject, expectations)
-      end    
+      end
     end # context
-    
+
     context 'Quantifier tokenization:' do
       it "should recognize 'exactly ... times'" do
         input = 'exactly 4 Times'
@@ -95,7 +95,7 @@ module SrlRuby
         ]
         match_expectations(subject, expectations)
       end
-      
+
       it "should recognize 'between ... and ... times'" do
         input = 'Between 2 AND 4 times'
         subject.scanner.string = input
@@ -129,7 +129,7 @@ module SrlRuby
           %w[MORE more]
         ]
         match_expectations(subject, expectations)
-      end 
+      end
 
       it "should recognize 'at least  ... times'" do
         input = 'at least 10 times'
@@ -141,7 +141,7 @@ module SrlRuby
           %w[TIMES times]
         ]
         match_expectations(subject, expectations)
-      end      
+      end
     end # context
   end # describe
 end # module

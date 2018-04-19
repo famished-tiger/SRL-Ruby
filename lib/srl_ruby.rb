@@ -3,22 +3,29 @@ require_relative './srl_ruby/tokenizer'
 require_relative './srl_ruby/grammar'
 require_relative './srl_ruby/ast_builder'
 
-module SrlRuby # This module is used as a namespace
-  # Load the SRL expression contained in filename. 
-  # Returns an equivalent Regexp object. 
-  # @param filename [String] file name to parse.
-  # @return [Regexp]
+module SrlRuby
+  # Compile the SRL expression in given filename into a Regexp object.
+  # @param filename [String] Name of SRL file to parse
+  # @return [Regexp] A regexp object equivalent to the SRL expression.
   def self.load_file(filename)
     source = nil
     File.open(filename, 'r') { |f| source = f.read }
     return source if source.nil? || source.empty?
-    
+
     return parse(source)
   end
-  
-  # Parse the SRL expression into its Regexp equivalent.
-  # @param source [String] the SRL source to parse and convert.
-  # @return [Regexp]  
+
+  # Compile the given SRL expression into its Regexp equivalent.
+  # @param source [String] SRL expression to parse
+  # @return [Regexp] A regexp object equivalent to the SRL expression.
+  # @example Matching a (signed) integer literal
+  #   some_srl =<<-SRL
+  #     begin with
+  #       (one of "+-") optional,
+  #       digit once or more,
+  #     must end
+  #   SRL
+  #   regex = SrlRuby::API.parse(some_srl) # => regex == /^[+\-]?\d+$/
   def self.parse(source)
     # Create a Rley facade object
     engine = Rley::Engine.new { |cfg| cfg.diagnose = true }
@@ -42,8 +49,6 @@ module SrlRuby # This module is used as a namespace
 
     # Now output the regexp literal
     root = ast_ptree.root
-    # puts root.to_str # TODO remove this line
-    # pp root
     return Regexp.new(root.to_str)
   end
 end # module

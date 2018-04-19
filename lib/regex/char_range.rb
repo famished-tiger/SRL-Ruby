@@ -7,9 +7,9 @@ module Regex # This module is used as a namespace
   # Assumption: characters are ordered by codepoint
   class CharRange < PolyadicExpression
     # Constructor.
-    # [thelowerBound] 
+    # [thelowerBound]
     #   A character that will be the lower bound value for the range.
-    # [theUpperBound] 
+    # [theUpperBound]
     #   A character that will be the upper bound value for the range.
     # TODO: optimisation. Build a Character if lower bound == upper bound.
     def initialize(theLowerBound, theUpperBound)

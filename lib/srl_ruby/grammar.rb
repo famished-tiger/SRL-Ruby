@@ -6,11 +6,11 @@ module SrlRuby
   builder = Rley::Syntax::GrammarBuilder.new do
     # Separators...
     add_terminals('LPAREN', 'RPAREN', 'COMMA')
-    
+
     # Literal values...
     add_terminals('DIGIT_LIT', 'INTEGER', 'LETTER_LIT', 'CHAR_CLASS')
     add_terminals('LITERALLY', 'STRING_LIT', 'IDENTIFIER')
-    
+
     # Keywords...
     add_terminals('BEGIN', 'STARTS', 'WITH')
     add_terminals('MUST', 'END', 'RAW')
@@ -74,8 +74,8 @@ module SrlRuby
     rule('digit_range' => %w[digit_or_number FROM DIGIT_LIT TO DIGIT_LIT]).as 'digits_from_to'
     rule('character_class' => %w[ANY CHARACTER]).as 'any_character'
     rule('character_class' => %w[NO CHARACTER]).as 'no_character'
-    rule('character_class' => 'digit_or_number').as 'digit'    
-    rule('character_class' => %w[NO DIGIT]).as 'non_digit'    
+    rule('character_class' => 'digit_or_number').as 'digit'
+    rule('character_class' => %w[NO DIGIT]).as 'non_digit'
     rule('character_class' => 'WHITESPACE').as 'whitespace'
     rule('character_class' => %w[NO WHITESPACE]).as 'no_whitespace'
     rule('character_class' => 'ANYTHING').as 'anything'
@@ -123,5 +123,6 @@ module SrlRuby
   end
 
   # And now build the grammar and make it accessible via a global constant
+  # [Rley::Syntax::Grammar]
   Grammar = builder.grammar
 end # module

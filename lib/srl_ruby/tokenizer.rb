@@ -124,7 +124,7 @@ module SrlRuby
       elsif (lexeme = scanner.scan(/'(?:\\'|[^'])*'/)) # Single quotes literal?
         unquoted = lexeme.gsub(/(^')|('$)/, '')
         token = build_token('STRING_LIT', unquoted)
-      elsif (lexeme = scanner.scan(/[a-zA-Z]((?=\s)|$)/))        
+      elsif (lexeme = scanner.scan(/[a-zA-Z]((?=\s|,)|$)/))        
         token = build_token('LETTER_LIT', lexeme)
       elsif (lexeme = scanner.scan(/[a-zA-Z_][a-zA-Z0-9_]+/))
         keyw = @@keywords[lexeme.upcase]
@@ -133,7 +133,7 @@ module SrlRuby
       elsif (lexeme = scanner.scan(/[^,"\s]{2,}/))
         token = build_token('CHAR_CLASS', lexeme)
       else # Unknown token
-        erroneous = curr_ch.nil? ? '' : curr_ch
+        erroneous = curr_ch.nil? ? '' : scanner.scan(/./)
         sequel = scanner.scan(/.{1,20}/)
         erroneous += sequel unless sequel.nil?
         raise ScanError.new("Unknown token #{erroneous} on line #{lineno}")

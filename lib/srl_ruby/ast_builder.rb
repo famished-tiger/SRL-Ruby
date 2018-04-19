@@ -34,7 +34,7 @@ module SrlRuby
     end
 
     def multiplicity(lowerBound, upperBound)
-      return SRL::Regex::Multiplicity.new(lowerBound, upperBound, :greedy)
+      return Regex::Multiplicity.new(lowerBound, upperBound, :greedy)
     end
 
     def string_literal(aString, to_escape = true)

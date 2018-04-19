@@ -37,9 +37,9 @@ module Acceptance
       self.srl = aSRLExpression.dup
       self.match_tests = []
       self.no_match_tests = []
-		  self.capture_tests = []
+      self.capture_tests = []
     end
-	end
+  end
 
   MatchTest = Struct.new(:test_string)
   NoMatchTest = Struct.new(:test_string)

@@ -1,0 +1,7 @@
+begin with
+  any of(
+    digit,
+    letter from a to f,
+    letter from A to F
+  ) once or more
+must end
