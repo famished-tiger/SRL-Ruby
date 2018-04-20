@@ -1,3 +1,18 @@
+## [0.3.4] - 2018-04-20
+
+### Fixed
+- Method `Tokenizer#_next_token` failed to recognize digit or integer value immediately followed by a comma
+
+## [0.3.3] - 2018-04-19
+### Changed
+- Binary `srl_ruby` now accepts a SRL filename as command-line argument. Command-line documentation updated.
+
+### Fixed
+- Method `Tokenizer#_next_token` failed to recognize single letter followed by a comma
+- Binary `srl_ruby` now loads source files from correct filepath
+- Module `SRL` is no more an ancestor of class `Multiplicity`.
+
+
 ## [0.3.2] - 2018-04-13
 ### Added
 - `Cucumber` feature files are now part of the gem.

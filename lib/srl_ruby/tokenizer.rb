@@ -5,6 +5,8 @@ require_relative 'srl_token'
 
 
 module SrlRuby
+  # A tokenizer for the Simple Regex Language.
+  # Responsibility: break input SRL into a sequence of token objects.
   # The tokenizer should recognize:
   # Keywords: as, capture, letter
   # Integer literals including single digit
@@ -86,6 +88,8 @@ module SrlRuby
 
     class ScanError < StandardError; end
 
+    # Constructor. Initialize a tokenizer for SRL.
+    # @param srl_source [String] SRL text to tokenize.
     def initialize(source)
       @scanner = StringScanner.new(source)
       @lineno = 1
@@ -114,10 +118,10 @@ module SrlRuby
       if '(),'.include? curr_ch
         # Delimiters, separators => single character token
         token = build_token(@@lexeme2name[curr_ch], scanner.getch)
-      elsif (lexeme = scanner.scan(/[0-9]{2,}((?=\s)|$)/))
+      elsif (lexeme = scanner.scan(/[0-9]{2,}((?=\s|,)|$)/))
         token = build_token('INTEGER', lexeme) # An integer has 2..* digits
-      elsif (lexeme = scanner.scan(/[0-9]((?=\s)|$)/))
-        token = build_token('DIGIT_LIT', lexeme)
+      elsif (lexeme = scanner.scan(/[0-9]((?=\s|,)|$)/))
+      token = build_token('DIGIT_LIT', lexeme)
       elsif (lexeme = scanner.scan(/"(?:\\"|[^"])*"/)) # Double quotes literal?
         unquoted = lexeme.gsub(/(^")|("$)/, '')
         token = build_token('STRING_LIT', unquoted)
@@ -136,7 +140,7 @@ module SrlRuby
         erroneous = curr_ch.nil? ? '' : scanner.scan(/./)
         sequel = scanner.scan(/.{1,20}/)
         erroneous += sequel unless sequel.nil?
-        raise ScanError.new("Unknown token #{erroneous} on line #{lineno}")
+        raise ScanError, "Unknown token #{erroneous} on line #{lineno}"
       end
 
       return token

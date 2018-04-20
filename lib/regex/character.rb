@@ -125,10 +125,10 @@ module Regex # This module is used as a namespace
     def ==(other)
       result = case other
         when Character
-          self.to_str == other.to_str
+          to_str == other.to_str
 
         when Integer
-          self.codepoint == other
+          codepoint == other
 
         when String
           other.size > 1 ? false : to_str == other
