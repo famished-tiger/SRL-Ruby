@@ -6,7 +6,7 @@ module Regex # This module is used as a namespace
   # An association between a capture variable and an expression
   # the subject text in the same serial arrangement
   class CapturingGroup < MonadicExpression
-    # The capture variable id. It is a Fixnum when the capture group gets 
+    # The capture variable id. It is a Fixnum when the capture group gets
     # a sequence number,
     # a String when it is an user-defined name
     attr_reader(:id)
@@ -16,18 +16,19 @@ module Regex # This module is used as a namespace
     attr_reader(:no_backtrack)
 
     # Constructor.
-    # [aChildExpression]  A sub-expression to match. When successful 
+    # @param aChildExpression[ Regex::Expression]
+    #   A sub-expression to match. When successful
     #   the matching text is assigned to the capture variable.
-    # [theId] The id of the capture variable.
-    # [noBacktrack] A flag that specifies whether the capturing group forbids 
-    #   backtracking requests from its parent expression.
+    # @param theId [String] The id of the capture variable.
+    # @param noBacktrack [Boolean] A flag that specifies whether the capturing
+    #     group forbids backtracking requests from its parent expression.
     def initialize(aChildExpression, theId = nil, noBacktrack = false)
       super(aChildExpression)
       @id = theId
       @no_backtrack = noBacktrack
     end
 
-    # Return true iff the capturing group has a name (and not )
+    # Return true iff the capturing group has a name
     def named?()
       return id.kind_of?(String)
     end

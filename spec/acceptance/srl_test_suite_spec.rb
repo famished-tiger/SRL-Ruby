@@ -18,7 +18,6 @@ RSpec.describe SrlRuby do
   def load_file(aFilename)
     return Acceptance::RuleFileParser.load_file(rule_path + aFilename)
   end
-   
 
   def test_rule_file(aRuleFileRepr)
     regex = SrlRuby::parse(aRuleFileRepr.srl.value)
