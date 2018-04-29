@@ -4,17 +4,17 @@ require_relative 'rule_file_ast_builder'
 
 module Acceptance # This module is used as a namespace
   module RuleFileParser
-    # Load the rule file 
-    # Returns the test rule representation 
+    # Load the rule file
+    # Returns the test rule representation
     # @param filename [String] file name to parse.
     def self.load_file(filename)
       source = nil
       File.open(filename, 'r') { |f| source = f.read }
       return source if source.nil? || source.empty?
-      
+
       return parse(source)
     end
-    
+
     # Parse the rule file
     # @param source [String] the SRL source to parse and convert.
     def self.parse(source)

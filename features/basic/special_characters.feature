@@ -10,7 +10,7 @@ Scenario: defining any whitespace as pattern
   whitespace,
   whitespace
   """
-  Then I expect the generated regular expression to be "\s\s"
+  Then I expect the generated regular expression source to be "\s\s"
   Then I expect matching for:
   | "two spaces>  " |
   | "  <two spaces" |
@@ -30,7 +30,7 @@ Scenario: defining any non-whitespace as pattern
   """
   no whitespace
   """
-  Then I expect the generated regular expression to be "\S"
+  Then I expect the generated regular expression source to be "\S"
   Then I expect matching for:
   | "{}"      |
   | " (red} " |
@@ -44,7 +44,7 @@ Scenario: defining a backslash as pattern
   """
   backslash
   """
-  Then I expect the generated regular expression to be "\\"
+  Then I expect the generated regular expression source to be "\\"
   Then I expect matching for:
   | "   \   " |
   | "{}\    " |
@@ -62,7 +62,7 @@ Scenario: defining a tab as pattern
   """
   tab
   """
-  Then I expect the generated regular expression to be "\t"
+  Then I expect the generated regular expression source to be "\t"
 
 
 Scenario: defining a vertical tab as pattern
@@ -70,7 +70,7 @@ Scenario: defining a vertical tab as pattern
   """
   vertical tab
   """
-  Then I expect the generated regular expression to be "\v"
+  Then I expect the generated regular expression source to be "\v"
 
   
 Scenario: defining a newline as pattern
@@ -78,7 +78,7 @@ Scenario: defining a newline as pattern
   """
   new line
   """
-  Then I expect the generated regular expression to be "\n"
+  Then I expect the generated regular expression source to be "\n"
 
 
   Scenario: defining a carriage return as pattern
@@ -86,5 +86,5 @@ Scenario: defining a newline as pattern
   """
   carriage return
   """
-  Then I expect the generated regular expression to be "\r"
+  Then I expect the generated regular expression source to be "\r"
 

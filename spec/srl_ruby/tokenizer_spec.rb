@@ -82,6 +82,19 @@ module SrlRuby
         ]
         match_expectations(subject, expectations)
       end
+
+      it "should recognize 'letter from ... to ... followed by comma'" do
+        input = 'letter a to f,'
+        subject.scanner.string = input
+        expectations = [
+          %w[LETTER letter],
+          %w[LETTER_LIT a],
+          %w[TO to],
+          %w[LETTER_LIT f],
+          %w[COMMA ,]
+        ]
+        match_expectations(subject, expectations)
+      end
     end # context
 
     context 'Quantifier tokenization:' do

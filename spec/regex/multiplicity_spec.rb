@@ -1,4 +1,4 @@
-# File: Multiplicity_spec.rb
+# File: multiplicity_spec.rb
 
 require_relative '../spec_helper' # Use the RSpec test framework
 require_relative '../../lib/regex/multiplicity'

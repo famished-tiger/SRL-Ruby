@@ -3,25 +3,29 @@
 module Regex # This module is used as a namespace
   # The multiplicity specifies by how much a given expression can be repeated.
   class Multiplicity
-    # The lowest acceptable repetition count
+    # @return [Integer] The lowest acceptable repetition count
     attr_reader(:lower_bound)
 
-    # The highest possible repetition count
+    # @return [Integer, Symbol] The highest possible repetition count
     attr_reader(:upper_bound)
 
-    # An indicator that specifies how to repeat (:greedy, :lazy, :possessive)
-    attr_reader(:policy)
+    # @return [Symbol] An indicator that specifies how to repeat
+    # @see initialize
+    attr_accessor(:policy)
 
     # @param aLowerBound [Integer]
     # @param anUpperBound [Integer, Symbol] integer or :more symbol
     # @param aPolicy [Symbol] One of: (:greedy, :lazy, :possessive)
+    # @option aPolicy [Symbol] :greedy
+    # @option aPolicy [Symbol] :lazy
+    # @option aPolicy [Symbol] :possessive
     def initialize(aLowerBound, anUpperBound, aPolicy)
       @lower_bound = valid_lower_bound(aLowerBound)
       @upper_bound = valid_upper_bound(anUpperBound)
       @policy = valid_policy(aPolicy)
     end
 
-    # Purpose: Return the String representation of the multiplicity.
+    # @return [String] String representation of the multiplicity.
     def to_str()
       case upper_bound
         when :more

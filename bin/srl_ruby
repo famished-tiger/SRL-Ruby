@@ -21,13 +21,13 @@ if ARGV.empty?
     #{my_name} "letter from a to f exactly 4 times"
     #{my_name} "uppercase letter between 2 and 3 times"
     #{my_name} "digit from 0 to 7 once or more"
-    
+
   Command-line syntax (II):
   ========================
     #{my_name} -f filename
     where:
       the filename is a text file containing the SRL expression to compile
-      
+
     Examples:
     #{my_name} -f hexadecimal.srl
 MSG

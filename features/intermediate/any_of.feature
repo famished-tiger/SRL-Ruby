@@ -12,7 +12,7 @@ Background:
 
 
 Scenario: defining an alternation as pattern
-  Then I expect the generated regular expression to be "((?:sample|(?:\d+)))"
+  Then I expect the generated regular expression source to be "((?:sample|(?:\d+)))"
   Then I expect matching for:
   | "two samples  "  |
   | "         1234"  |

@@ -1,3 +1,15 @@
+## [0.3.5] - 2018-04-29
+
+### Added
+- Support for SRL flags (i.e. 'case insensitive', 'multi line', 'all lazy'). 
+  This marks a milestone: all SRL can be, in principle, parsed and compiled.
+
+### Changed
+- Methods `SrlRuby#load_file`, `SrlRuby#parse` now return a Regexp object initialized with options parsed from SRL
+- New feature step defined in file `features/lib/step_definitions/srl_testing_steps.rb`
+- File `.rubocop.yml` enabled some of the complaining cops
+
+
 ## [0.3.4] - 2018-04-20
 
 ### Fixed

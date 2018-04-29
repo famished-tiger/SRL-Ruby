@@ -16,7 +16,7 @@ Scenario: defining email validating expression
   must end, 
   case insensitive
   """
-  Then I expect the generated regular expression to be "^(?:\d|[a-z]|[._%+\-])+@(?:\d|[a-z]|[.\-])+(?:\.[a-z]{2,})?$"
+  Then I expect the generated regular expression source to be "^(?:\d|[a-z]|[._%+\-])+@(?:\d|[a-z]|[.\-])+(?:\.[a-z]{2,})?$"
   Then I expect matching for:
   | s@example.com |
   | simple@example.com    |

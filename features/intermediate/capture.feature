@@ -62,3 +62,39 @@ Scenario: using either of (synonym of any of)
   Then I expect the first captures to be:
   | 0 | sample  |
   | 1 | 1234    |
+  
+
+Scenario: using captures and greedy lode (default)
+  Given I define the following SRL expression:
+  """
+  capture(letter once or more)
+  """
+  When I use the text "this is a sample"
+  Then I expect the first captures to be:
+  | 0 | this  |
+  | 1 | is    |
+  | 2 | a     |
+  | 3 | sample|   
+
+  
+Scenario: using captures and lazy flag
+  Given I define the following SRL expression:
+  """
+  capture(letter once or more),
+  all lazy
+  """
+  When I use the text "this is a sample"
+  Then I expect the first captures to be:
+  | 0 | t  |
+  | 1 | h  |
+  | 2 | i  |
+  | 3 | s  | 
+  | 4 | i  |
+  | 5 | s  |
+  | 6 | a  |
+  | 7 | s  |
+  | 8 | a  |
+  | 9 | m  |
+  | 10| p  |
+  | 11| l  |
+  | 12| E  |  

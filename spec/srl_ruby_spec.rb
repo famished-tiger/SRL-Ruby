@@ -343,6 +343,7 @@ SRL
     it 'should parse begin anchors' do
       regexp = SrlRuby.parse('starts with literally "match"')
       expect(regexp.source).to eq('^match')
+      expect(regexp.to_s).to eq('(?-mix:^match)')
     end
 
     it 'should parse begin anchors (alternative syntax)' do
@@ -370,6 +371,44 @@ SRL
       regexp = SrlRuby.parse(source)
       # SRL: (?:\w|[\._%\-\+])+(?:@)(?:[0-9]|[a-z]|[\.\-])+(?:\.)[a-z]{2,}
       expect(regexp.source).to eq('^(?:\d|[a-z]|[.\-])+\.[a-z]{2,}$')
+    end
+  end # context
+
+  context 'Parsing flags' do
+    it "should parse 'case insensitive'" do
+      regexp = SrlRuby.parse('starts with literally "hello", case insensitive')
+      expect(regexp.source).to eq('^hello')
+      expect(regexp.to_s).to eq('(?i-mx:^hello)')
+    end
+
+    it "should parse 'multi line'" do
+      regexp = SrlRuby.parse('starts with literally "hello", multi line')
+      expect(regexp.source).to eq('^hello')
+      expect(regexp.to_s).to eq('(?m-ix:^hello)')
+    end
+
+    it 'should parse combined flags' do
+      source = <<-SRL
+      starts with literally "hello",
+      multi line,
+      case insensitive
+SRL
+      regexp = SrlRuby.parse(source)
+      expect(regexp.source).to eq('^hello')
+      expect(regexp.to_s).to eq('(?mi-x:^hello)')
+    end
+
+    it "should parse 'all lazy' flag" do
+      source = <<-SRL
+      begin with any of (digit, letter, one of ".-") once or more,
+      literally ".",
+      letter at least 2 times,
+      must end,
+      all lazy
+SRL
+
+      regexp = SrlRuby.parse(source)
+      expect(regexp.source).to eq('^(?:\d|[a-z]|[.\-])+?\.[a-z]{2,}?$')
     end
   end # context
 end # describe

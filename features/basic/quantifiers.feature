@@ -10,7 +10,7 @@ Scenario: Repeat a pattern an exact number of times
   (uppercase letter,
   digit) exactly 2 times
   """
-  Then I expect the generated regular expression to be "(?:[A-Z]\d){2}"
+  Then I expect the generated regular expression source to be "(?:[A-Z]\d){2}"
   Then I expect matching for:
   | "R2D2" |
 
@@ -30,7 +30,7 @@ Scenario: Repeat a pattern a number from range
   digit) between 2 and 4 times
   must end
   """
-  Then I expect the generated regular expression to be "^(?:[A-Z]\d){2,4}$"
+  Then I expect the generated regular expression source to be "^(?:[A-Z]\d){2,4}$"
   Then I expect matching for:
   | "R2D2"     |
   | "A1B2C3"   |
@@ -54,7 +54,7 @@ Scenario: Repeat a pattern a number from range (without 'times' keyword)
   digit) between 2 and 4
   must end
   """
-  Then I expect the generated regular expression to be "^(?:[A-Z]\d){2,4}$"
+  Then I expect the generated regular expression source to be "^(?:[A-Z]\d){2,4}$"
   Then I expect matching for:
   | "R2D2"     |
   | "A1B2C3"   |
@@ -76,7 +76,7 @@ Scenario: Repeat a pattern zero or one times
   begin with one of "+-" optional,
   digit
   """
-  Then I expect the generated regular expression to be "^[+\-]?\d"
+  Then I expect the generated regular expression source to be "^[+\-]?\d"
   Then I expect matching for:
   | "42  "       |
   | "+42 "       |
@@ -95,7 +95,7 @@ Scenario: Repeat a pattern zero or more times
   digit never or more,
   letter
   """
-  Then I expect the generated regular expression to be "^[+\-]?\d*[a-z]"
+  Then I expect the generated regular expression source to be "^[+\-]?\d*[a-z]"
   Then I expect matching for:
   | "42cm  "   |
   | "+42cm "   |
@@ -116,7 +116,7 @@ Scenario: Repeat a pattern one or more times
   digit once or more,
   letter
   """
-  Then I expect the generated regular expression to be "^[+\-]?\d+[a-z]"
+  Then I expect the generated regular expression source to be "^[+\-]?\d+[a-z]"
   Then I expect matching for:
   | "42cm  "   |
   | "+42cm "   |
@@ -136,7 +136,7 @@ Scenario: Repeat a pattern n times or more
   begin with letter at least 2 times,
   must end
   """
-  Then I expect the generated regular expression to be "^[a-z]{2,}$"
+  Then I expect the generated regular expression source to be "^[a-z]{2,}$"
   Then I expect matching for:
   | "ab"       |
   | "abcdef"   |
@@ -152,7 +152,7 @@ Scenario: Repeat a pattern exactly once
   begin with (uppercase letter, digit) once,
   must end
   """
-  Then I expect the generated regular expression to be "^(?:[A-Z]\d){1}$"
+  Then I expect the generated regular expression source to be "^(?:[A-Z]\d){1}$"
   Then I expect matching for:
   | "R2"       |
 
@@ -168,7 +168,7 @@ Scenario: Repeat a pattern twice
   literally "-" optional) twice,
   must end
   """
-  Then I expect the generated regular expression to be "^(?:[A-Z]\d-?){2}$"
+  Then I expect the generated regular expression source to be "^(?:[A-Z]\d-?){2}$"
   Then I expect matching for:
   | "R2D2"     |
   | "R2-D2"    |

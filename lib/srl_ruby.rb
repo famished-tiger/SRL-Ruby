@@ -49,6 +49,7 @@ module SrlRuby
 
     # Now output the regexp literal
     root = ast_ptree.root
-    return Regexp.new(root.to_str)
+    options = root.is_a?(Regex::MatchOption) ? root.combine_opts : nil
+    return Regexp.new(root.to_str, options)
   end
 end # module

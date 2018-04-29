@@ -4,19 +4,19 @@ module Regex # This module is used as a namespace
   # A raw expression is a string that will be copied verbatim (as is)
   # in the generated regular expression.
   class RawExpression < AtomicExpression
-  attr_reader :raw
-  
+    # @return [String] String representation of a regular expression (sub)pattern
+    attr_reader :raw
+
     # Constructor
+    # @param rawLiteral [String] Sub-pattern expressed as regexp
     def initialize(rawLiteral)
       super()
       @raw = rawLiteral
     end
 
-    protected
-
-    # Conversion method re-definition.
-    # Purpose: Return the String representation of the expression.
-  alias_method :text_repr, :raw
+      # Conversion method re-definition.
+      # Purpose: Return the String representation of the expression.
+    alias text_repr raw
   end # class
 end # module
 

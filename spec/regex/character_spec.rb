@@ -10,11 +10,11 @@ module Regex # Open this namespace, to get rid of scope qualifiers
     # This constant holds the codepoints of the character selection
     SampleInts = [0x61, 0, 0x0107].freeze
 
-    # This constant holds an arbitrary selection of two characters (digrams) 
+    # This constant holds an arbitrary selection of two characters (digrams)
     # escape sequences
     SampleDigrams = %w[\n \e \0 \6 \k].freeze
 
-    # This constant holds an arbitrary selection of escaped octal 
+    # This constant holds an arbitrary selection of escaped octal
     # or hexadecimal literals
     SampleNumEscs = %w[\0 \07 \x07 \xa \x0F \u03a3 \u{a}].freeze
 
@@ -72,7 +72,10 @@ module Regex # Open this namespace, to get rid of scope qualifiers
         expect(newOne.to_str).to eq("\u03A3")
 
         # Try with our chars sample
-        SampleChars.each { |aChar| Character.new(aChar).to_str == aChar }
+        SampleChars.each do |aChar|
+          new_ch = Character.new(aChar).to_str
+          new_ch == aChar
+        end
 
         # Try with our codepoint sample
         mapped_chars = SampleInts.map do |aCodepoint|
@@ -83,7 +86,8 @@ module Regex # Open this namespace, to get rid of scope qualifiers
         # Try with our escape sequence samples
         (SampleDigrams + SampleNumEscs).each do |anEscSeq|
           expectation = String.class_eval(%Q|"#{anEscSeq}"|, __FILE__, __LINE__)
-          Character.new(anEscSeq).to_str == expectation
+          new_ch = Character.new(anEscSeq).to_str
+          new_ch == expectation
         end
       end
 
@@ -99,7 +103,7 @@ module Regex # Open this namespace, to get rid of scope qualifiers
         expect(allCodepoints).to eq(SampleInts)
 
         # Try with our codepoint sample
-        mapped_chars = SampleInts.each do |aCodepoint|
+        SampleInts.each do |aCodepoint|
           expect(Character.new(aCodepoint).codepoint).to eq(aCodepoint)
         end
 

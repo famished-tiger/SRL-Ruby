@@ -89,7 +89,7 @@ module SrlRuby
     class ScanError < StandardError; end
 
     # Constructor. Initialize a tokenizer for SRL.
-    # @param srl_source [String] SRL text to tokenize.
+    # @param source [String] SRL text to tokenize.
     def initialize(source)
       @scanner = StringScanner.new(source)
       @lineno = 1
@@ -128,12 +128,12 @@ module SrlRuby
       elsif (lexeme = scanner.scan(/'(?:\\'|[^'])*'/)) # Single quotes literal?
         unquoted = lexeme.gsub(/(^')|('$)/, '')
         token = build_token('STRING_LIT', unquoted)
-      elsif (lexeme = scanner.scan(/[a-zA-Z]((?=\s|,)|$)/))        
+      elsif (lexeme = scanner.scan(/[a-zA-Z]((?=\s|,)|$)/))
         token = build_token('LETTER_LIT', lexeme)
       elsif (lexeme = scanner.scan(/[a-zA-Z_][a-zA-Z0-9_]+/))
         keyw = @@keywords[lexeme.upcase]
         tok_type = keyw ? keyw : 'IDENTIFIER'
-        token = build_token(tok_type, lexeme)       
+        token = build_token(tok_type, lexeme)
       elsif (lexeme = scanner.scan(/[^,"\s]{2,}/))
         token = build_token('CHAR_CLASS', lexeme)
       else # Unknown token
@@ -151,7 +151,7 @@ module SrlRuby
         col = scanner.pos - aLexeme.size - @line_start + 1
         pos = Position.new(@lineno, col)
         token = SrlToken.new(aLexeme, aSymbolName, pos)
-      rescue Exception => exc
+      rescue StandardError => exc
         puts "Failing with '#{aSymbolName}' and '#{aLexeme}'"
         raise exc
       end
@@ -162,7 +162,7 @@ module SrlRuby
     def skip_whitespaces()
       pre_pos = scanner.pos
 
-      begin
+      loop do
         ws_found = false
         found = scanner.skip(/[ \t\f]+/)
         ws_found = true if found
@@ -172,17 +172,18 @@ module SrlRuby
           @lineno += 1
           @line_start = scanner.pos
         end
-      end while ws_found
+        break unless ws_found
+      end
 
       curr_pos = scanner.pos
       return if curr_pos == pre_pos
       # skipped = scanner.string.slice(Range.new(pre_pos, curr_pos))
       # triplet = skipped.rpartition(/\n|\r/)
       # @column = 1 unless triplet[1].empty?
-      
+
       # Correction for the tabs
       # tab_count = triplet[2].chars.count { |ch| ch =~ /\t/ }
-      # @column += triplet[2].size + tab_count * (tab_size - 1) - 1    
+      # @column += triplet[2].size + tab_count * (tab_size - 1) - 1
     end
 
     def tab_size()

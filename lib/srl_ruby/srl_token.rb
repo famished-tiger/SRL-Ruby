@@ -12,11 +12,11 @@ module SrlRuby
   # It stores the position in (line, row) of the token
   class SrlToken < Rley::Lexical::Token
     attr_reader(:position)
-    
+
     def initialize(theLexeme, aTerminal, aPosition)
       super(theLexeme, aTerminal)
       @position = aPosition
-    end 
+    end
   end # class
 end # module
 

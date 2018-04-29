@@ -10,17 +10,24 @@ module Regex # This module is used as a namespace
     attr_reader(:child)
 
     # Constructor.
+    # @param theChild [Regex::Expression] Child (sub)expression
     def initialize(theChild)
       super()
       @child = theChild
     end
-    
+
+    # Notification that the parse tree construction is complete.
     def done!()
-      # Do nothing
-    end    
+      child.done!
+    end
+
+    # Notification that all quantifiers are lazy
+    def lazy!()
+      child.lazy!
+    end
 
     protected
-  
+
     # Return the text representation of the child (if any)
     def all_child_text()
       result = child.nil? ? '' : child.to_str

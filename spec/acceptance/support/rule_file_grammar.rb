@@ -12,10 +12,10 @@ builder = Rley::Syntax::GrammarBuilder.new do
   # Keywords
   add_terminals('CAPTURE', 'FOR')
   add_terminals('MATCH:', 'NO', 'SRL:')
-  
+
   # Literals
   add_terminals('INTEGER', 'STRING_LIT')
-  add_terminals('IDENTIFIER', 'SRL_SOURCE')  
+  add_terminals('IDENTIFIER', 'SRL_SOURCE')
 
   rule('rule_file' => 'srl_heading srl_tests').as 'start_rule'
   rule('srl_heading' => 'SRL: SRL_SOURCE').as 'srl_source'

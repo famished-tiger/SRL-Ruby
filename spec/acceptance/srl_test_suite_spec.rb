@@ -19,6 +19,7 @@ RSpec.describe SrlRuby do
     return Acceptance::RuleFileParser.load_file(rule_path + aFilename)
   end
    
+
   def test_rule_file(aRuleFileRepr)
     regex = SrlRuby::parse(aRuleFileRepr.srl.value)
     # puts regex.source
@@ -39,7 +40,7 @@ RSpec.describe SrlRuby do
       else
         actual_names = regex.names
       end
-      
+
       # CaptureExpectation = Struct.new(:result_index, :var_name, :captured_text)
       # Compare actual vs. expected capture names
       cp_test.expectations.each do |expec|
@@ -48,21 +49,21 @@ RSpec.describe SrlRuby do
           expect(actual_names).to be_include(expected_name)
         end
       end
-      
+
       scan_results = test_string.scan(regex)
       actual_captures = scan_results.map do |capture_tuples|
         actual_names.zip(capture_tuples).to_h
       end
-      
+
       # Compare actual vs. expected captured texts
       cp_test.expectations.each do |expec|
         index =  expec.result_index.value
         var_name = expec.var_name.value.to_s
         expected_capture = expec.captured_text.value
         names2val = actual_captures[index]
-        actual = names2val[var_name].nil? ? "" : names2val[var_name]
-        expect(actual).to eq(expected_capture )
-      end      
+        actual = names2val[var_name].nil? ? '' : names2val[var_name]
+        expect(actual).to eq(expected_capture)
+      end
     end
   end
 
@@ -85,7 +86,7 @@ RSpec.describe SrlRuby do
     rule_file_repr = load_file('literally_spaces.rule')
     test_rule_file(rule_file_repr)
   end
-  
+
   it 'should support non word boundary' do
     rule_file_repr = load_file('no_word.rule')
     test_rule_file(rule_file_repr)
@@ -95,12 +96,12 @@ RSpec.describe SrlRuby do
     rule_file_repr = load_file('nondigit.rule')
     test_rule_file(rule_file_repr)
   end
-  
+
   it 'should support negative character class' do
     rule_file_repr = load_file('none_of.rule')
     test_rule_file(rule_file_repr)
   end
-  
+
   it 'should support negative character class' do
     rule_file_repr = load_file('sample_capture.rule')
     test_rule_file(rule_file_repr)
@@ -119,8 +120,8 @@ RSpec.describe SrlRuby do
   it 'should match mail address' do
     rule_file_repr = load_file('website_example_email_capture.rule')
     test_rule_file(rule_file_repr)
-  end  
- 
+  end
+
   it 'should support lookahead' do
     rule_file_repr = load_file('website_example_lookahead.rule')
     test_rule_file(rule_file_repr)
@@ -135,9 +136,9 @@ RSpec.describe SrlRuby do
     rule_file_repr = load_file('website_example_url.rule')
     test_rule_file(rule_file_repr)
   end
-  
+
   it 'should match a word boundary' do
     rule_file_repr = load_file('word.rule')
     test_rule_file(rule_file_repr)
-  end  
+  end
 end # describe

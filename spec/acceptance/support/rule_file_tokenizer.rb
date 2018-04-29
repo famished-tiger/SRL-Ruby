@@ -94,7 +94,7 @@ module Acceptance
         erroneous = curr_ch.nil? ? '' : curr_ch
         sequel = scanner.scan(/.{1,20}/)
         erroneous += sequel unless sequel.nil?
-        raise ScanError.new("Unknown token #{erroneous}")
+        raise ScanError, "Unknown token #{erroneous}"
       end
 
       return token
@@ -121,17 +121,18 @@ module Acceptance
     end
 
     def skip_noise()
-      begin
+      loop do
         noise_found = false
         noise_found = true if skip_whitespaces
         noise_found = true if skip_comment
-      end while noise_found
+        break unless noise_found
+      end
     end
 
     def skip_whitespaces()
       pre_pos = scanner.pos
 
-      begin
+      loop do
         ws_found = false
         found = scanner.skip(/[ \t\f]+/)
         ws_found = true if found
@@ -141,7 +142,8 @@ module Acceptance
           @lineno += 1
           @line_start = scanner.pos
         end
-      end while ws_found
+        break unless ws_found
+      end
 
       curr_pos = scanner.pos
       return !(curr_pos == pre_pos)

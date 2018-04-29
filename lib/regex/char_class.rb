@@ -24,7 +24,7 @@ module Regex # This module is used as a namespace
     def text_repr()
       result_children = children.inject('') do |subResult, aChild|
         if aChild.kind_of?(Regex::Character) && Metachars.include?(aChild.codepoint)
-          subResult << "\\" # Escape meta-character...
+          subResult << '\\' # Escape meta-character...
         end
         subResult << aChild.to_str
       end

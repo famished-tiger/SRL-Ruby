@@ -9,7 +9,7 @@ Scenario: defining a literal string as pattern
   """
   literally "aba"
   """
-  Then I expect the generated regular expression to be "aba"
+  Then I expect the generated regular expression source to be "aba"
   Then I expect matching for:
   | "nabab  "  |
   | "alibaba"  |
@@ -29,7 +29,7 @@ Scenario: defining a character from a set as pattern
   """
   one of "13579"
   """
-  Then I expect the generated regular expression to be "[13579]"
+  Then I expect the generated regular expression source to be "[13579]"
   Then I expect matching for:
   | "NCC-1701-A"  |
   | "even24685"   |
@@ -48,7 +48,7 @@ Scenario: defining a character not from a  given set
   """
   none of "13579"
   """
-  Then I expect the generated regular expression to be "[^13579]"
+  Then I expect the generated regular expression source to be "[^13579]"
   Then I expect matching for:
   |  "42"   |
   | "text"  |

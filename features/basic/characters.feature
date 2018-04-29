@@ -14,7 +14,7 @@ Scenario: defining any character as pattern
   any character,
   any character
   """
-  Then I expect the generated regular expression to be "\w\w"
+  Then I expect the generated regular expression source to be "\w\w"
   Then I expect matching for:
   | "srl"     |
   | "SRL"     |
@@ -32,7 +32,7 @@ Scenario: defining any non-character as pattern
   """
   no character
   """
-  Then I expect the generated regular expression to be "\W"
+  Then I expect the generated regular expression source to be "\W"
   Then I expect matching for:
   | "{}"      |
   | " (red} " |

@@ -10,7 +10,7 @@ Scenario: defining a begin anchor as pattern
   begin with uppercase letter,
   digit
   """
-  Then I expect the generated regular expression to be "^[A-Z]\d"
+  Then I expect the generated regular expression source to be "^[A-Z]\d"
   Then I expect matching for:
   | "R2"   |
   | "A10"  |
@@ -30,7 +30,7 @@ Scenario: defining a begin anchor as pattern (alternative syntax)
   starts with uppercase letter,
   digit
   """
-  Then I expect the generated regular expression to be "^[A-Z]\d"
+  Then I expect the generated regular expression source to be "^[A-Z]\d"
   Then I expect matching for:
   | "R2"   |
   | "A10"  |
@@ -47,7 +47,7 @@ Scenario: defining an end anchor as pattern
   digit,
   must end
   """
-  Then I expect the generated regular expression to be "[A-Z]\d$"
+  Then I expect the generated regular expression source to be "[A-Z]\d$"
   Then I expect matching for:
   | "r2-D2"   |
   | "! B1"    |

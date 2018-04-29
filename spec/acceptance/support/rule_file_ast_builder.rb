@@ -19,7 +19,7 @@ module Acceptance
     }.freeze
 
     attr_reader :options
-    
+
     def done!()
       # Do nothing!
     end

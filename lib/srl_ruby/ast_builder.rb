@@ -14,10 +14,38 @@ module SrlRuby
 
     attr_reader :options
 
+    # Create a new AST builder instance.
+    # @param theTokens [Array<Token>] The sequence of input tokens.
+    def initialize(theTokens)
+      super(theTokens)
+      @options = []
+    end
+
+    # Notification that the parse tree construction is complete.
+    def done!()
+      apply_options
+      super
+    end
+
     protected
 
     def terminal2node()
       Terminal2NodeClass
+    end
+
+    def apply_options()
+      tree_root = result.root
+      regexp_opts = []
+      options.each do |opt|
+        if opt == :ALL_LAZY
+          tree_root.lazy!
+        else
+          regexp_opts << opt
+        end
+      end
+      return if regexp_opts.empty?
+      new_root = Regex::MatchOption.new(tree_root, regexp_opts)
+      result.instance_variable_set(:@root, new_root)
     end
 
     # Overriding method.
@@ -42,13 +70,13 @@ module SrlRuby
         chars = []
         aString.each_char do |ch|
           if to_escape && Regex::Character::MetaChars.include?(ch)
-            chars << Regex::Character.new("\\")
+            chars << Regex::Character.new('\\')
           end
           chars << Regex::Character.new(ch)
         end
         result = Regex::Concatenation.new(*chars)
       elsif to_escape && Regex::Character::MetaChars.include?(aString)
-        backslash = Regex::Character.new("\\")
+        backslash = Regex::Character.new('\\')
         a_string = Regex::Character.new(aString)
         result = Regex::Concatenation.new(backslash, a_string)
       else
@@ -117,17 +145,17 @@ module SrlRuby
 
     # rule('single_flag' => %w[CASE INSENSITIVE]).as 'case_insensitive'
     def reduce_case_insensitive(_production, _range, _tokens, _children)
-      return [Regex::MatchOption.new(:IGNORECASE, true)]
+      return Regexp::IGNORECASE
     end
 
     # rule('single_flag' => %w[MULTI LINE]).as 'multi_line'
     def reduce_multi_line(_production, _range, _tokens, _children)
-      return [Regex::MatchOption.new(:MULTILINE, true)]
+      return Regexp::MULTILINE
     end
 
     # rule('single_flag' => %w[ALL LAZY]).as 'all_lazy'
     def reduce_all_lazy(_production, _range, _tokens, _children)
-      return [Regex::MatchOption.new(:ALL_LAZY, true)]
+      return :ALL_LAZY
     end
 
     # rule 'quantifiable' => %w[begin_anchor anchorable end_anchor]
@@ -188,7 +216,7 @@ module SrlRuby
     end
 
     # rule('letter_range' => %w[LETTER FROM LETTER_LIT TO LETTER_LIT]).as 'lowercase_from_to'
-    def reduce_lowercase_from_to(_production, _range, _tokens, theChildren) 
+    def reduce_lowercase_from_to(_production, _range, _tokens, theChildren)
       raw_range = [theChildren[2].token.lexeme, theChildren[4].token.lexeme]
       range_sorted = raw_range.sort
       ch_range = char_range(range_sorted[0], range_sorted[1])
@@ -216,7 +244,7 @@ module SrlRuby
     end
 
     # rule('digit_range' => %w[digit_or_number FROM DIGIT_LIT TO DIGIT_LIT]).as 'digits_from_to'
-    def reduce_digits_from_to(aProduction, aRange, theTokens, theChildren)
+    def reduce_digits_from_to(_production, _range, _tokens, theChildren)
       raw_range = [theChildren[2].token.lexeme, theChildren[4].token.lexeme]
       range_sorted = raw_range.map(&:to_i).sort
       ch_range = char_range(range_sorted[0].to_s, range_sorted[1].to_s)
@@ -263,7 +291,7 @@ module SrlRuby
       raw_literal = theChildren[-1].token.lexeme.dup
       alternatives = raw_literal.chars.map do |ch|
         if Regex::Character::MetaCharsInClass.include?(ch)
-          chars = [Regex::Character.new("\\"), Regex::Character.new(ch)]
+          chars = [Regex::Character.new('\\'), Regex::Character.new(ch)]
           Regex::Concatenation.new(*chars)
         else
           Regex::Character.new(ch)
@@ -296,7 +324,7 @@ module SrlRuby
     # rule('special_char' => 'BACKSLASH').as 'backslash'
     def reduce_backslash(_production, _range, _tokens, _children)
       # Double the backslash (because of escaping)
-      string_literal("\\", true)
+      string_literal('\\', true)
     end
 
     # rule('special_char' => %w[NEW LINE]).as 'new_line'

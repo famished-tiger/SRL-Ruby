@@ -6,10 +6,11 @@ module Regex # This module is used as a namespace
   # Abstract class. An element that is part of a regular expression &
   # that has its own child sub-expressions.
   class PolyadicExpression < CompoundExpression
-    # The aggregation of child elements
+    # @return [Array<Regex::Expression>] The aggregation of child elements
     attr_reader(:children)
 
     # Constructor.
+    # @param theChildren [Array<Regex::Expression>]
     def initialize(theChildren)
       super()
       @children = theChildren
@@ -17,23 +18,30 @@ module Regex # This module is used as a namespace
 
     # Append the given child to the list of children.
     # TODO: assess whether to defer to a subclass NAryExpression
+    # param aChild [Regex::Expression]
     def <<(aChild)
       @children << aChild
 
       return self
     end
-    
+
+    # Notification that the parse tree construction is complete.
     def done!()
       children.each(&:done!)
       children.each_with_index do |child, index|
         break if index == children.size - 1
-        next_child = children[index+1]
+        next_child = children[index + 1]
         if next_child.kind_of?(Lookaround) && next_child.dir == :behind
           # Swap children: lookbehind regex must precede pattern
-          @children[index+1] = child
+          @children[index + 1] = child
           @children[index] = next_child
         end
       end
+    end
+
+    # Apply the 'lazy' option to the child elements
+    def lazy!()
+      children.each(&:lazy!)
     end
 
     # Build a depth-first in-order children visitor.
@@ -45,7 +53,7 @@ module Regex # This module is used as a namespace
         # Initialization part: will run once
         visit_stack = [root] # The LIFO queue of nodes to visit
 
-        begin # Traversal part (as a loop)
+        loop do # Traversal part (as a loop)
           top = visit_stack.pop
           if top.kind_of?(Array)
             next if top.empty?
@@ -62,9 +70,11 @@ module Regex # This module is used as a namespace
             children_to_enqueue = currChild.children.reverse
             visit_stack.push(children_to_enqueue)
           end
-        end until visit_stack.empty?
+
+          break if visit_stack.empty?
+        end
       end
-      
+
       return visitor
     end
   end # class

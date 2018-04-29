@@ -7,22 +7,22 @@ module Regex # This module is used as a namespace
   class Character < AtomicExpression
     # Constant with all special 2-characters escape sequences
     DigramSequences = {
-      "\\a" => 0x7, # alarm
-      "\\n" => 0xA, # newline
-      "\\r" => 0xD, # carriage return
-      "\\t" => 0x9, # tab
-      "\\e" => 0x1B, # escape
-      "\\f" => 0xC, # form feed
-      "\\v" => 0xB, # vertical feed
+      '\a' => 0x7, # alarm
+      '\n' => 0xA, # newline
+      '\r' => 0xD, # carriage return
+      '\t' => 0x9, # tab
+      '\e' => 0x1B, # escape
+      '\f' => 0xC, # form feed
+      '\v' => 0xB, # vertical feed
       # Single octal digit literals
-      "\\0" => 0,
-      "\\1" => 1,
-      "\\2" => 2,
-      "\\3" => 3,
-      "\\4" => 4,
-      "\\5" => 5, 
-      "\\6" => 6, 
-      "\\7" => 7  
+      '\0' => 0,
+      '\1' => 1,
+      '\2' => 2,
+      '\3' => 3,
+      '\4' => 4,
+      '\5' => 5,
+      '\6' => 6,
+      '\7' => 7
     }.freeze
 
     MetaChars = '\^$.|+?*()[]{}'.freeze
@@ -35,11 +35,11 @@ module Regex # This module is used as a namespace
     attr_reader(:lexeme)
 
     # Constructor.
-    # [aValue] Initialize the character with a either a String literal or a 
+    # [aValue] Initialize the character with a either a String literal or a
     # codepoint value.
     # Examples:
     # Initializing with codepoint value...
-    # RegAn::Character.new(0x3a3) # Represents: Σ 
+    # RegAn::Character.new(0x3a3) # Represents: Σ
     # (Unicode GREEK CAPITAL LETTER SIGMA)
     # RegAn::Character.new(931)   # Also represents: Σ (931 dec == 3a3 hex)
     #
@@ -49,7 +49,7 @@ module Regex # This module is used as a namespace
     #
     # Initializing with an escape sequence string
     # Recognized escaped characters are: \a (alarm, 0x07), \n (newline, 0xA),
-    # \r (carriage return, 0xD), \t (tab, 0x9), \e (escape, 0x1B), 
+    # \r (carriage return, 0xD), \t (tab, 0x9), \e (escape, 0x1B),
     # \f (form feed, 0xC)
     # \uXXXX where XXXX is a 4 hex digits integer value, \u{X...}, \ooo (octal)
     # \xXX (hex)
@@ -90,20 +90,20 @@ module Regex # This module is used as a namespace
       return aChar.ord
     end
 
-    # Convertion method that returns the codepoint for the given escape 
+    # Convertion method that returns the codepoint for the given escape
     # sequence (a String).
     # Recognized escaped characters are: \a (alarm, 0x07), \n (newline, 0xA),
-    # \r (carriage return, 0xD), \t (tab, 0x9), \e (escape, 0x1B), \f (form feed, 
+    # \r (carriage return, 0xD), \t (tab, 0x9), \e (escape, 0x1B), \f (form feed,
     # 0xC), \v (vertical feed, 0xB)
     # \uXXXX where XXXX is a 4 hex digits integer value, \u{X...}, \ooo (octal)
     # \xXX (hex)
     # Any other escaped character will be treated as a literal character
     # Example:
     # RegAn::Character::esc2codepoint('\n') # Returns: 0xd
-    def self.esc2codepoint(anEscapeSequence)
-      msg = "Escape sequence #{anEscapeSequence} does not begin with a backslash (\)."
-      raise StandardError, msg unless anEscapeSequence[0] == "\\"
-      result = (anEscapeSequence.length == 2)? digram2codepoint(anEscapeSequence) : esc_number2codepoint(anEscapeSequence)
+    def self.esc2codepoint(esc_seq)
+      msg = "Escape sequence #{esc_seq} does not begin with a backslash (\)."
+      raise StandardError, msg unless esc_seq[0] == '\\'
+      result = (esc_seq.length == 2) ? digram2codepoint(esc_seq) : esc_number2codepoint(esc_seq)
 
       return result
     end
@@ -186,12 +186,12 @@ module Regex # This module is used as a namespace
     # \ooo (1..3 octal digits literal)
     # \xXX (1..2 hex digits literal)
     def self.esc_number2codepoint(anEscapeSequence)
-      unless /^\\(?:(?:(?<prefix>[uxX])\{?(?<hexa>\h+)\}?)|(?<octal>[0-7]{1,3}))$/ =~ anEscapeSequence
-        raise StandardError, "Unsupported escape sequence #{anEscapeSequence}." 
+      unless /^\\(?:(?:[uxX]\{?(?<hexa>\h+)\}?)|(?<octal>[0-7]{1,3}))$/ =~ anEscapeSequence
+        raise StandardError, "Unsupported escape sequence #{anEscapeSequence}."
       else
       # Octal literal case?
         return octal.oct if octal # shorterSeq =~ /[0-7]{1,3}/
-      
+
         # Extract the hexadecimal number
         hexliteral = hexa # shorterSeq.sub(/^[xXu]\{?([0-9a-fA-F]+)}?$/, '\1')
         return hexliteral.hex

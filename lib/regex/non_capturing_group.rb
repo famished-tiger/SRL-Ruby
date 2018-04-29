@@ -3,7 +3,7 @@
 require_relative 'monadic_expression' # Access the superclass
 
 module Regex # This module is used as a namespace
-  # A non-capturing group, in other word it is a pure grouping 
+  # A non-capturing group, in other word it is a pure grouping
   # of sub-expressions
   class NonCapturingGroup < MonadicExpression
     # Constructor.

@@ -10,7 +10,7 @@ Scenario: defining any small letter as pattern
   letter, 
   letter
   """
-  Then I expect the generated regular expression to be "[a-z][a-z]"
+  Then I expect the generated regular expression source to be "[a-z][a-z]"
   Then I expect matching for:
   | "srl"     |
   | "99 km"   |
@@ -21,13 +21,32 @@ Scenario: defining any small letter as pattern
   | "f1"  |
   | "?;!" |
 
+  Scenario: defining any small letter for case insensitive pattern
+  When I define the following SRL expression:
+  """
+  letter, 
+  letter,
+  case insensitive
+  """
+  Then I expect the generated regular expression source to be "[a-z][a-z]"
+  Then I expect the full generated regular expression to be "(?i-mx:[a-z][a-z])"
+  Then I expect matching for:
+  | "srl"     |
+  | "99 km"   |
+  | " >red: " |
+  | "ABC"     |
+  And I expect no match for:
+  | "123" |
+  | "f1"  |
+  | "?;!" |
+
 
 Scenario: defining one small letter from a given range as pattern
   When I define the following SRL expression:
   """
   letter from a to f
   """
-  Then I expect the generated regular expression to be "[a-f]"
+  Then I expect the generated regular expression source to be "[a-f]"
   Then I expect matching for:
   | "b1"   |
   | "red"  |
@@ -43,7 +62,7 @@ Scenario: defining any capital letter as pattern
   """
   uppercase letter
   """
-  Then I expect the generated regular expression to be "[A-Z]"
+  Then I expect the generated regular expression source to be "[A-Z]"
   Then I expect matching for:
   | "Ruby"    |
   | "99 Km"   |
@@ -59,7 +78,7 @@ Scenario: defining one capital letter from a given range as pattern
   """
   uppercase letter from X to Z
   """
-  Then I expect the generated regular expression to be "[X-Z]"
+  Then I expect the generated regular expression source to be "[X-Z]"
   Then I expect matching for:
   | "Yes"    |
   | ">Zulu"  |
@@ -75,7 +94,7 @@ Scenario: defining one small letter from a scrambled range as pattern
   """
   letter from d to a
   """
-  Then I expect the generated regular expression to be "[a-d]"
+  Then I expect the generated regular expression source to be "[a-d]"
   Then I expect matching for:
   | "b1"   |
   And I expect no match for:

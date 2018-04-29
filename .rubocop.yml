@@ -25,54 +25,54 @@ Layout/IndentationWidth:
   Enabled: false
 
 Layout/IndentationConsistency:
-  Enabled: false
+  Enabled: true
   
 Layout/MultilineHashBraceLayout:
-  Enabled: false
+  Enabled: true
 
 Layout/SpaceAroundOperators:
-  Enabled: false
+  Enabled: true
 
 Layout/SpaceInsideParens:
-  Enabled: false
+  Enabled: true
   
 Layout/Tab:
   Enabled: true
   
 Layout/TrailingBlankLines:
-  Enabled: false
+  Enabled: true
 
 Layout/TrailingWhitespace:
-  Enabled: false
+  Enabled: true
 
 Lint/Loop:
-  Enabled: false
+  Enabled: true
 
 Lint/RescueException:
-  Enabled: false
+  Enabled: true
 
 Lint/UnusedMethodArgument:
-  Enabled: false
+  Enabled: true
 
 Lint/UselessAccessModifier:
-  Enabled: false
+  Enabled: true
 
 Lint/Void:
   Enabled: false
 
 Lint/UselessAssignment:
-  Enabled: false
+  Enabled: true
 
 Metrics/AbcSize:
   Enabled: false
 
 Metrics/BlockLength:
   Enabled: true
-  Max: 300
+  Max: 350
 
 Metrics/ClassLength:
   Enabled: true
-  Max: 300
+  Max: 350
 
 Metrics/CyclomaticComplexity:
   Enabled: false
@@ -108,7 +108,7 @@ Naming/VariableName:
   Enabled: false
 
 Style/Alias:
-  Enabled: false
+  Enabled: true
 
 Layout/AlignHash:
   Enabled: false
@@ -180,7 +180,7 @@ Style/PercentLiteralDelimiters:
   Enabled: false
 
 Style/StringLiterals:
-  Enabled: false
+  Enabled: true
 
 Style/TernaryParentheses:
   Enabled: false

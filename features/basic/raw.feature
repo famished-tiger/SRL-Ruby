@@ -10,7 +10,7 @@ Scenario: defining a literal string as pattern
   letter,
   raw "[^1-4]"
   """
-  Then I expect the generated regular expression to be "[a-z][^1-4]"
+  Then I expect the generated regular expression source to be "[a-z][^1-4]"
   Then I expect matching for:
   | " b52  "  |
   | "road66"  |

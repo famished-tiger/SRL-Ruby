@@ -9,7 +9,7 @@ Scenario: defining any single digit as pattern
   """
   digit
   """
-  Then I expect the generated regular expression to be "\d"
+  Then I expect the generated regular expression source to be "\d"
   Then I expect matching for:
   | "123"     |
   | "THX1138" |
@@ -24,7 +24,7 @@ Scenario: using alternative syntax for any single digit
   """
   number
   """
-  Then I expect the generated regular expression to be "\d"
+  Then I expect the generated regular expression source to be "\d"
   Then I expect matching for:
   | "123"     |
   | "THX1138" |
@@ -39,7 +39,7 @@ Scenario: using alternative syntax for any single digit
   """
   no digit
   """
-  Then I expect the generated regular expression to be "\D"
+  Then I expect the generated regular expression source to be "\D"
   Then I expect matching for:
   | "a"   |
   | "two" |
@@ -54,7 +54,7 @@ Scenario: defining any single digit from a given range as pattern
   """
   digit from 3 to 8
   """
-  Then I expect the generated regular expression to be "[3-8]"
+  Then I expect the generated regular expression source to be "[3-8]"
   Then I expect matching for:
   | "4"   |
   | "124" |
@@ -69,7 +69,7 @@ Scenario: using alternative syntax for any single digit from a given range
   """
   number from 3 to 8
   """
-  Then I expect the generated regular expression to be "[3-8]"
+  Then I expect the generated regular expression source to be "[3-8]"
   Then I expect matching for:
   | "4"   |
   | "124" |
@@ -84,7 +84,7 @@ Scenario: defining any single digit from a given scrambled range
   """
   digit from 8 to 3
   """
-  Then I expect the generated regular expression to be "[3-8]"
+  Then I expect the generated regular expression source to be "[3-8]"
   Then I expect matching for:
   | "4"   |
   | "124" |
