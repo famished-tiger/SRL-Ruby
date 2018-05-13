@@ -31,8 +31,8 @@ module Regex # This module is used as a namespace
 
     # Conversion method re-definition.
     # Purpose: Return the String representation of the expression.
-    def text_repr()
-      return "\\#{shortname}"
+    def text_repr
+      "\\#{shortname}"
     end
 
     private

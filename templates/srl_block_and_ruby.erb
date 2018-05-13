@@ -1,0 +1,10 @@
+<% # srl_and_ruby.erb: Outputs the SRL expression in block comment, then the Ruby Regexp %>
+# SRL expression follows:
+=begin
+<% srl_lines = srl_source.split(/(?:\r\n)|\n/)%>
+<% srl_lines.each do |line| %>
+<%=  '  ' + line + "\n" %>
+<% end %>
+=end
+# ... and its Regexp equivalent:
+/<%= (regexp.to_s =~ /\(\?\-mix/) ? regexp.source : regexp.to_s %>/

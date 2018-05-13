@@ -18,7 +18,7 @@ module Regex # This module is used as a namespace
     end
 
     # Apply the `lazy` flag.
-    def lazy!()
+    def lazy!
       multiplicity.policy = :lazy
       super
     end
@@ -27,7 +27,7 @@ module Regex # This module is used as a namespace
 
     # Conversion method re-definition.
     # @return [String] String representation of the concatented expressions.
-    def text_repr()
+    def text_repr
       result = all_child_text + multiplicity.to_str
       return result
     end

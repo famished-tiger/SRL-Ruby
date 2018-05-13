@@ -19,7 +19,7 @@ module Regex # This module is used as a namespace
 
     # Conversion method re-definition.
     # Purpose: Return the String representation of the captured expression.
-    def text_repr()
+    def text_repr
       result = '(?:' + all_child_text + ')'
       return result
     end

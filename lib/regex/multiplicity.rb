@@ -26,7 +26,7 @@ module Regex # This module is used as a namespace
     end
 
     # @return [String] String representation of the multiplicity.
-    def to_str()
+    def to_str
       case upper_bound
         when :more
           case lower_bound

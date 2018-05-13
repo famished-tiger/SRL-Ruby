@@ -13,12 +13,12 @@ module Regex # This module is used as a namespace
     end
 
     # Notification that the parse tree construction is complete.
-    def done!()
+    def done!
       # Do nothing
     end
 
     # Notification that all quantifiers are lazy
-    def lazy!()
+    def lazy!
       # Do nothing
     end
   end # class

@@ -44,7 +44,7 @@ module Acceptance
       @state = :default
     end
 
-    def tokens()
+    def tokens
       tok_sequence = []
       until @scanner.eos?
         token = _next_token
@@ -56,7 +56,7 @@ module Acceptance
 
     private
 
-    def _next_token()
+    def _next_token
       skip_noise
       curr_ch = scanner.peek(1)
       return nil if curr_ch.nil? || curr_ch.empty?
@@ -70,7 +70,7 @@ module Acceptance
       return token
     end
 
-    def default_mode()
+    def default_mode
       curr_ch = scanner.peek(1)
       token = nil
 
@@ -100,7 +100,7 @@ module Acceptance
       return token
     end
 
-    def expecting_srl()
+    def expecting_srl
       scanner.skip(/^:/)
       lexeme = scanner.scan(/[^\r\n]*/)
       @state = :default
@@ -120,7 +120,7 @@ module Acceptance
       return token
     end
 
-    def skip_noise()
+    def skip_noise
       loop do
         noise_found = false
         noise_found = true if skip_whitespaces
@@ -129,7 +129,7 @@ module Acceptance
       end
     end
 
-    def skip_whitespaces()
+    def skip_whitespaces
       pre_pos = scanner.pos
 
       loop do
@@ -146,10 +146,10 @@ module Acceptance
       end
 
       curr_pos = scanner.pos
-      return !(curr_pos == pre_pos)
+      return curr_pos != pre_pos
     end
 
-    def skip_comment()
+    def skip_comment
       scanner.skip(/#[^\n\r]+/)
     end
   end # class

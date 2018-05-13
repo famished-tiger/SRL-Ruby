@@ -8,7 +8,7 @@ module Regex # This module is used as a namespace
   class CompoundExpression < Expression
     # Redefined method. Return false since it may have one or more children.
     def atomic?
-      return false
+      false
     end
 
 =begin
@@ -48,7 +48,7 @@ module Regex # This module is used as a namespace
     protected
 
     # Abstract method. Return the text representation of the child (if any)
-    def all_child_text()
+    def all_child_text
       abstract_method
     end
   end # class

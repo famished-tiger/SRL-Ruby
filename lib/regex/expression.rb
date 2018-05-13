@@ -14,7 +14,7 @@ module Regex # This module is used as a namespace
     # Abstract method. Return true iff the expression is atomic
     # (= doesn't not have any child).
     # @return [Boolean]
-    def atomic?()
+    def atomic?
       abstract_method
     end
 
@@ -30,7 +30,7 @@ module Regex # This module is used as a namespace
 
     # Template method.
     # @return [String] text representation of the expression.
-    def to_str()
+    def to_str
       result = ''
       result << prefix
       result << text_repr
@@ -41,11 +41,11 @@ module Regex # This module is used as a namespace
 
     protected
 
-    def prefix()
+    def prefix
       begin_anchor ? begin_anchor.to_str : ''
     end
 
-    def suffix()
+    def suffix
       end_anchor ? end_anchor.to_str : ''
     end
   end # class

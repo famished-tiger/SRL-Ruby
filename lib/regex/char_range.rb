@@ -18,20 +18,20 @@ module Regex # This module is used as a namespace
     end
 
     # Return the lower bound of the range.
-    def lower()
-      return children.first
+    def lower
+      children.first
     end
 
     # Return the upper bound of the range.
-    def upper()
-      return children.last
+    def upper
+      children.last
     end
 
     protected
 
     # Conversion method re-definition.
     # Purpose: Return the String representation of the concatented expressions.
-    def text_repr()
+    def text_repr
       result = lower.to_str + '-' + upper.to_str
 
       return result

@@ -6,7 +6,7 @@ module Regex # This module is used as a namespace
   # A wildcard matches any character (except for the newline).
   class Wildcard < AtomicExpression
     # Constructor
-    def initialize()
+    def initialize
       super
     end
 
@@ -14,8 +14,8 @@ module Regex # This module is used as a namespace
 
     # Conversion method re-definition.
     # Purpose: Return the String representation of the expression.
-    def text_repr()
-      return '.'
+    def text_repr
+      '.'
     end
   end # class
 end # module

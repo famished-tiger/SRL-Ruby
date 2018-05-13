@@ -13,7 +13,7 @@ module AbstractMethod
   #
   # def some_method() abstract_method
   # end
-  def abstract_method()
+  def abstract_method
     # Determine the short class name of self
     className = self.class.name.split(/::/).last
 

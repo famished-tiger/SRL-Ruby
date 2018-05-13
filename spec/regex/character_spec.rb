@@ -25,26 +25,26 @@ module Regex # Open this namespace, to get rid of scope qualifiers
 
     context 'Creation & initialization' do
       it 'should be created with a with an integer value (codepoint) or...' do
-        SampleInts.each do |aCodepoint|
-          expect { Character.new(aCodepoint) }.not_to raise_error
+        SampleInts.each do |codepoint|
+          expect { Character.new(codepoint) }.not_to raise_error
         end
       end
 
       it '...could be created with a single character String or...' do
-        SampleChars.each do |aChar|
-          expect { Character.new(aChar) }.not_to raise_error
+        SampleChars.each do |ch|
+          expect { Character.new(ch) }.not_to raise_error
         end
       end
 
       it '...could be created with an escape sequence' do
         # Case 1: escape sequence is a digram
-        SampleDigrams.each do |anEscapeSeq|
-          expect { Character.new(anEscapeSeq) }.not_to raise_error
+        SampleDigrams.each do |escape_seq|
+          expect { Character.new(escape_seq) }.not_to raise_error
         end
 
         # Case 2: escape sequence is an escaped octal or hexadecimal literal
-        SampleNumEscs.each do |anEscapeSeq|
-          expect { Character.new(anEscapeSeq) }.not_to raise_error
+        SampleNumEscs.each do |escape_seq|
+          expect { Character.new(escape_seq) }.not_to raise_error
         end
       end
     end # context
@@ -52,15 +52,15 @@ module Regex # Open this namespace, to get rid of scope qualifiers
     context 'Provided services' do
       it 'Should know its lexeme if created from a string' do
         # Lexeme is defined when the character was initialised from a text
-        SampleChars.each do |aChar|
-          ch = Character.new(aChar)
-          expect(ch.lexeme).to eq(aChar)
+        SampleChars.each do |ch|
+          ch = Character.new(ch)
+          expect(ch.lexeme).to eq(ch)
         end
       end
 
       it 'Should not know its lexeme representation from a codepoint' do
-        SampleInts.each do |aChar|
-          ch = Character.new(aChar)
+        SampleInts.each do |ch|
+          ch = Character.new(ch)
           expect(ch.lexeme).to be_nil
         end
       end
@@ -72,21 +72,21 @@ module Regex # Open this namespace, to get rid of scope qualifiers
         expect(newOne.to_str).to eq("\u03A3")
 
         # Try with our chars sample
-        SampleChars.each do |aChar|
-          new_ch = Character.new(aChar).to_str
-          new_ch == aChar
+        SampleChars.each do |ch|
+          new_ch = Character.new(ch).to_str
+          new_ch == ch
         end
 
         # Try with our codepoint sample
-        mapped_chars = SampleInts.map do |aCodepoint|
-          Character.new(aCodepoint).char
+        mapped_chars = SampleInts.map do |codepoint|
+          Character.new(codepoint).char
         end
         expect(mapped_chars).to eq(SampleChars)
 
         # Try with our escape sequence samples
-        (SampleDigrams + SampleNumEscs).each do |anEscSeq|
-          expectation = String.class_eval(%Q|"#{anEscSeq}"|, __FILE__, __LINE__)
-          new_ch = Character.new(anEscSeq).to_str
+        (SampleDigrams + SampleNumEscs).each do |escape_seq|
+          expectation = String.class_eval(%Q|"#{escape_seq}"|, __FILE__, __LINE__)
+          new_ch = Character.new(escape_seq).to_str
           new_ch == expectation
         end
       end
@@ -97,20 +97,20 @@ module Regex # Open this namespace, to get rid of scope qualifiers
         expect(newOne.codepoint).to eq(0x03a3)
 
         # Try with our chars sample
-        allCodepoints = SampleChars.map do |aChar|
-          Character.new(aChar).codepoint
+        allCodepoints = SampleChars.map do |ch|
+          Character.new(ch).codepoint
         end
         expect(allCodepoints).to eq(SampleInts)
 
         # Try with our codepoint sample
-        SampleInts.each do |aCodepoint|
-          expect(Character.new(aCodepoint).codepoint).to eq(aCodepoint)
+        SampleInts.each do |codepoint|
+          expect(Character.new(codepoint).codepoint).to eq(codepoint)
         end
 
         # Try with our escape sequence samples
-        (SampleDigrams + SampleNumEscs).each do |anEscSeq|
-          expectation = String.class_eval(%Q|"#{anEscSeq}".ord()|, __FILE__, __LINE__)
-          expect(Character.new(anEscSeq).codepoint).to eq(expectation)
+        (SampleDigrams + SampleNumEscs).each do |escape_seq|
+          expectation = String.class_eval(%Q|"#{escape_seq}".ord()|, __FILE__, __LINE__)
+          expect(Character.new(escape_seq).codepoint).to eq(expectation)
         end
       end
 
@@ -147,8 +147,8 @@ module Regex # Open this namespace, to get rid of scope qualifiers
 
         # Create a module that re-defines the existing to_s method
         module Tweak_to_s
-          def to_s() # Overwrite the existing to_s method
-            return ?\u03a3
+          def to_s # Overwrite the existing to_s method
+            ?\u03a3
           end
         end # module
         weird = Object.new

@@ -22,18 +22,18 @@ module SrlRuby
     end
 
     # Notification that the parse tree construction is complete.
-    def done!()
+    def done!
       apply_options
       super
     end
 
     protected
 
-    def terminal2node()
+    def terminal2node
       Terminal2NodeClass
     end
 
-    def apply_options()
+    def apply_options
       tree_root = result.root
       regexp_opts = []
       options.each do |opt|
@@ -100,16 +100,16 @@ module SrlRuby
       Regex::CharShorthand.new(shortName)
     end
 
-    def wildcard()
+    def wildcard
       Regex::Wildcard.new
     end
 
     def repetition(expressionToRepeat, aMultiplicity)
-      return Regex::Repetition.new(expressionToRepeat, aMultiplicity)
+      Regex::Repetition.new(expressionToRepeat, aMultiplicity)
     end
 
     def begin_anchor
-      return Regex::Anchor.new('^')
+      Regex::Anchor.new('^')
     end
 
     # rule('expression' => %w[pattern flags]).as 'flagged_expr'
@@ -120,7 +120,7 @@ module SrlRuby
 
     # rule('pattern' => %w[pattern separator sub_pattern]).as 'pattern_sequence'
     def reduce_pattern_sequence(_production, _range, _tokens, theChildren)
-      return Regex::Concatenation.new(theChildren[0], theChildren[2])
+      Regex::Concatenation.new(theChildren[0], theChildren[2])
     end
 
     # rule('pattern' => 'sub_pattern').as 'basic_pattern'
@@ -145,27 +145,27 @@ module SrlRuby
 
     # rule('single_flag' => %w[CASE INSENSITIVE]).as 'case_insensitive'
     def reduce_case_insensitive(_production, _range, _tokens, _children)
-      return Regexp::IGNORECASE
+      Regexp::IGNORECASE
     end
 
     # rule('single_flag' => %w[MULTI LINE]).as 'multi_line'
     def reduce_multi_line(_production, _range, _tokens, _children)
-      return Regexp::MULTILINE
+      Regexp::MULTILINE
     end
 
     # rule('single_flag' => %w[ALL LAZY]).as 'all_lazy'
     def reduce_all_lazy(_production, _range, _tokens, _children)
-      return :ALL_LAZY
+      :ALL_LAZY
     end
 
     # rule 'quantifiable' => %w[begin_anchor anchorable end_anchor]
     def reduce_pinned_quantifiable(_production, _range, _tokens, theChildren)
-      return Regex::Concatenation.new(*theChildren)
+      Regex::Concatenation.new(*theChildren)
     end
 
     # rule 'quantifiable' => %w[begin_anchor anchorable]
     def reduce_begin_anchor_quantifiable(_production, _range, _tokens, theChildren)
-      return Regex::Concatenation.new(*theChildren)
+      Regex::Concatenation.new(*theChildren)
     end
 
     # rule 'quantifiable' => %w[anchorable end_anchor]
@@ -185,27 +185,27 @@ module SrlRuby
 
     # rule('end_anchor' => %w[separator MUST END]).as 'end_anchor'
     def reduce_end_anchor(_production, _range, _tokens, _children)
-      return Regex::Anchor.new('$')
+      Regex::Anchor.new('$')
     end
 
     # rule('assertion' => %w[IF FOLLOWED BY assertable]).as 'if_followed'
     def reduce_if_followed(_production, _range, _tokens, theChildren)
-      return Regex::Lookaround.new(theChildren.last, :ahead, :positive)
+      Regex::Lookaround.new(theChildren.last, :ahead, :positive)
     end
 
     # rule('assertion' => %w[IF NOT FOLLOWED BY assertable]).as 'if_not_followed'
     def reduce_if_not_followed(_production, _range, _tokens, theChildren)
-      return Regex::Lookaround.new(theChildren.last, :ahead, :negative)
+      Regex::Lookaround.new(theChildren.last, :ahead, :negative)
     end
 
     # rule('assertion' => %w[IF ALREADY HAD assertable]).as 'if_had'
     def reduce_if_had(_production, _range, _tokens, theChildren)
-      return Regex::Lookaround.new(theChildren.last, :behind, :positive)
+      Regex::Lookaround.new(theChildren.last, :behind, :positive)
     end
 
     # rule('assertion' => %w[IF NOT ALREADY HAD assertable]).as 'if_not_had'
     def reduce_if_not_had(_production, _range, _tokens, theChildren)
-      return Regex::Lookaround.new(theChildren.last, :behind, :negative)
+      Regex::Lookaround.new(theChildren.last, :behind, :negative)
     end
 
     # rule('assertable' => %w[term quantifier]).as 'quantified_assertable'
@@ -384,17 +384,17 @@ module SrlRuby
 
     # rule('alternatives' => 'quantifiable').as 'simple_alternative'
     def reduce_simple_alternative(_production, _range, _tokens, theChildren)
-      return [theChildren.last]
+      [theChildren.last]
     end
 
     # rule('grouping' => %w[LPAREN pattern RPAREN]).as 'grouping_parenthenses'
     def reduce_grouping_parenthenses(_production, _range, _tokens, theChildren)
-      return Regex::NonCapturingGroup.new(theChildren[1])
+      Regex::NonCapturingGroup.new(theChildren[1])
     end
 
     # rule('capturing_group' => %w[CAPTURE assertable]).as 'capture'
     def reduce_capture(_production, _range, _tokens, theChildren)
-      return Regex::CapturingGroup.new(theChildren[1])
+      Regex::CapturingGroup.new(theChildren[1])
     end
 
     # If the rightmost (sub)expression is a repetition, then make it lazy
@@ -491,12 +491,12 @@ module SrlRuby
 
     # rule('times_suffix' => 'TIMES').as 'times_keyword'
     def reduce_times_keyword(_production, _range, _tokens, _children)
-      return nil
+      nil
     end
 
     # rule('times_suffix' => []).as 'times_dropped'
     def reduce_times_dropped(_production, _range, _tokens, _children)
-      return nil
+      nil
     end
   end # class
 end # module

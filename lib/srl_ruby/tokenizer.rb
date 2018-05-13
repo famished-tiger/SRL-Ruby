@@ -96,7 +96,7 @@ module SrlRuby
       @line_start = 0
     end
 
-    def tokens()
+    def tokens
       tok_sequence = []
       until @scanner.eos?
         token = _next_token
@@ -108,7 +108,7 @@ module SrlRuby
 
     private
 
-    def _next_token()
+    def _next_token
       skip_whitespaces
       curr_ch = scanner.peek(1)
       return nil if curr_ch.nil? || curr_ch.empty?
@@ -118,9 +118,9 @@ module SrlRuby
       if '(),'.include? curr_ch
         # Delimiters, separators => single character token
         token = build_token(@@lexeme2name[curr_ch], scanner.getch)
-      elsif (lexeme = scanner.scan(/[0-9]{2,}((?=\s|,)|$)/))
+      elsif (lexeme = scanner.scan(/[0-9]{2,}((?=\s|,|\))|$)/))
         token = build_token('INTEGER', lexeme) # An integer has 2..* digits
-      elsif (lexeme = scanner.scan(/[0-9]((?=\s|,)|$)/))
+      elsif (lexeme = scanner.scan(/[0-9]((?=\s|,|\))|$)/))
       token = build_token('DIGIT_LIT', lexeme)
       elsif (lexeme = scanner.scan(/"(?:\\"|[^"])*"/)) # Double quotes literal?
         unquoted = lexeme.gsub(/(^")|("$)/, '')
@@ -128,7 +128,7 @@ module SrlRuby
       elsif (lexeme = scanner.scan(/'(?:\\'|[^'])*'/)) # Single quotes literal?
         unquoted = lexeme.gsub(/(^')|('$)/, '')
         token = build_token('STRING_LIT', unquoted)
-      elsif (lexeme = scanner.scan(/[a-zA-Z]((?=\s|,)|$)/))
+      elsif (lexeme = scanner.scan(/[a-zA-Z]((?=\s|,|\))|$)/))
         token = build_token('LETTER_LIT', lexeme)
       elsif (lexeme = scanner.scan(/[a-zA-Z_][a-zA-Z0-9_]+/))
         keyw = @@keywords[lexeme.upcase]
@@ -159,7 +159,7 @@ module SrlRuby
       return token
     end
 
-    def skip_whitespaces()
+    def skip_whitespaces
       pre_pos = scanner.pos
 
       loop do
@@ -186,7 +186,7 @@ module SrlRuby
       # @column += triplet[2].size + tab_count * (tab_size - 1) - 1
     end
 
-    def tab_size()
+    def tab_size
       2
     end
   end # class

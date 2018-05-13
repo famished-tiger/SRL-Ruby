@@ -29,15 +29,15 @@ module Regex # This module is used as a namespace
 
     # Conversion method re-definition.
     # Purpose: Return the String representation of the expression.
-    def to_str()
-      return AnchorToSymbol.rassoc(kind).first
+    def to_str
+      AnchorToSymbol.rassoc(kind).first
     end
 
     private
 
     # Return the symbolic value corresponding to the given lexeme.
     def valid_kind(aKind)
-      return AnchorToSymbol[aKind]
+      AnchorToSymbol[aKind]
     end
   end # class
 end # module

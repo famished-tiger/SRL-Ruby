@@ -80,14 +80,14 @@ module Regex # This module is used as a namespace
     # RegAn::Character::codepoint2char(0x3a3) # Returns: Σ (
     # The Unicode GREEK CAPITAL LETTER SIGMA)
     def self.codepoint2char(aCodepoint)
-      return [aCodepoint].pack('U') # Remark: chr() fails with codepoints > 256
+      [aCodepoint].pack('U') # Remark: chr() fails with codepoints > 256
     end
 
     # Convertion method that returns the codepoint for the given single character.
     # Example:
     # RegAn::Character::char2codepoint('Σ') # Returns: 0x3a3
     def self.char2codepoint(aChar)
-      return aChar.ord
+      aChar.ord
     end
 
     # Convertion method that returns the codepoint for the given escape
@@ -109,7 +109,7 @@ module Regex # This module is used as a namespace
     end
 
     # Return the character as a String object
-    def char()
+    def char
       self.class.codepoint2char(@codepoint)
     end
 
@@ -142,8 +142,8 @@ module Regex # This module is used as a namespace
     end
 
     # Return a plain English description of the character
-    def explain()
-      return "the character '#{to_str}'"
+    def explain
+      "the character '#{to_str}'"
     end
 
     protected
@@ -153,7 +153,7 @@ module Regex # This module is used as a namespace
     # If the Character was initially from a text (the lexeme), then the lexeme
     # is returned back.
     # Otherwise the character corresponding to the codepoint is returned.
-    def text_repr()
+    def text_repr
       return char if lexeme.nil?
       return lexeme.dup
     end

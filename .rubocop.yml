@@ -27,6 +27,9 @@ Layout/IndentationWidth:
 Layout/IndentationConsistency:
   Enabled: true
   
+Layout/IndentHeredoc:
+  Enabled: false
+  
 Layout/MultilineHashBraceLayout:
   Enabled: true
 
@@ -99,7 +102,7 @@ Naming/ClassAndModuleCamelCase:
   Enabled: false
   
 Naming/UncommunicativeBlockParamName:
-  Enabled: false
+  Enabled: true
   
 Naming/UncommunicativeMethodParamName:
   Enabled: false
@@ -144,7 +147,7 @@ Style/ConditionalAssignment:
   Enabled: false
 
 Style/DefWithParentheses:
-  Enabled: false
+  Enabled: true
 
 Style/Documentation:
   Enabled: false
@@ -159,7 +162,7 @@ Style/IfUnlessModifier:
   Enabled: false
 
 Style/InverseMethods:
-  Enabled: false
+  Enabled: true
 
 Style/Next:
   Enabled: false
@@ -178,6 +181,9 @@ Style/RegexpLiteral:
 
 Style/PercentLiteralDelimiters:
   Enabled: false
+  
+Style/StderrPuts:
+  Enabled: false  
 
 Style/StringLiterals:
   Enabled: true

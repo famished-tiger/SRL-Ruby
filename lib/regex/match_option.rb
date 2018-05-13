@@ -20,7 +20,7 @@ module Regex # This module is used as a namespace
     # Combine all options/flags into one integer value that
     # is compliant as second argument of with Regexp#new method.
     # return [Integer]
-    def combine_opts()
+    def combine_opts
       result = 0
       flags.each { |f| result |= f }
 
@@ -45,7 +45,7 @@ module Regex # This module is used as a namespace
 
     # Conversion method re-definition.
     # Purpose: Return the String representation of the concatented expressions.
-    def text_repr()
+    def text_repr
       all_child_text
     end
   end # class

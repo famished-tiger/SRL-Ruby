@@ -1,3 +1,23 @@
+## [0.4.0] - 2018-05-13
+Version bump: SrlRuby has a command-line compiler `srl2ruby`
+
+### Added
+- File `bin/srl2ruby` A compiler that parses SRL expressions and transform them into regular Regexp.
+- File `srl2ruby_cli_parser.rb` Implementation of the CLI of the `srl2ruby` compiler.
+- Directory `templates` contains ERB templates that can be used to format `srl2ruby` output.
+
+### Changed
+- File `README.md` vastly expanded in order to cover `srl2ruby` compiler and a couple of SRL examples
+- File `.rubocop.yml` enabled some of the complaining cops
+
+### Removed
+- File `srl_ruby` the previous binary of the gem is now replaced by `srl2ruby`.
+
+### Fixed
+- Method `Tokenizer#_next_token` failed to recognize digit or integer value immediately followed by a closing parenthesis ')'.
+- Many classes lightly refactored in order to please Rubocop.
+
+
 ## [0.3.5] - 2018-04-29
 
 ### Added

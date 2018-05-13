@@ -37,7 +37,7 @@ module Regex # This module is used as a namespace
 
     # Conversion method re-definition.
     # Purpose: Return the String representation of the captured expression.
-    def to_str()
+    def to_str
       dir_syntax = (dir == :ahead) ? '' : '<'
       kind_syntax = (kind == :positive) ? '=' : '!'
       result = '(?' + dir_syntax + kind_syntax + child.to_str + ')'

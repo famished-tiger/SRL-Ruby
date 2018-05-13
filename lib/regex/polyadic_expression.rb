@@ -26,7 +26,7 @@ module Regex # This module is used as a namespace
     end
 
     # Notification that the parse tree construction is complete.
-    def done!()
+    def done!
       children.each(&:done!)
       children.each_with_index do |child, index|
         break if index == children.size - 1
@@ -40,13 +40,13 @@ module Regex # This module is used as a namespace
     end
 
     # Apply the 'lazy' option to the child elements
-    def lazy!()
+    def lazy!
       children.each(&:lazy!)
     end
 
     # Build a depth-first in-order children visitor.
     # The visitor is implemented as an Enumerator.
-    def df_visitor()
+    def df_visitor
       root = children # The visit will start from the children of this object
 
       visitor = Enumerator.new do |result| # result is a Yielder

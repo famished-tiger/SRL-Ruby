@@ -17,13 +17,16 @@ module PkgExtending
       'LICENSE.txt',
       'README.md',
       'srl_ruby.gemspec',
-      'lib/*.*',
-      'lib/**/*.rb',
-      'spec/**/*.rb',
+      'bin/*.srl',
+      'bin/*.rb',
       'features/*.*',
       'features/**/*.*',
       'features/**/**/*.features',
-      'srl_test/**/*.*'
+      'lib/*.*',
+      'lib/**/*.rb',
+      'spec/**/*.rb',
+      'srl_test/**/*.*',
+      'templates/*.erb'
     ]
     aPackage.files = file_list
     aPackage.test_files = Dir['spec/**/*_spec.rb']
@@ -56,7 +59,7 @@ SUMMARY
   spec.license       = 'MIT'
 
   spec.bindir = 'bin'
-  spec.executables << 'srl_ruby'
+  spec.executables << 'srl2ruby'
   spec.require_paths = ['lib']
   PkgExtending.pkg_files(spec)
   PkgExtending.pkg_documentation(spec)

@@ -29,13 +29,13 @@ module Regex # This module is used as a namespace
     end
 
     # Return true iff the capturing group has a name
-    def named?()
-      return id.kind_of?(String)
+    def named?
+      id.kind_of?(String)
     end
 
     # Conversion method re-definition.
     # Purpose: Return the String representation of the captured expression.
-    def to_str()
+    def to_str
       prefix = named? ? "?<#{id}>" : ''
       atomic = no_backtrack ? '?>' : ''
       if child.is_a?(Regex::NonCapturingGroup)

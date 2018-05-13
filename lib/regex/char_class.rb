@@ -21,12 +21,12 @@ module Regex # This module is used as a namespace
 
     # Conversion method re-definition.
     # Purpose: Return the String representation of the character class.
-    def text_repr()
-      result_children = children.inject('') do |subResult, aChild|
-        if aChild.kind_of?(Regex::Character) && Metachars.include?(aChild.codepoint)
-          subResult << '\\' # Escape meta-character...
+    def text_repr
+      result_children = children.inject('') do |sub_result, child|
+        if child.kind_of?(Regex::Character) && Metachars.include?(child.codepoint)
+          sub_result << '\\' # Escape meta-character...
         end
-        subResult << aChild.to_str
+        sub_result << child.to_str
       end
       result = '[' + (negated ? '^' : '') + result_children + ']'
 

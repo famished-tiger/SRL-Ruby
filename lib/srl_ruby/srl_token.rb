@@ -3,7 +3,7 @@ require 'rley' # Load the Rley gem
 
 module SrlRuby
   Position = Struct.new(:line, :column) do
-    def to_s()
+    def to_s
       "line #{line}, column #{column}"
     end
   end

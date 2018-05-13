@@ -16,7 +16,7 @@ RSpec.describe SrlRuby do
   end
 
   def load_file(aFilename)
-    return Acceptance::RuleFileParser.load_file(rule_path + aFilename)
+    Acceptance::RuleFileParser.load_file(rule_path + aFilename)
   end
 
   def test_rule_file(aRuleFileRepr)
