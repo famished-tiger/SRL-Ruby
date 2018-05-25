@@ -1,0 +1,8 @@
+begin with digit from 0 to 1,
+digit,
+literally ":",
+digit from 0 to 5, 
+digit,
+literally " ",
+one of "AP", literally "M"
+must end

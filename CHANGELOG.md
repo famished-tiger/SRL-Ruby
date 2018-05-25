@@ -1,3 +1,10 @@
+## [0.4.1] - 2018-05-25
+
+### Added
+- Command-line option -p, --pattern SRL_PATT, that allows users to enter directly short one-liner SRL patterns.
+  Thanks to `KarimGeiger` for suggesting me this enhancement.
+- Directory `examples` with SRL examples from `README` and more...
+
 ## [0.4.0] - 2018-05-13
 Version bump: SrlRuby has a command-line compiler `srl2ruby`
 

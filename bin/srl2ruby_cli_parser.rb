@@ -13,6 +13,7 @@ class Srl2RubyCLIParser < OptionParser
 
     heading
     separator 'Options:'
+    add_p_option    
     add_o_option
     add_t_option
     separator ''
@@ -41,6 +42,7 @@ Description:
 
 Examples:
   #{program_name} example.srl
+  #{program_name} -p 'begin with literally "Hello world!"'
   #{program_name} example.srl -o example_re.rb -t srl_and_ruby.erb
 DESCR
 
@@ -61,6 +63,14 @@ DESCR
       @parsed_options[:output] = pathname
     end
   end
+  
+  def add_p_option
+    explanation = 'One-liner SRL pattern.'
+
+    on '-p', '--pattern SRL_PATT', explanation do |pattern_arg|
+       @parsed_options[:pattern] = pattern_arg.gsub(/^'|'$/, '')
+    end
+  end  
 
   def add_t_option
     explanation = <<-EXPLANATION

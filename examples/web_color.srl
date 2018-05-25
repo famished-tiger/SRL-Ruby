@@ -1,0 +1,7 @@
+begin with literally "#",
+any of(
+  any of (digit, letter from a to f) exactly 3 times,
+  any of (digit, letter from a to f) exactly 6 times
+),
+must end,
+case insensitive

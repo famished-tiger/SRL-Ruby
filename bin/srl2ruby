@@ -21,19 +21,16 @@ class Srl2RubyProg
   end
 
   def run!(file_names)
+    if cli_options.include?(:pattern)
+      srl_source = cli_options[:pattern]
+      process_srl(srl_source)    
+    end
     file_names.each do |srl_file|
       fname = validate_filename(srl_file)
       next unless file_exist?(fname)
       puts "Parsing file '#{fname}'"
       srl_source = File.read(fname)
-      result = SrlRuby.parse(srl_source)
-      destination = $stdout
-      if cli_options.include?(:output)
-        filepath = cli_options[:output]
-        destination = File.open(filepath, 'w')
-      end
-      puts "Writing to file '#{filepath}'" unless destination == $stdout
-      destination.puts emit_code(template, srl_source, result)
+      process_srl(srl_source)
     end
   end
 
@@ -78,6 +75,17 @@ class Srl2RubyProg
     $stderr.puts "No such file '#{fname}'" unless exists
 
     exists
+  end
+  
+  def process_srl(srl_source)
+    result = SrlRuby.parse(srl_source)
+    destination = $stdout
+    if cli_options.include?(:output)
+      filepath = cli_options[:output]
+      destination = File.open(filepath, 'w')
+    end
+    puts "Writing to file '#{filepath}'" unless destination == $stdout
+    destination.puts emit_code(template, srl_source, result)  
   end
 
   def emit_code(template, srl_source, regexp)

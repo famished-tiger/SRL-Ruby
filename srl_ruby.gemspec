@@ -46,8 +46,8 @@ Gem::Specification.new do |spec|
   spec.email         = ['famished.tiger@yahoo.com']
 
   spec.description   = <<-DESCR
-  A compiler that transforms highly readable Simple Regex Language patterns
-  into regular expressions.
+  A compiler and library that transforms highly readable Simple Regex Language 
+  patterns into regular expressions.
 DESCR
   spec.summary = <<-SUMMARY
   A parser for the [Simple Regex Language](https://simple-regex.com/).
