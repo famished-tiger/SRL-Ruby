@@ -5,6 +5,9 @@
   Thanks to `KarimGeiger` for suggesting me this enhancement.
 - Directory `examples` with SRL examples from `README` and more...
 
+### Changed
+- File `README.md` updated with new text of command-line help.
+
 ## [0.4.0] - 2018-05-13
 Version bump: SrlRuby has a command-line compiler `srl2ruby`
 
