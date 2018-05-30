@@ -1,5 +1,8 @@
-## [0.4.1] - 2018-05-25
+## [0.4.2] - 2018-05-30
+### Changed
+- File `srl_ruby.gemspec` Updated Rley dependency.
 
+## [0.4.1] - 2018-05-25
 ### Added
 - Command-line option -p, --pattern SRL_PATT, that allows users to enter directly short one-liner SRL patterns.
   Thanks to `KarimGeiger` for suggesting me this enhancement.
