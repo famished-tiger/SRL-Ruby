@@ -1,3 +1,7 @@
+## [0.4.2] - 2018-06-24
+### Changed
+- File `srl_ruby.gemspec` Updated Rley dependency.
+
 ## [0.4.2] - 2018-05-30
 ### Changed
 - File `srl_ruby.gemspec` Updated Rley dependency.
