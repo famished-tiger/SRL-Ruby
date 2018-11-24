@@ -1,4 +1,16 @@
-## [0.4.2] - 2018-06-24
+## [0.4.4] - 2018-11-24
+### Changed
+- File `srl_ruby.gemspec` Updated Rley dependency.
+
+### Removed
+- Class `SrlRuby::SrlToken` since it became completely redundant with `Token` class from Rley.
+- Class `Acceptance::RuleFileToken` since it became completely redundant with `Token` class from Rley.
+
+### Fixed
+- Method `SrlRuby::Tokenizer#build_token` now instantiates a `Rley::Lexical::Token`
+- Method `Acceptance::RuleFileTokenizer#build_token` now instantiates a `Rley::Lexical::Token`
+
+## [0.4.3] - 2018-06-24
 ### Changed
 - File `srl_ruby.gemspec` Updated Rley dependency.
 

@@ -14,7 +14,7 @@ module SrlRuby
     subject { Tokenizer.new('') }
 
     context 'Initialization:' do
-      it 'should be initialized with a text to tokenize and a grammar' do
+      it 'should be initialized with a text to tokenize' do
         expect { Tokenizer.new('anything') }.not_to raise_error
       end
 

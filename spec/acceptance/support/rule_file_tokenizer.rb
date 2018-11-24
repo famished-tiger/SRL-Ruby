@@ -3,7 +3,7 @@
 # [File format](https://github.com/SimpleRegex/Test-Rules/blob/master/README.md)
 require 'strscan'
 require 'pp'
-require_relative 'rule_file_token'
+require 'rley'
 
 module Acceptance
   # The tokenizer should recognize:
@@ -74,7 +74,6 @@ module Acceptance
       curr_ch = scanner.peek(1)
       token = nil
 
-
       if '-:'.include? curr_ch
         # Delimiters, separators => single character token
         token = build_token(@@lexeme2name[curr_ch], scanner.getch)
@@ -110,8 +109,8 @@ module Acceptance
     def build_token(aSymbolName, aLexeme)
       begin
         col = scanner.pos - aLexeme.size - @line_start + 1
-        pos = Position.new(@lineno, col)
-        token = RuleFileToken.new(aLexeme, aSymbolName, pos)
+        pos = Rley::Lexical::Position.new(@lineno, col)
+        token = Rley::Lexical::Token.new(aLexeme, aSymbolName, pos)
       rescue StandardError => exc
         puts "Failing with '#{aSymbolName}' and '#{aLexeme}'"
         raise exc

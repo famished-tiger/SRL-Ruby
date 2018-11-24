@@ -1,7 +1,7 @@
 # File: srl_tokenizer.rb
 # Tokenizer for SRL (Simple Regex Language)
 require 'strscan'
-require_relative 'srl_token'
+require 'rley'
 
 
 module SrlRuby
@@ -149,8 +149,8 @@ module SrlRuby
     def build_token(aSymbolName, aLexeme)
       begin
         col = scanner.pos - aLexeme.size - @line_start + 1
-        pos = Position.new(@lineno, col)
-        token = SrlToken.new(aLexeme, aSymbolName, pos)
+        pos = Rley::Lexical::Position.new(@lineno, col)
+        token = Rley::Lexical::Token.new(aLexeme, aSymbolName, pos)
       rescue StandardError => exc
         puts "Failing with '#{aSymbolName}' and '#{aLexeme}'"
         raise exc
