@@ -46,7 +46,7 @@ Gem::Specification.new do |spec|
   spec.email         = ['famished.tiger@yahoo.com']
 
   spec.description   = <<-DESCR
-  A compiler and library that transforms highly readable Simple Regex Language 
+  A compiler and library that transforms highly readable Simple Regex Language
   patterns into regular expressions.
 DESCR
   spec.summary = <<-SUMMARY
@@ -66,7 +66,7 @@ SUMMARY
   spec.required_ruby_version = '>= 2.1.0'
 
   # Runtime dependencies
-  spec.add_dependency 'rley', '~> 0.7'
+  spec.add_dependency 'rley', '~> 0.7.00'
 
   # Development dependencies
   spec.add_development_dependency 'bundler', '~> 1.16'

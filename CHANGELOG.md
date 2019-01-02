@@ -1,3 +1,13 @@
+## [0.4.5] - 2019-01-02
+### Changed
+- Minor code re-styling to please Rubocop 0.62.0.
+- File `.travis.yml` Updated Ruby versions for CI builds
+- File `.appveyor.yml` Sequence of Ruby versions refactored
+- File `LICENSE.txt`: updated years in copyright text.
+
+### Fixed
+- Method `ASTBuilder#reduce_pattern_sequence` was broken for lookbehind assertions.
+
 ## [0.4.4] - 2018-11-24
 ### Changed
 - File `srl_ruby.gemspec` Updated Rley dependency.

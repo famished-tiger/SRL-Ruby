@@ -132,7 +132,7 @@ module SrlRuby
         token = build_token('LETTER_LIT', lexeme)
       elsif (lexeme = scanner.scan(/[a-zA-Z_][a-zA-Z0-9_]+/))
         keyw = @@keywords[lexeme.upcase]
-        tok_type = keyw ? keyw : 'IDENTIFIER'
+        tok_type = keyw || 'IDENTIFIER'
         token = build_token(tok_type, lexeme)
       elsif (lexeme = scanner.scan(/[^,"\s]{2,}/))
         token = build_token('CHAR_CLASS', lexeme)

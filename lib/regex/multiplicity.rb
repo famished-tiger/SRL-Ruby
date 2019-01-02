@@ -66,6 +66,7 @@ module Regex # This module is used as a namespace
     def valid_lower_bound(aLowerBound)
       err_msg = "Invalid lower bound of repetition count #{aLowerBound}"
       raise StandardError, err_msg unless aLowerBound.kind_of?(Integer)
+
       return aLowerBound
     end
 

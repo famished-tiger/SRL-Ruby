@@ -44,6 +44,7 @@ module SrlRuby
         end
       end
       return if regexp_opts.empty?
+
       new_root = Regex::MatchOption.new(tree_root, regexp_opts)
       result.instance_variable_set(:@root, new_root)
     end
@@ -120,7 +121,13 @@ module SrlRuby
 
     # rule('pattern' => %w[pattern separator sub_pattern]).as 'pattern_sequence'
     def reduce_pattern_sequence(_production, _range, _tokens, theChildren)
-      Regex::Concatenation.new(theChildren[0], theChildren[2])
+      third_member = theChildren[2]
+      if third_member.kind_of?(Regex::Lookaround) && third_member.dir == :behind
+        Regex::Concatenation.new(theChildren[2], theChildren[0])
+      else
+        Regex::Concatenation.new(theChildren[0], theChildren[2])
+      end
+      
     end
 
     # rule('pattern' => 'sub_pattern').as 'basic_pattern'

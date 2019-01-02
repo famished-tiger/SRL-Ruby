@@ -103,6 +103,7 @@ module Regex # This module is used as a namespace
     def self.esc2codepoint(esc_seq)
       msg = "Escape sequence #{esc_seq} does not begin with a backslash (\)."
       raise StandardError, msg unless esc_seq[0] == '\\'
+
       result = (esc_seq.length == 2) ? digram2codepoint(esc_seq) : esc_number2codepoint(esc_seq)
 
       return result
@@ -155,6 +156,7 @@ module Regex # This module is used as a namespace
     # Otherwise the character corresponding to the codepoint is returned.
     def text_repr
       return char if lexeme.nil?
+
       return lexeme.dup
     end
 

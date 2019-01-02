@@ -84,7 +84,7 @@ module Acceptance
         @state = :expecting_srl if lexeme == 'srl:'
       elsif (lexeme = scanner.scan(/[a-zA-Z_][a-zA-Z0-9_]*/))
         keyw = @@keywords[lexeme]
-        token_type = keyw ? keyw : 'IDENTIFIER'
+        token_type = keyw || 'IDENTIFIER'
         token = build_token(token_type, lexeme)
       elsif (lexeme = scanner.scan(/"([^"]|\\")*"/)) # Double quotes literal?
         unquoted = lexeme.gsub(/(^")|("$)/, '')

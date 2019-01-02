@@ -43,6 +43,7 @@ module Regex # This module is used as a namespace
     def validated_range(theLowerBound, theUpperBound)
       msg = 'Character range error: lower bound is greater than upper bound.'
       raise StandardError, msg if theLowerBound.codepoint > theUpperBound.codepoint
+
       return [theLowerBound, theUpperBound]
     end
   end # class

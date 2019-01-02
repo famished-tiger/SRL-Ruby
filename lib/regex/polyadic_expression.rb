@@ -30,6 +30,7 @@ module Regex # This module is used as a namespace
       children.each(&:done!)
       children.each_with_index do |child, index|
         break if index == children.size - 1
+
         next_child = children[index + 1]
         if next_child.kind_of?(Lookaround) && next_child.dir == :behind
           # Swap children: lookbehind regex must precede pattern
@@ -57,6 +58,7 @@ module Regex # This module is used as a namespace
           top = visit_stack.pop
           if top.kind_of?(Array)
             next if top.empty?
+
             currChild = top.pop
             visit_stack.push top
           else

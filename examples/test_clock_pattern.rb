@@ -4,7 +4,7 @@ text = '1:43am'
 
 matching = pattern.match(text)
 if matching
-  print 'Capture names: '; p(matching.names) # => Capture names: ["hour", "min"]
+  print "Capture names: #{matching.names}" # => Capture names: ["hour", "min"]
   puts "Value of 'hour': #{matching[:hour]}" # => Value of 'hour': 1
   puts "Value of 'min': #{matching[:min]}" # => Value of 'min': 43
 else
