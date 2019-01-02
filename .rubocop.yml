@@ -4,6 +4,9 @@ AllCops:
 
 Layout/CaseIndentation:
   Enabled: false
+  
+Layout/ClosingHeredocIndentation:
+  Enabled: false
 
 Layout/CommentIndentation:
   Enabled: false
