@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # File: quantifiable.rb
 
 require_relative 'multiplicity'

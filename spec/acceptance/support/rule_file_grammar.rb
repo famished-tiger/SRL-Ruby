@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # File: rule_file_grammar.rb
 require 'rley' # Load the Rley gem
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Grammar for SRL (Simple Regex Language)
 require 'rley' # Load the gem
 module SrlRuby

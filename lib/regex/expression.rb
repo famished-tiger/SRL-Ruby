@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # File: expression.rb
 
 require_relative 'abstract_method'
@@ -31,7 +33,7 @@ module Regex # This module is used as a namespace
     # Template method.
     # @return [String] text representation of the expression.
     def to_str
-      result = ''
+      result = +''
       result << prefix
       result << text_repr
       result << suffix

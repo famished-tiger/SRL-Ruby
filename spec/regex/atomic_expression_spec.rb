@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # File: atomic_expression_spec.rb
 require_relative '../spec_helper' # Use the RSpec test framework
 require_relative '../../lib/regex/atomic_expression'

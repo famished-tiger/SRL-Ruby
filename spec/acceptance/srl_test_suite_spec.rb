@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../spec_helper'
 require_relative './support/rule_file_parser'
 require_relative '../../lib/srl_ruby'

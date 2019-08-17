@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../regex/character'
 require_relative '../regex/char_range'
 require_relative '../regex/concatenation'

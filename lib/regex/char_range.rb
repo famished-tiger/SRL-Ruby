@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # File: char_range.rb
 
 require_relative 'polyadic_expression' # Access the superclass

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # File: Multiplicity.rb
 
 module Regex # This module is used as a namespace

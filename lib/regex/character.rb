@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # File: character.rb
 
 require_relative 'atomic_expression' # Access the superclass
@@ -25,8 +27,8 @@ module Regex # This module is used as a namespace
       '\7' => 7
     }.freeze
 
-    MetaChars = '\^$.|+?*()[]{}'.freeze
-    MetaCharsInClass = '\^[]-'.freeze # Characters with special meaning in char. class
+    MetaChars = '\^$.|+?*()[]{}'
+    MetaCharsInClass = '\^[]-' # Characters with special meaning in char. class
 
     # The integer value that uniquely identifies the character.
     attr_reader(:codepoint)

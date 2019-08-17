@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'rule_file_tokenizer'
 require_relative 'rule_file_grammar'
 require_relative 'rule_file_ast_builder'

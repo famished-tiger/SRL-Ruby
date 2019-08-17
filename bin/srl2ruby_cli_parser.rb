@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'optparse' # Use standard OptionParser class for command-line parsing
 
 # A command-line option parser for the srl2ruby compiler.

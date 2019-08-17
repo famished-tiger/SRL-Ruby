@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # File: srl_tokenizer.rb
 # Tokenizer for SRL (Simple Regex Language)
 require 'strscan'
@@ -151,9 +153,9 @@ module SrlRuby
         col = scanner.pos - aLexeme.size - @line_start + 1
         pos = Rley::Lexical::Position.new(@lineno, col)
         token = Rley::Lexical::Token.new(aLexeme, aSymbolName, pos)
-      rescue StandardError => exc
+      rescue StandardError => e
         puts "Failing with '#{aSymbolName}' and '#{aLexeme}'"
-        raise exc
+        raise e
       end
 
       return token

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # File: char_class.rb
 
 require_relative 'polyadic_expression' # Access the superclass
@@ -22,7 +24,7 @@ module Regex # This module is used as a namespace
     # Conversion method re-definition.
     # Purpose: Return the String representation of the character class.
     def text_repr
-      result_children = children.inject('') do |sub_result, child|
+      result_children = children.inject(+'') do |sub_result, child|
         if child.kind_of?(Regex::Character) && Metachars.include?(child.codepoint)
           sub_result << '\\' # Escape meta-character...
         end

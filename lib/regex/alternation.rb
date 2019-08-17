@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # File: alternation.rb
 
 require_relative 'polyadic_expression' # Access the superclass

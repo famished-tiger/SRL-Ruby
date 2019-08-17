@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # File: abstract_method.rb
 
 # Mix-in module. Provides the method 'abstract_method' that raises an exception

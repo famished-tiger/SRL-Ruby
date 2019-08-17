@@ -1,7 +1,0 @@
-begin with
-  any of(
-    digit,
-    letter from a to f
-  ) once or more
-must end,
-case insensitive

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'stringio'
 require_relative 'regex_repr'
 
@@ -127,7 +129,6 @@ module SrlRuby
       else
         Regex::Concatenation.new(theChildren[0], theChildren[2])
       end
-      
     end
 
     # rule('pattern' => 'sub_pattern').as 'basic_pattern'

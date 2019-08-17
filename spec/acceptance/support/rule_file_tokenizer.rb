@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # File: rule_tokenizer.rb
 # Tokenizer for SimpleRegex Test-Rule files
 # [File format](https://github.com/SimpleRegex/Test-Rules/blob/master/README.md)
@@ -111,9 +113,9 @@ module Acceptance
         col = scanner.pos - aLexeme.size - @line_start + 1
         pos = Rley::Lexical::Position.new(@lineno, col)
         token = Rley::Lexical::Token.new(aLexeme, aSymbolName, pos)
-      rescue StandardError => exc
+      rescue StandardError => e
         puts "Failing with '#{aSymbolName}' and '#{aLexeme}'"
-        raise exc
+        raise e
       end
 
       return token

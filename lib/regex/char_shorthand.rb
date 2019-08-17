@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # File: char_shorthand.rb
 
 require_relative 'atomic_expression' # Access the superclass

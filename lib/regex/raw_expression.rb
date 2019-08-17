@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'atomic_expression' # Access the superclass
 
 module Regex # This module is used as a namespace

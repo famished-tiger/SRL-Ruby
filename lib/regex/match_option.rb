@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # File: MatchOption.rb
 require_relative 'monadic_expression'
 

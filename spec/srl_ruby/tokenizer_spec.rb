@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../spec_helper' # Use the RSpec framework
 require_relative '../../lib/srl_ruby/tokenizer' # Load the class under test
 

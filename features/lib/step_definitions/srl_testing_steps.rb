@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 When('I define the following SRL expression:') do |srl_source|
   @regex = SrlRuby::parse(srl_source)
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative './srl_ruby/version'
 require_relative './srl_ruby/tokenizer'
 require_relative './srl_ruby/grammar'

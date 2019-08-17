@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # File: compound_expression.rb
 
 require_relative 'expression' # Access the superclass

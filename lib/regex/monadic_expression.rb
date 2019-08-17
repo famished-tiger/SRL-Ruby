@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # File: monadic_expression.rb
 
 require_relative 'compound_expression' # Access the superclass

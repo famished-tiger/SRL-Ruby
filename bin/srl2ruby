@@ -1,4 +1,6 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
+
 require 'erb'
 require 'rubygems'
 require 'pathname'
@@ -7,9 +9,9 @@ require_relative '../lib/srl_ruby'
 require_relative 'srl2ruby_cli_parser'
 
 class Srl2RubyProg
-  DefaultSRLExtension = 'srl'.freeze
-  DefDirname = '/templates'.freeze
-  DefTemplate = 'base.erb'.freeze
+  DefaultSRLExtension = 'srl'
+  DefDirname = '/templates'
+  DefTemplate = 'base.erb'
   attr_reader(:cli_options)
   attr_reader(:template)
 

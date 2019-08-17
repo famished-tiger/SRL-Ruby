@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # File: non_capturing_group.rb
 
 require_relative 'monadic_expression' # Access the superclass

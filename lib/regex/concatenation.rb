@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # File: concatenation.rb
 
 require_relative 'polyadic_expression' # Access the superclass
@@ -17,7 +19,7 @@ module Regex # This module is used as a namespace
     # Conversion method re-definition.
     # Purpose: Return the String representation of the concatented expressions.
     def text_repr
-      outcome = children.inject('') do |result, child|
+      outcome = children.inject(+'') do |result, child|
         result << child.to_str
       end
 

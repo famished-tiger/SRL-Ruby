@@ -1,5 +1,0 @@
-# Match a backslash.
-srl: begin with backslash must end
-match: "\"
-no match: "\a"
-no match: "a\"

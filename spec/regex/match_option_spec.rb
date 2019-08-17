@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # File: match_option_spec.rb
 
 require_relative '../spec_helper' # Use the RSpec test framework

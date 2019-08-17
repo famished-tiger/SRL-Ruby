@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # File: wildcard.rb
 
 require_relative 'atomic_expression' # Access the superclass
