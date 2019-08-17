@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'srl_ruby/version'
@@ -63,7 +65,7 @@ SUMMARY
   spec.require_paths = ['lib']
   PkgExtending.pkg_files(spec)
   PkgExtending.pkg_documentation(spec)
-  spec.required_ruby_version = '>= 2.1.0'
+  spec.required_ruby_version = '>= 2.3.0'
 
   # Runtime dependencies
   spec.add_dependency 'rley', '~> 0.7.00'
@@ -71,6 +73,6 @@ SUMMARY
   # Development dependencies
   spec.add_development_dependency 'bundler', '~> 2.0.0'
   spec.add_development_dependency 'cucumber', '>= 2.2.0'
-  spec.add_development_dependency 'rake', '~> 10.0'
+  spec.add_development_dependency 'rake', '~> 12.0'
   spec.add_development_dependency 'rspec', '~> 3.0'
 end

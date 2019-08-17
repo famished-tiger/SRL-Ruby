@@ -15,7 +15,7 @@ With **srl_ruby** you can easily design your patterns in SRL and let *srl_ruby* 
 - Ruby API for integrating a SRL parser or compiler with your code.
 - 100% pure Ruby with clean design (_not a port from some other language_)
 - Minimal runtime dependency ([Rley](https://rubygems.org/gems/rley) gem). Won't drag a bunch of gems...
-- Compatibility: works with 2.x+ MRI, JRuby
+- Compatibility: works with Ruby 2.3+ MRI, JRuby
 - Portability: tested on both Linux and Windows,...
 
 ## Installation

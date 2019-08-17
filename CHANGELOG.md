@@ -1,3 +1,10 @@
+## [0.4.6] - 2019-08-17
+- Code refactoring to use string frozen magic comments (as a consequence, srl_ruby runs only on Rubies 2.3 or newer).  
+- Code restyling to please rubocop 0.7.40. 
+### Changed
+- File `README.md` updated note on compatibility with Rubies
+
+
 ## [0.4.5] - 2019-01-13
 - Removed Ruby versions older than 2.3 in CI testing because of breaking changes by Bundler 2.0  
 
