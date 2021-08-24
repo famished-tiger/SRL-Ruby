@@ -37,7 +37,7 @@ class Srl2RubyCLIParser < OptionParser
   end
 
   def description
-    descr = <<-DESCR
+    <<-DESCR
 Description:
   Parses a SRL file and compiles it into a Ruby Regexp literal.
   Simple Regex Language (SRL) website: https://simple-regex.com
@@ -47,8 +47,6 @@ Examples:
   #{program_name} -p 'begin with literally "Hello world!"'
   #{program_name} example.srl -o example_re.rb -t srl_and_ruby.erb
 DESCR
-
-    descr
   end
 
   def heading

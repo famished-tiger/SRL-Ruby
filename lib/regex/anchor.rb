@@ -26,6 +26,7 @@ module Regex # This module is used as a namespace
     # Constructor
     # @param aKind [String] Lexeme representation of the anchor
     def initialize(aKind)
+      super()
       @kind = valid_kind(aKind)
     end
 

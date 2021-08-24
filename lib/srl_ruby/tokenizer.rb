@@ -17,10 +17,14 @@ module SrlRuby
   # Delimiters: parentheses '(' and ')'
   # Separators: comma (optional)
   class Tokenizer
+    # @return [StringScanner]
     attr_reader(:scanner)
+
+    # @return [Integer] current line number
     attr_reader(:lineno)
+
+    # @return [Integer] offset of start of current line within input
     attr_reader(:line_start)
-    # attr_reader(:column)
 
     @@lexeme2name = {
       '(' => 'LPAREN',
@@ -86,7 +90,7 @@ module SrlRuby
       WHITESPACE
       WITH
       WORD
-    ].map { |x| [x, x] } .to_h
+    ].map { |x| [x, x] }.to_h
 
     class ScanError < StandardError; end
 

@@ -19,9 +19,7 @@ module Regex # This module is used as a namespace
     # Purpose: Return the String representation of the concatented expressions.
     def text_repr
       result_children = children.map(&:to_str)
-      result = '(?:' + result_children.join('|') + ')'
-
-      return result
+      "(?:#{result_children.join('|')})"
     end
   end # class
 end # module

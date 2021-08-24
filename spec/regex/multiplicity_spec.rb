@@ -23,6 +23,7 @@ module Regex # This module is used as a namespace
     end
 
     context 'Provided services' do
+      # rubocop: disable Style/CombinableLoops
       it 'should know its text representation' do
         policy2text = { greedy: '', lazy: '?', possessive: '+' }
 
@@ -73,6 +74,7 @@ module Regex # This module is used as a namespace
           end
         end
       end
+      # rubocop: enable Style/CombinableLoops
     end
   end
 end # module

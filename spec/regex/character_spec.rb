@@ -6,6 +6,8 @@ require_relative '../../lib/regex/character'
 
 module Regex # Open this namespace, to get rid of scope qualifiers
   describe Character do
+  # rubocop: disable Lint/ConstantDefinitionInBlock
+
     # This constant holds an arbitrary selection of characters
     SampleChars = [?a, ?\0, ?\u0107].freeze
 
@@ -116,6 +118,13 @@ module Regex # Open this namespace, to get rid of scope qualifiers
         end
       end
 
+      # Create a module that re-defines the existing to_s method
+      module Tweak_to_s
+        def to_s # Overwrite the existing to_s method
+          ?\u03a3
+        end
+      end # module
+
       it 'should known whether it is equal to another Object' do
         newOne = Character.new(?\u03a3)
 
@@ -147,12 +156,6 @@ module Regex # Open this namespace, to get rid of scope qualifiers
         expect(simulator).to receive(:to_s).and_return(?\u03a3)
         expect(newOne).to eq(simulator)
 
-        # Create a module that re-defines the existing to_s method
-        module Tweak_to_s
-          def to_s # Overwrite the existing to_s method
-            ?\u03a3
-          end
-        end # module
         weird = Object.new
         weird.extend(Tweak_to_s)
         expect(newOne).to eq(weird)
@@ -166,6 +169,7 @@ module Regex # Open this namespace, to get rid of scope qualifiers
         expect(ch2.explain).to eq("the character '\u03a3'")
       end
     end # context
+    # rubocop: enable Lint/ConstantDefinitionInBlock
   end # describe
 end # module
 

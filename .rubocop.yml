@@ -2,9 +2,19 @@ AllCops:
   Exclude:
     - 'exp/**/*'
 
+Gemspec/DateAssignment:
+  Enabled: true
+
+Layout/ArgumentAlignment:
+  Enabled: false
+
+Layout/ArrayAlignment:
+  Enabled: true
+  EnforcedStyle: with_fixed_indentation
+
 Layout/CaseIndentation:
   Enabled: false
-  
+
 Layout/ClosingHeredocIndentation:
   Enabled: false
 
@@ -16,7 +26,7 @@ Layout/ElseAlignment:
 
 Layout/EmptyLines:
   Enabled: false
-  
+
 Layout/EndAlignment:
   Enabled: false
 
@@ -24,37 +34,116 @@ Layout/EndOfLine:
   Enabled: true
   EnforcedStyle: lf
 
+Layout/FirstArgumentIndentation:
+  Enabled: false
+
+Layout/HashAlignment:
+  Enabled: false
+
 Layout/IndentationWidth:
   Enabled: false
 
 Layout/IndentationConsistency:
   Enabled: true
-  
-Layout/IndentHeredoc:
+
+Layout/HeredocIndentation:
   Enabled: false
-  
+
+Layout/LineEndStringConcatenationIndentation:
+  Enabled: true
+
 Layout/MultilineHashBraceLayout:
   Enabled: true
+
+Layout/MultilineMethodCallBraceLayout:
+  Enabled: true
+  EnforcedStyle: same_line
 
 Layout/SpaceAroundOperators:
   Enabled: true
 
+Layout/SpaceBeforeBrackets:
+  Enabled: true
+
 Layout/SpaceInsideParens:
   Enabled: true
-  
-Layout/Tab:
+
+Layout/IndentationStyle:
   Enabled: true
-  
-Layout/TrailingBlankLines:
+
+Layout/SpaceAroundMethodCallOperator:
+  Enabled: true
+
+Layout/TrailingEmptyLines:
   Enabled: true
 
 Layout/TrailingWhitespace:
   Enabled: true
 
+Lint/AmbiguousAssignment:
+  Enabled: true
+
+Lint/AmbiguousRange:
+  Enabled: true
+
+Lint/DeprecatedConstants:
+  Enabled: true
+
+Lint/DuplicateBranch:
+  Enabled: true
+
+Lint/DuplicateRegexpCharacterClassElement:
+  Enabled: true
+
+Lint/EmptyBlock:
+  Enabled: true
+
+Lint/EmptyClass:
+  Enabled: false
+
+Lint/EmptyInPattern:
+  Enabled: true
+
+Lint/LambdaWithoutLiteralBlock:
+  Enabled: true
+
 Lint/Loop:
   Enabled: true
 
+Lint/NoReturnInBeginEndBlocks:
+  Enabled: true
+
+Lint/NumberedParameterAssignment:
+  Enabled: true
+
+Lint/OrAssignmentToConstant:
+  Enabled: true
+
+Lint/RaiseException:
+  Enabled: true
+
+Lint/RedundantDirGlobSort:
+  Enabled: true
+
 Lint/RescueException:
+  Enabled: true
+
+Lint/StructNewOverride:
+  Enabled: true
+
+Lint/SymbolConversion:
+  Enabled: true
+
+Lint/ToEnumArguments:
+  Enabled: true
+
+Lint/TripleQuotes:
+  Enabled: true
+
+Lint/UnexpectedBlockArity:
+  Enabled: true
+
+Lint/UnmodifiedReduceAccumulator:
   Enabled: true
 
 Lint/UnusedMethodArgument:
@@ -76,20 +165,24 @@ Metrics/BlockLength:
   Enabled: true
   Max: 350
 
+Metrics/BlockNesting:
+  Enabled: true
+  Max: 5
+
 Metrics/ClassLength:
   Enabled: true
-  Max: 350
+  Max: 450
 
 Metrics/CyclomaticComplexity:
   Enabled: false
 
-Metrics/LineLength:
+Layout/LineLength:
   Enabled: false
   Max: 90
 
 Metrics/MethodLength:
   Enabled: true
-  Max: 40
+  Max: 60
 
 Metrics/ModuleLength:
   Enabled: true
@@ -103,11 +196,17 @@ Naming/ConstantName:
 
 Naming/ClassAndModuleCamelCase:
   Enabled: false
-  
-Naming/UncommunicativeBlockParamName:
+
+Naming/BlockParameterName:
   Enabled: true
-  
-Naming/UncommunicativeMethodParamName:
+
+Naming/InclusiveLanguage:
+  Enabled: true
+
+Naming/MethodParameterName:
+  Enabled: false
+
+Naming/MethodName:
   Enabled: false
 
 Naming/VariableName:
@@ -116,8 +215,8 @@ Naming/VariableName:
 Style/Alias:
   Enabled: true
 
-Layout/AlignHash:
-  Enabled: false
+Style/ArgumentsForwarding:
+  Enabled: true
 
 Style/AsciiComments:
   Enabled: false
@@ -137,6 +236,9 @@ Style/ClassCheck:
 Style/ClassVars:
   Enabled: false
 
+Style/CollectionCompact:
+  Enabled: true
+
 Style/ColonMethodCall:
   Enabled: false
 
@@ -155,28 +257,73 @@ Style/DefWithParentheses:
 Style/Documentation:
   Enabled: false
 
+Style/DocumentDynamicEvalDefinition:
+  Enabled: false
+
 Style/ExpandPathArguments:
   Enabled: false
+
+Style/ExponentialNotation:
+  Enabled: true
 
 Style/GuardClause:
   Enabled: false
 
+Style/HashEachMethods:
+  Enabled: true
+
+Style/HashExcept:
+  Enabled: true
+
+Style/HashTransformKeys:
+  Enabled: true
+
+Style/HashTransformValues:
+  Enabled: true
+
 Style/IfUnlessModifier:
   Enabled: false
 
+Style/InPatternThen:
+  Enabled: true
+
 Style/InverseMethods:
+  Enabled: false
+
+Style/MissingRespondToMissing:
+  Enabled: false
+
+Style/MultilineInPatternThen:
+  Enabled: true
+
+Style/NegatedIfElseCondition:
   Enabled: true
 
 Style/Next:
   Enabled: false
 
+Style/NilLambda:
+  Enabled: true
+
+Style/NumericLiterals:
+  Enabled: false
+
+Style/QuotedSymbols:
+  Enabled: true
+
 Style/RaiseArgs:
+  Enabled: true
+
+Style/RedundantArgument:
   Enabled: true
 
 Style/RedundantReturn:
   Enabled: false
-  
+
 Style/RedundantSelf:
+  Enabled: true
+
+Style/RedundantSelfAssignmentBranch:
   Enabled: true
 
 Style/RegexpLiteral:
@@ -184,15 +331,121 @@ Style/RegexpLiteral:
 
 Style/PercentLiteralDelimiters:
   Enabled: false
-  
+
 Style/StderrPuts:
-  Enabled: false  
+  Enabled: false
 
 Style/StringLiterals:
   Enabled: true
 
+Style/SwapValues:
+  Enabled: true
+
 Style/TernaryParentheses:
   Enabled: false
-  
+
 Style/UnlessElse:
   Enabled: false
+
+# Rubocop complains when it doesn't find an explicit setting for the following cops:
+Layout/EmptyLinesAroundAttributeAccessor:
+  Enabled: true
+
+Lint/BinaryOperatorWithIdenticalOperands:
+  Enabled: true
+
+Lint/DeprecatedOpenSSLConstant:
+  Enabled: true
+
+Lint/DuplicateElsifCondition:
+  Enabled: true
+
+Lint/DuplicateRescueException:
+  Enabled: true
+
+Lint/EmptyConditionalBody:
+  Enabled: true
+
+Lint/FloatComparison:
+  Enabled: true
+
+Lint/MissingSuper:
+  Enabled: true
+
+Lint/MixedRegexpCaptureTypes:
+  Enabled: true
+
+Lint/OutOfRangeRegexpRef:
+  Enabled: true
+
+Lint/SelfAssignment:
+  Enabled: true
+
+Lint/TopLevelReturnWithArgument:
+  Enabled: true
+
+Lint/UnreachableLoop:
+  Enabled: true
+
+Style/AccessorGrouping:
+  Enabled: true
+
+Style/ArrayCoercion:
+  Enabled: true
+
+Style/BisectedAttrAccessor:
+  Enabled: true
+
+Style/CaseLikeIf:
+  Enabled: true
+
+Style/EndlessMethod:
+  Enabled: true
+
+Style/ExplicitBlockArgument:
+  Enabled: true
+
+Style/GlobalStdStream:
+  Enabled: true
+
+Style/HashAsLastArrayItem:
+  Enabled: true
+
+Style/HashConversion:
+  Enabled: true
+
+Style/HashLikeCase:
+  Enabled: true
+
+Style/IfWithBooleanLiteralBranches:
+  Enabled: true
+
+Style/OptionalBooleanParameter:
+  Enabled: true
+
+Style/RedundantAssignment:
+  Enabled: true
+
+Style/RedundantFetchBlock:
+  Enabled: true
+
+Style/RedundantFileExtensionInRequire:
+  Enabled: true
+
+Style/RedundantRegexpCharacterClass:
+  Enabled: true
+
+Style/RedundantRegexpEscape:
+  Enabled: true
+
+Style/SingleArgumentDig:
+  Enabled: true
+
+Style/SlicingWithRange:
+  Enabled: true
+
+Style/StringChars:
+  Enabled: true
+
+Style/StringConcatenation:
+  Enabled: true

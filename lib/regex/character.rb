@@ -59,6 +59,7 @@ module Regex # This module is used as a namespace
     # RegAn::Character.new('\n')    # Represents a newline
     # RegAn::Character.new('\u03a3')  # Represents a Σ
     def initialize(aValue)
+      super()
       case aValue
         when String
           if aValue.size == 1

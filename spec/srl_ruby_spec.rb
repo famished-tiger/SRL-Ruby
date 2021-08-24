@@ -226,7 +226,7 @@ SRL
     let(:prefix) { 'letter from p to t ' }
 
     it "should parse 'once' syntax" do
-      regexp = SrlRuby.parse(prefix + 'once')
+      regexp = SrlRuby.parse("#{prefix}once")
       expect(regexp.source).to eq('[p-t]{1}')
     end
 
@@ -246,26 +246,26 @@ SRL
     end
 
     it "should parse 'between ... and ... times' syntax" do
-      regexp = SrlRuby.parse(prefix + 'between 2 and 4 times')
+      regexp = SrlRuby.parse("#{prefix}between 2 and 4 times")
       expect(regexp.source).to eq('[p-t]{2,4}')
 
       # Dropping 'times' keyword is a shorter alternative syntax
-      regexp = SrlRuby.parse(prefix + 'between 2 and 4')
+      regexp = SrlRuby.parse("#{prefix}between 2 and 4")
       expect(regexp.source).to eq('[p-t]{2,4}')
     end
 
     it "should parse 'once or more' syntax" do
-      regexp = SrlRuby.parse(prefix + 'once or more')
+      regexp = SrlRuby.parse("#{prefix}once or more")
       expect(regexp.source).to eq('[p-t]+')
     end
 
     it "should parse 'never or more' syntax" do
-      regexp = SrlRuby.parse(prefix + 'never or more')
+      regexp = SrlRuby.parse("#{prefix}never or more")
       expect(regexp.source).to eq('[p-t]*')
     end
 
     it "should parse 'at least  ... times' syntax" do
-      regexp = SrlRuby.parse(prefix + 'at least 10 times')
+      regexp = SrlRuby.parse("#{prefix}at least 10 times")
       expect(regexp.source).to eq('[p-t]{10,}')
     end
   end # context

@@ -16,8 +16,13 @@ module Acceptance
   # Delimiters: parentheses '(' and ')'
   # Separators: comma (optional)
   class RuleFileTokenizer
+    # @return [StringScanner]
     attr_reader(:scanner)
+
+    # @return [Integer] current line number
     attr_reader(:lineno)
+
+    # @return [Integer] offset of start of current line within input
     attr_reader(:line_start)
 
     # Can be :default, :expecting_srl
@@ -82,7 +87,7 @@ module Acceptance
       elsif (lexeme = scanner.scan(/[0-9]+/))
         token = build_token('INTEGER', lexeme)
       elsif (lexeme = scanner.scan(/srl:|match:/))
-        token = build_token(@@keywords[lexeme], lexeme)
+        token = build_token(@@keywords[lexeme].chop, lexeme.chop)
         @state = :expecting_srl if lexeme == 'srl:'
       elsif (lexeme = scanner.scan(/[a-zA-Z_][a-zA-Z0-9_]*/))
         keyw = @@keywords[lexeme]

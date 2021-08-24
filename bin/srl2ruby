@@ -12,7 +12,11 @@ class Srl2RubyProg
   DefaultSRLExtension = 'srl'
   DefDirname = '/templates'
   DefTemplate = 'base.erb'
+
+  # @return [Hash]
   attr_reader(:cli_options)
+
+  # @return [ERB]
   attr_reader(:template)
 
   def initialize(prog_name, args)
@@ -49,18 +53,16 @@ class Srl2RubyProg
       fname = cli_options[:template]
       exists = File.exist?(fname)
       if exists
-        t_filepath = Dir.getwd + '/' + fname
+        t_filepath = "#{Dir.getwd}/#{fname}"
       else
-        t_filepath = def_template_dir + '/' + fname
+        t_filepath = "#{def_template_dir}/#{fname}"
         exit(1) unless file_exist?(t_filepath)
       end
     else
-      t_filepath = def_template_dir + '/' + DefTemplate
+      t_filepath = "#{def_template_dir}/#{DefTemplate}"
     end
     path = Pathname.new(t_filepath)
-    erb_template = ERB.new(path.read, nil, '<>')
-
-    erb_template
+    ERB.new(path.read, nil, '<>')
   end
 
   def validate_filename(raw_fname)

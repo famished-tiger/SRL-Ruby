@@ -7,7 +7,10 @@ require_relative 'abstract_method'
 module Regex # This module is used as a namespace
   # Abstract class. The generalization of any valid regular (sub)expression.
   class Expression
+    # @return [NilClass, Anchor]
     attr_accessor :begin_anchor
+
+    # @return [NilClass, Anchor]
     attr_accessor :end_anchor
 
     # Constructor

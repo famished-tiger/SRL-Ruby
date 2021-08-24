@@ -50,16 +50,13 @@ module Regex # This module is used as a namespace
           end
       end
 
-      suffix = case policy
-        when :greedy
-          ''
-        when :lazy
-          '?'
-        when :possessive
-          '+'
-      end
+      policy2suffix = {
+        greedy: '',
+        lazy: '?',
+        possessive: '+'
+      }
 
-      return subresult + suffix
+      return subresult + policy2suffix[policy]
     end
 
     private

@@ -1,5 +1,12 @@
+## [0.4.7] - 2021-08-24
+- Updated dependencies (Ruby >= 2.5), (Rley >= 0.8.02)
+- Code restyling to please rubocop 1.19.1. 
+### Changed
+- File `srl_ruby.gemspec` Updated the dependencies
+- File `.rubocop.yml` Added configuration for newest cops
+
 ## [0.4.6] - 2019-08-17
-- Code refactoring to use string frozen magic comments (as a consequence, srl_ruby runs only on Rubies 2.3 or newer).  
+- Code refactoring to use string frozen magic comments (as a consequence, skeem runs only on Rubies 2.3 or newer).  
 - Code restyling to please rubocop 0.7.40. 
 ### Changed
 - File `README.md` updated note on compatibility with Rubies

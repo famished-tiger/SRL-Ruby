@@ -26,6 +26,7 @@ module Regex # This module is used as a namespace
 
     # Constructor
     def initialize(aShortname)
+      super()
       @shortname = valid_shortname(aShortname)
     end
 

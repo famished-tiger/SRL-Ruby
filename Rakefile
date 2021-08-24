@@ -10,6 +10,7 @@ RSpec::Core::RakeTask.new do |spec|
 end
 
 Cucumber::Rake::Task.new do |_|
+  # Comment
 end
 
 # Combine RSpec and Cucumber tests

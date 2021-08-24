@@ -68,6 +68,8 @@ module SrlRuby
       return Regex::Multiplicity.new(lowerBound, upperBound, :greedy)
     end
 
+    # rubocop: disable Style/OptionalBooleanParameter
+
     def string_literal(aString, to_escape = true)
       if aString.size > 1
         chars = []
@@ -88,6 +90,7 @@ module SrlRuby
 
       return result
     end
+    # rubocop: enable Style/OptionalBooleanParameter
 
     def char_range(lowerBound, upperBound)
       lower = Regex::Character.new(lowerBound)

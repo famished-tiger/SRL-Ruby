@@ -34,9 +34,7 @@ module Regex # This module is used as a namespace
     # Conversion method re-definition.
     # Purpose: Return the String representation of the concatented expressions.
     def text_repr
-      result = lower.to_str + '-' + upper.to_str
-
-      return result
+      "#{lower.to_str}-#{upper.to_str}"
     end
 
     private

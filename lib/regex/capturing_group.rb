@@ -8,6 +8,8 @@ module Regex # This module is used as a namespace
   # An association between a capture variable and an expression
   # the subject text in the same serial arrangement
   class CapturingGroup < MonadicExpression
+    # rubocop: disable Style/OptionalBooleanParameter
+
     # The capture variable id. It is a Fixnum when the capture group gets
     # a sequence number,
     # a String when it is an user-defined name
@@ -42,12 +44,13 @@ module Regex # This module is used as a namespace
       atomic = no_backtrack ? '?>' : ''
       if child.is_a?(Regex::NonCapturingGroup)
         # Minor optimization
-        result = '(' + atomic + prefix + child.child.to_str + ')'
+        suffix = child.child.to_str
       else
-        result = '(' + atomic + prefix + child.to_str + ')'
+        suffix = child.to_str
       end
-      return result
+      "(#{atomic}#{prefix}#{suffix})"
     end
+    # rubocop: enable Style/OptionalBooleanParameter
   end # class
 end # module
 

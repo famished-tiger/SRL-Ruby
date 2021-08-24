@@ -8,7 +8,7 @@ module Regex # This module is used as a namespace
   module Quantifiable
     # Redefined method. Return true since it may not have any child.
     def quantified?
-      return @quantifier.nil? ? false : true
+      return !@quantifier.nil?
     end
 
     def quantifier
