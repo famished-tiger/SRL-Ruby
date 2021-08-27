@@ -118,70 +118,52 @@ module SrlRuby
       Regex::Anchor.new('^')
     end
 
-    # rule('expression' => %w[pattern flags]).as 'flagged_expr'
+    # rule('expression' => 'pattern (flags)?').tag 'flagged_expr'
     def reduce_flagged_expr(_production, aRange, theTokens, theChildren)
       @options = theChildren[1] if theChildren[1]
       return_first_child(aRange, theTokens, theChildren)
     end
 
-    # rule('pattern' => %w[pattern separator sub_pattern]).as 'pattern_sequence'
+    # rule('pattern' => 'subpattern (separator sub_pattern)*').tag 'pattern_sequence'
     def reduce_pattern_sequence(_production, _range, _tokens, theChildren)
-      third_member = theChildren[2]
-      if third_member.kind_of?(Regex::Lookaround) && third_member.dir == :behind
-        Regex::Concatenation.new(theChildren[2], theChildren[0])
+      return theChildren[0] if theChildren[1].empty?
+
+      successors = theChildren[1].map { |pair| pair[1] }
+      if successors[0].kind_of?(Regex::Lookaround) && successors[0].dir == :behind
+        Regex::Concatenation.new(successors.shift, theChildren[0], *successors)
       else
-        Regex::Concatenation.new(theChildren[0], theChildren[2])
+        Regex::Concatenation.new(theChildren[0], *successors)
       end
     end
 
-    # rule('pattern' => 'sub_pattern').as 'basic_pattern'
-    def reduce_basic_pattern(_production, aRange, theTokens, theChildren)
-      return_first_child(aRange, theTokens, theChildren)
-    end
-
-    # rule('sub_pattern' => 'assertion').as 'assertion_sub_pattern'
+    # rule('sub_pattern' => 'assertion').tag 'assertion_sub_pattern'
     def reduce_assertion_sub_pattern(_production, aRange, theTokens, theChildren)
       return_first_child(aRange, theTokens, theChildren)
     end
 
-    # rule('flags' => %[flags separator single_flag]).as 'flag_sequence'
+    # rule('flags' => '(separator single_flag)+').tag 'flag_sequence'
     def reduce_flag_sequence(_production, _range, _tokens, theChildren)
-      theChildren[0] << theChildren[2]
+      theChildren[0].map { |(_, flag)| flag }
     end
 
-    # rule('flags' => %w[separator single_flag]).as 'flag_simple'
-    def reduce_flag_simple(_production, _range, _tokens, theChildren)
-      [theChildren.last]
-    end
-
-    # rule('single_flag' => %w[CASE INSENSITIVE]).as 'case_insensitive'
+    # rule('single_flag' => %w[CASE INSENSITIVE]).tag 'case_insensitive'
     def reduce_case_insensitive(_production, _range, _tokens, _children)
       Regexp::IGNORECASE
     end
 
-    # rule('single_flag' => %w[MULTI LINE]).as 'multi_line'
+    # rule('single_flag' => %w[MULTI LINE]).tag 'multi_line'
     def reduce_multi_line(_production, _range, _tokens, _children)
       Regexp::MULTILINE
     end
 
-    # rule('single_flag' => %w[ALL LAZY]).as 'all_lazy'
+    # rule('single_flag' => %w[ALL LAZY]).tag 'all_lazy'
     def reduce_all_lazy(_production, _range, _tokens, _children)
       :ALL_LAZY
     end
 
-    # rule 'quantifiable' => %w[begin_anchor anchorable end_anchor]
-    def reduce_pinned_quantifiable(_production, _range, _tokens, theChildren)
-      Regex::Concatenation.new(*theChildren)
-    end
-
-    # rule 'quantifiable' => %w[begin_anchor anchorable]
-    def reduce_begin_anchor_quantifiable(_production, _range, _tokens, theChildren)
-      Regex::Concatenation.new(*theChildren)
-    end
-
-    # rule 'quantifiable' => %w[anchorable end_anchor]
-    def reduce_end_anchor_quantifiable(_production, _range, _tokens, theChildren)
-      return Regex::Concatenation.new(*theChildren)
+    # rule('quantifiable' => 'begin_anchor? anchorable end_anchor?')
+    def reduce_quantifiable(_production, _range, _tokens, theChildren)
+      Regex::Concatenation.new(*theChildren.compact)
     end
 
     # rule 'begin_anchor' => %w[STARTS WITH]
@@ -194,39 +176,30 @@ module SrlRuby
       begin_anchor
     end
 
-    # rule('end_anchor' => %w[separator MUST END]).as 'end_anchor'
+    # rule('end_anchor' => %w[separator MUST END]).tag 'end_anchor'
     def reduce_end_anchor(_production, _range, _tokens, _children)
       Regex::Anchor.new('$')
     end
 
-    # rule('assertion' => %w[IF FOLLOWED BY assertable]).as 'if_followed'
+    # rule('assertion' => 'IF NOT? FOLLOWED BY assertable')
     def reduce_if_followed(_production, _range, _tokens, theChildren)
-      Regex::Lookaround.new(theChildren.last, :ahead, :positive)
+      polarity = theChildren[1] ? :negative : :positive
+      Regex::Lookaround.new(theChildren.last, :ahead, polarity)
     end
 
-    # rule('assertion' => %w[IF NOT FOLLOWED BY assertable]).as 'if_not_followed'
-    def reduce_if_not_followed(_production, _range, _tokens, theChildren)
-      Regex::Lookaround.new(theChildren.last, :ahead, :negative)
-    end
-
-    # rule('assertion' => %w[IF ALREADY HAD assertable]).as 'if_had'
+    # rule('assertion' => 'IF NOT? ALREADY HAD assertable')
     def reduce_if_had(_production, _range, _tokens, theChildren)
-      Regex::Lookaround.new(theChildren.last, :behind, :positive)
+      polarity = theChildren[1] ? :negative : :positive
+      Regex::Lookaround.new(theChildren.last, :behind, polarity)
     end
 
-    # rule('assertion' => %w[IF NOT ALREADY HAD assertable]).as 'if_not_had'
-    def reduce_if_not_had(_production, _range, _tokens, theChildren)
-      Regex::Lookaround.new(theChildren.last, :behind, :negative)
+    # rule('assertable' => 'term quantifier?').tag 'assertable'
+    def reduce_assertable(_production, _range, _tokens, theChildren)
+      (term, quantifier) = theChildren
+      quantifier ? repetition(term, quantifier) : term
     end
 
-    # rule('assertable' => %w[term quantifier]).as 'quantified_assertable'
-    def reduce_quantified_assertable(_production, _range, _tokens, theChildren)
-      quantifier = theChildren[1]
-      term = theChildren[0]
-      repetition(term, quantifier)
-    end
-
-    # rule('letter_range' => %w[LETTER FROM LETTER_LIT TO LETTER_LIT]).as 'lowercase_from_to'
+    # rule('letter_range' => %w[LETTER FROM LETTER_LIT TO LETTER_LIT]).tag 'lowercase_from_to'
     def reduce_lowercase_from_to(_production, _range, _tokens, theChildren)
       raw_range = [theChildren[2].token.lexeme, theChildren[4].token.lexeme]
       range_sorted = raw_range.sort
@@ -234,7 +207,7 @@ module SrlRuby
       char_class(false, ch_range)
     end
 
-    # rule('letter_range' => %w[UPPERCASE LETTER FROM LETTER_LIT TO LETTER_LIT]).as 'uppercase_from_to'
+    # rule('letter_range' => %w[UPPERCASE LETTER FROM LETTER_LIT TO LETTER_LIT]).tag 'uppercase_from_to'
     def reduce_uppercase_from_to(_production, _range, _tokens, theChildren)
       raw_range = [theChildren[3].token.lexeme, theChildren[5].token.lexeme]
       range_sorted = raw_range.sort
@@ -242,19 +215,19 @@ module SrlRuby
       char_class(false, ch_range)
     end
 
-    # rule('letter_range' => 'LETTER').as 'any_lowercase'
+    # rule('letter_range' => 'LETTER').tag 'any_lowercase'
     def reduce_any_lowercase(_production, _range, _tokens, _children)
       ch_range = char_range('a', 'z')
       char_class(false, ch_range)
     end
 
-    # rule('letter_range' => %w[UPPERCASE LETTER]).as 'any_uppercase'
+    # rule('letter_range' => %w[UPPERCASE LETTER]).tag 'any_uppercase'
     def reduce_any_uppercase(_production, _range, _tokens, _children)
       ch_range = char_range('A', 'Z')
       char_class(false, ch_range)
     end
 
-    # rule('digit_range' => %w[digit_or_number FROM DIGIT_LIT TO DIGIT_LIT]).as 'digits_from_to'
+    # rule('digit_range' => %w[digit_or_number FROM DIGIT_LIT TO DIGIT_LIT]).tag 'digits_from_to'
     def reduce_digits_from_to(_production, _range, _tokens, theChildren)
       raw_range = [theChildren[2].token.lexeme, theChildren[4].token.lexeme]
       range_sorted = raw_range.map(&:to_i).sort
@@ -262,42 +235,42 @@ module SrlRuby
       char_class(false, ch_range)
     end
 
-    # rule('character_class' => %w[ANY CHARACTER]).as 'any_character'
+    # rule('character_class' => %w[ANY CHARACTER]).tag 'any_character'
     def reduce_any_character(_production, _range, _tokens, _children)
       char_shorthand('w')
     end
 
-    # rule('character_class' => %w[NO CHARACTER]).as 'no_character'
+    # rule('character_class' => %w[NO CHARACTER]).tag 'no_character'
     def reduce_no_character(_production, _range, _tokens, _children)
       char_shorthand('W')
     end
 
-    # rule('character_class' => 'digit_or_number').as 'digit'
+    # rule('character_class' => 'digit_or_number').tag 'digit'
     def reduce_digit(_production, _range, _tokens, _children)
       char_shorthand('d')
     end
 
-    # rule('character_class' => %w[NO DIGIT]).as 'non_digit'
+    # rule('character_class' => %w[NO DIGIT]).tag 'non_digit'
     def reduce_non_digit(_production, _range, _tokens, _children)
       char_shorthand('D')
     end
 
-    # rule('character_class' => 'WHITESPACE').as 'whitespace'
+    # rule('character_class' => 'WHITESPACE').tag 'whitespace'
     def reduce_whitespace(_production, _range, _tokens, _children)
       char_shorthand('s')
     end
 
-    # rule('character_class' => %w[NO WHITESPACE]).as 'no_whitespace'
+    # rule('character_class' => %w[NO WHITESPACE]).tag 'no_whitespace'
     def reduce_no_whitespace(_production, _range, _tokens, _children)
       char_shorthand('S')
     end
 
-    # rule('character_class' => 'ANYTHING').as 'anything'
+    # rule('character_class' => 'ANYTHING').tag 'anything'
     def reduce_anything(_production, _range, _tokens, _children)
       wildcard
     end
 
-    # rule('character_class' => %w[ONE OF STRING_LIT]).as 'one_of'
+    # rule('character_class' => %w[ONE OF STRING_LIT]).tag 'one_of'
     def reduce_one_of(_production, _range, _tokens, theChildren)
       raw_literal = theChildren[-1].token.lexeme.dup
       alternatives = raw_literal.chars.map do |ch|
@@ -313,7 +286,7 @@ module SrlRuby
       return Regex::CharClass.new(false, *alternatives)
     end
 
-    # rule('character_class' => %w[NONE OF STRING_LIT]).as 'none_of'
+    # rule('character_class' => %w[NONE OF STRING_LIT]).tag 'none_of'
     def reduce_none_of(_production, _range, _tokens, theChildren)
       raw_literal = theChildren[-1].token.lexeme.dup
       chars = raw_literal.chars.map do |ch|
@@ -322,44 +295,44 @@ module SrlRuby
       Regex::CharClass.new(true, *chars)
     end
 
-    # rule('special_char' => 'TAB').as 'tab'
+    # rule('special_char' => 'TAB').tag 'tab'
     def reduce_tab(_production, _range, _tokens, _children)
       Regex::Character.new('\t')
     end
 
-    # rule('special_char' => ' VERTICAL TAB').as 'vtab'
+    # rule('special_char' => ' VERTICAL TAB').tag 'vtab'
     def reduce_vtab(_production, _range, _tokens, _children)
       Regex::Character.new('\v')
     end
 
-    # rule('special_char' => 'BACKSLASH').as 'backslash'
+    # rule('special_char' => 'BACKSLASH').tag 'backslash'
     def reduce_backslash(_production, _range, _tokens, _children)
       # Double the backslash (because of escaping)
       string_literal('\\', true)
     end
 
-    # rule('special_char' => %w[NEW LINE]).as 'new_line'
+    # rule('special_char' => %w[NEW LINE]).tag 'new_line'
     def reduce_new_line(_production, _range, _tokens, _children)
       # TODO: control portability
       Regex::Character.new('\n')
     end
 
-    # rule('special_char' => %w[CARRIAGE RETURN]).as 'carriage_return'
+    # rule('special_char' => %w[CARRIAGE RETURN]).tag 'carriage_return'
     def reduce_carriage_return(_production, _range, _tokens, _children)
       Regex::Character.new('\r')
     end
 
-    # rule('special_char' => %w[WORD]).as 'word'
+    # rule('special_char' => %w[WORD]).tag 'word'
     def reduce_word(_production, _range, _tokens, _children)
       Regex::Anchor.new('\b')
     end
 
-    # rule('special_char' => %w[NO WORD]).as 'no word'
+    # rule('special_char' => %w[NO WORD]).tag 'no word'
     def reduce_no_word(_production, _range, _tokens, _children)
       Regex::Anchor.new('\B')
     end
 
-    # rule('literal' => %w[LITERALLY STRING_LIT]).as 'literally'
+    # rule('literal' => %w[LITERALLY STRING_LIT]).tag 'literally'
     def reduce_literally(_production, _range, _tokens, theChildren)
       # What if literal is empty?...
 
@@ -367,13 +340,13 @@ module SrlRuby
       return string_literal(raw_literal)
     end
 
-    # rule('raw' => %w[RAW STRING_LIT]).as 'raw_literal'
+    # rule('raw' => %w[RAW STRING_LIT]).tag 'raw_literal'
     def reduce_raw_literal(_production, _range, _tokens, theChildren)
       raw_literal = theChildren[-1].token.lexeme.dup
       return Regex::RawExpression.new(raw_literal)
     end
 
-    # rule('alternation' => %w[ANY OF LPAREN alternatives RPAREN]).as 'any_of'
+    # rule('alternation' => %w[ANY OF LPAREN alternatives RPAREN]).tag 'any_of'
     def reduce_any_of(_production, _range, _tokens, theChildren)
       first_alternative = theChildren[3].first
       result = nil
@@ -388,24 +361,19 @@ module SrlRuby
       return result
     end
 
-    # rule('alternatives' => %w[alternatives separator quantifiable]).as 'alternative_list'
+    # rule('alternatives' => %w[alternatives separator quantifiable]).tag 'alternative_list'
     def reduce_alternative_list(_production, _range, _tokens, theChildren)
       return theChildren[0] << theChildren[-1]
     end
 
-    # rule('alternatives' => 'quantifiable').as 'simple_alternative'
+    # rule('alternatives' => 'quantifiable').tag 'simple_alternative'
     def reduce_simple_alternative(_production, _range, _tokens, theChildren)
       [theChildren.last]
     end
 
-    # rule('grouping' => %w[LPAREN pattern RPAREN]).as 'grouping_parenthenses'
+    # rule('grouping' => %w[LPAREN pattern RPAREN]).tag 'grouping_parenthenses'
     def reduce_grouping_parenthenses(_production, _range, _tokens, theChildren)
       Regex::NonCapturingGroup.new(theChildren[1])
-    end
-
-    # rule('capturing_group' => %w[CAPTURE assertable]).as 'capture'
-    def reduce_capture(_production, _range, _tokens, theChildren)
-      Regex::CapturingGroup.new(theChildren[1])
     end
 
     # If the rightmost (sub)expression is a repetition, then make it lazy
@@ -427,51 +395,49 @@ module SrlRuby
       end
     end
 
-    # rule('capturing_group' => %w[CAPTURE assertable UNTIL assertable]).as
-    #   'capture_until'
-    def reduce_capture_until(_production, _range, _tokens, theChildren)
+    # rule('capturing_group' => 'CAPTURE assertable (UNTIL assertable)?').tag
+    # 'capture'
+    def reduce_capture(_production, _range, _tokens, theChildren)
+      return Regex::CapturingGroup.new(theChildren[1]) unless theChildren[2]
+
       # Until semantic requires that the last pattern in capture to be lazy
       make_last_repetition_lazy(theChildren[1])
 
       group = Regex::CapturingGroup.new(theChildren[1])
-      return Regex::Concatenation.new(group, theChildren[3])
+      (_, until_expr) = theChildren[2]
+      Regex::Concatenation.new(group, until_expr)
     end
 
-    # rule('capturing_group' => %w[CAPTURE assertable AS var_name]).as
-    #   'named_capture'
+    # rule('capturing_group' => 'CAPTURE assertable AS var_name (UNTIL assertable)?').tag
+    # 'named_capture'
     def reduce_named_capture(_production, _range, _tokens, theChildren)
       name = theChildren[3].token.lexeme.dup
-      return Regex::CapturingGroup.new(theChildren[1], name)
-    end
+      return Regex::CapturingGroup.new(theChildren[1], name) unless theChildren[4]
 
-    # rule('capturing_group' => %w[CAPTURE assertable AS var_name
-    #   UNTIL assertable]).as 'named_capture_until'
-    def reduce_named_capture_until(_production, _range, _tokens, theChildren)
       # Until semantic requires that the last pattern in capture to be lazy
       make_last_repetition_lazy(theChildren[1])
-
-      name = theChildren[3].token.lexeme.dup
       group = Regex::CapturingGroup.new(theChildren[1], name)
-      return Regex::Concatenation.new(group, theChildren[5])
+      (_, until_expr) = theChildren[4]
+      return Regex::Concatenation.new(group, until_expr)
     end
 
-    # rule('quantifier' => 'ONCE').as 'once'
+    # rule('quantifier' => 'ONCE').tag 'once'
     def reduce_once(_production, _range, _tokens, _children)
       multiplicity(1, 1)
     end
 
-    # rule('quantifier' => 'TWICE').as 'twice'
+    # rule('quantifier' => 'TWICE').tag 'twice'
     def reduce_twice(_production, _range, _tokens, _children)
       multiplicity(2, 2)
     end
 
-    # rule('quantifier' => %w[EXACTLY count TIMES]).as 'exactly'
+    # rule('quantifier' => %w[EXACTLY count TIMES]).tag 'exactly'
     def reduce_exactly(_production, _range, _tokens, theChildren)
       count = theChildren[1].token.lexeme.to_i
       multiplicity(count, count)
     end
 
-    # rule('quantifier' => %w[BETWEEN count AND count times_suffix]).as
+    # rule('quantifier' => 'BETWEEN count AND count times_suffix').tag
     #   'between_and'
     def reduce_between_and(_production, _range, _tokens, theChildren)
       lower = theChildren[1].token.lexeme.to_i
@@ -479,35 +445,25 @@ module SrlRuby
       multiplicity(lower, upper)
     end
 
-    # rule('quantifier' => 'OPTIONAL').as 'optional'
+    # rule('quantifier' => 'OPTIONAL').tag 'optional'
     def reduce_optional(_production, _range, _tokens, _children)
       multiplicity(0, 1)
     end
 
-    # rule('quantifier' => %w[ONCE OR MORE]).as 'once_or_more'
+    # rule('quantifier' => %w[ONCE OR MORE]).tag 'once_or_more'
     def reduce_once_or_more(_production, _range, _tokens, _children)
       multiplicity(1, :more)
     end
 
-    # rule('quantifier' => %w[NEVER OR MORE]).as 'never_or_more'
+    # rule('quantifier' => %w[NEVER OR MORE]).tag 'never_or_more'
     def reduce_never_or_more(_production, _range, _tokens, _children)
       multiplicity(0, :more)
     end
 
-    # rule('quantifier' => %w[AT LEAST count TIMES]).as 'at_least'
+    # rule('quantifier' => %w[AT LEAST count TIMES]).tag 'at_least'
     def reduce_at_least(_production, _range, _tokens, theChildren)
       count = theChildren[2].token.lexeme.to_i
       multiplicity(count, :more)
-    end
-
-    # rule('times_suffix' => 'TIMES').as 'times_keyword'
-    def reduce_times_keyword(_production, _range, _tokens, _children)
-      nil
-    end
-
-    # rule('times_suffix' => []).as 'times_dropped'
-    def reduce_times_dropped(_production, _range, _tokens, _children)
-      nil
     end
   end # class
 end # module

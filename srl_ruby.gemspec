@@ -71,7 +71,7 @@ SUMMARY
   spec.add_dependency 'rley', '~> 0.8.02'
 
   # Development dependencies
-  spec.add_development_dependency 'bundler', '~> 2.1.0'
+  spec.add_development_dependency 'bundler', '~> 2.2.0'
   spec.add_development_dependency 'cucumber', '>= 2.2.0'
   spec.add_development_dependency 'rake', '~> 12.0'
   spec.add_development_dependency 'rspec', '~> 3.0'

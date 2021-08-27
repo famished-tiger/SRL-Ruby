@@ -1,3 +1,12 @@
+## [0.4.8] - 2021-08-27
+- Updated dependencies (Bundler >~ 2.2), (Rley >~ 0.8.03)
+- Grammar refactoring to take profit of new Rley rule syntax.
+
+### Changed
+- File `srl_ruby.gemspec` Updated the dependencies
+- File `grammar.rb` Grammar refactored (use  ? * + modifiers in production rules)
+- class `ASTBuilder` updated `reduce_` to reflect new refactored production rules.
+
 ## [0.4.7] - 2021-08-24
 - Updated dependencies (Ruby >= 2.5), (Rley >= 0.8.02)
 - Code restyling to please rubocop 1.19.1. 
