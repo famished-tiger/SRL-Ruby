@@ -32,7 +32,7 @@ module Acceptance
       Terminal2NodeClass
     end
 
-    # rule('rule_file' => %w[srl_heading srl_tests]).as 'start_rule'
+    # rule('rule_file' => 'srl_heading tests').as 'start_rule'
     def reduce_start_rule(_production, _range, _tokens, theChildren)
       rule_file = RuleFileTests.new(theChildren[0])
       tests = theChildren.last.flatten
@@ -54,16 +54,6 @@ module Acceptance
       theChildren.last
     end
 
-    # rule('srl_tests' => %w[srl_tests single_test]).as 'test_list'
-    def reduce_test_list(_production, _range, _tokens, theChildren)
-      theChildren[0] << theChildren[1]
-    end
-
-    # rule('srl_tests' => 'single_test').as 'one_test'
-    def reduce_one_test(_production, _range, _tokens, theChildren)
-      [theChildren.last]
-    end
-
     # rule('match_test' => %w[MATCH: STRING_LIT]).as 'match_string'
     def reduce_match_string(_production, _range, _tokens, theChildren)
       MatchTest.new(theChildren.last)
@@ -83,17 +73,6 @@ module Acceptance
     # rule('capture_heading' => %w[CAPTURE FOR STRING_LIT COLON]).as 'capture_string'
     def reduce_capture_string(_production, _range, _tokens, theChildren)
       theChildren[2]
-    end
-
-    # rule('capture_expectations' => %w[capture_expectations
-    #   single_expectation]).as 'assertion_list'
-    def reduce_assertion_list(_production, _range, _tokens, theChildren)
-      theChildren[0] << theChildren[1]
-    end
-
-    # rule('capture_expectations' => 'single_expectation').as 'one_expectation'
-    def reduce_one_expectation(_production, _range, _tokens, theChildren)
-      [theChildren.last]
     end
 
     # rule('single_expectation' => %w[DASH INTEGER COLON capture_variable
