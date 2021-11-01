@@ -1,3 +1,15 @@
+## [0.4.9] - 2021-11-01
+- Code update to align with `Rley` v. 0.8.08
+
+### Changed
+- File `ast_builder.rb` Updated some `reduce_...` methods to cope with ? quantifier change
+- File `srl_ruby.gemspec` Updated the dependency towards Rley
+- File `.rubocop.yml` Added newest cops from 1.21 and 1.22
+
+### Fixed
+- File `grammar.rb` is now calling `Rley::grammar_builder` factory method.
+- File `rule_file_grammar.rb` is now calling `Rley::grammar_builder` factory method.
+
 ## [0.4.8] - 2021-08-27
 - Updated dependencies (Bundler >~ 2.2), (Rley >~ 0.8.03)
 - Grammar refactoring to take profit of new Rley rule syntax.

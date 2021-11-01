@@ -5,7 +5,7 @@ require 'rley' # Load the gem
 module SrlRuby
   ########################################
   # SRL grammar
-  builder = Rley::Notation::GrammarBuilder.new do
+  builder = Rley::grammar_builder do
     # Separators...
     add_terminals('LPAREN', 'RPAREN', 'COMMA')
 

@@ -7,7 +7,7 @@ require 'rley' # Load the Rley gem
 # [File format](https://github.com/SimpleRegex/Test-Rules/blob/master/README.md)
 ########################################
 # Define a grammar for basic arithmetical expressions
-builder = Rley::Notation::GrammarBuilder.new do
+builder = Rley::grammar_builder do
   # Punctuation
   add_terminals('COLON', 'DASH')
 

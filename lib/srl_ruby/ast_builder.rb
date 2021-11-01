@@ -120,7 +120,7 @@ module SrlRuby
 
     # rule('expression' => 'pattern (flags)?').tag 'flagged_expr'
     def reduce_flagged_expr(_production, aRange, theTokens, theChildren)
-      @options = theChildren[1] if theChildren[1]
+      @options = theChildren[1].first if theChildren[1]
       return_first_child(aRange, theTokens, theChildren)
     end
 
@@ -163,7 +163,7 @@ module SrlRuby
 
     # rule('quantifiable' => 'begin_anchor? anchorable end_anchor?')
     def reduce_quantifiable(_production, _range, _tokens, theChildren)
-      Regex::Concatenation.new(*theChildren.compact)
+      Regex::Concatenation.new(*theChildren.flatten.compact)
     end
 
     # rule 'begin_anchor' => %w[STARTS WITH]
@@ -195,7 +195,7 @@ module SrlRuby
 
     # rule('assertable' => 'term quantifier?').tag 'assertable'
     def reduce_assertable(_production, _range, _tokens, theChildren)
-      (term, quantifier) = theChildren
+      (term, quantifier) = theChildren.flatten
       quantifier ? repetition(term, quantifier) : term
     end
 

@@ -1,6 +1,7 @@
 AllCops:
   Exclude:
     - 'exp/**/*'
+    - 'demo/**/*'
 
 Gemspec/DateAssignment:
   Enabled: true
@@ -83,6 +84,9 @@ Layout/TrailingWhitespace:
 Lint/AmbiguousAssignment:
   Enabled: true
 
+Lint/AmbiguousOperatorPrecedence: # new in 1.21
+  Enabled: true
+
 Lint/AmbiguousRange:
   Enabled: true
 
@@ -104,6 +108,9 @@ Lint/EmptyClass:
 Lint/EmptyInPattern:
   Enabled: true
 
+Lint/IncompatibleIoSelectWithFiberScheduler: # new in 1.21
+  Enabled: true
+
 Lint/LambdaWithoutLiteralBlock:
   Enabled: true
 
@@ -123,6 +130,9 @@ Lint/RaiseException:
   Enabled: true
 
 Lint/RedundantDirGlobSort:
+  Enabled: true
+
+Lint/RequireRelativeSelfPath: # new in 1.22
   Enabled: true
 
 Lint/RescueException:
@@ -212,6 +222,9 @@ Naming/MethodName:
 Naming/VariableName:
   Enabled: false
 
+Security/IoMethods: # new in 1.22
+  Enabled: true
+
 Style/Alias:
   Enabled: true
 
@@ -258,7 +271,7 @@ Style/Documentation:
   Enabled: false
 
 Style/DocumentDynamicEvalDefinition:
-  Enabled: false
+  Enabled: true
 
 Style/ExpandPathArguments:
   Enabled: false
@@ -305,6 +318,12 @@ Style/Next:
 Style/NilLambda:
   Enabled: true
 
+Style/NumberedParameters: # new in 1.22
+  Enabled: true
+
+Style/NumberedParametersLimit: # new in 1.22
+  Enabled: true
+
 Style/NumericLiterals:
   Enabled: false
 
@@ -331,6 +350,9 @@ Style/RegexpLiteral:
 
 Style/PercentLiteralDelimiters:
   Enabled: false
+
+Style/SelectByRegexp: # new in 1.22
+  Enabled: true
 
 Style/StderrPuts:
   Enabled: false
