@@ -1,3 +1,12 @@
+## [0.4.11] - 2022-04-17
+- Fixed code breaking change in Ruby 3.1+: prime library is no longer part of stdlib.
+
+### Fixed
+- File `srl-ruby.gemspec` has a dependency to `Rley 0.8.11`. Necessary to fix change in CRuby 3.1:  `prime` library is no more part of stdlib.
+
+### Changed
+- Minor style refactoring to please Runocop 1.27
+
 ## [0.4.9] - 2021-11-01
 - Code update to align with `Rley` v. 0.8.08
 
