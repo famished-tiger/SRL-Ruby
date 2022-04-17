@@ -5,6 +5,9 @@ AllCops:
 
 Gemspec/DateAssignment:
   Enabled: true
+  
+Gemspec/RequireMFA: # new in 1.23
+  Enabled: false  
 
 Layout/ArgumentAlignment:
   Enabled: false
@@ -131,6 +134,9 @@ Lint/RaiseException:
 
 Lint/RedundantDirGlobSort:
   Enabled: true
+  
+Lint/RefinementImportMethods: # new in 1.27
+  Enabled: true  
 
 Lint/RequireRelativeSelfPath: # new in 1.22
   Enabled: true
@@ -161,6 +167,9 @@ Lint/UnusedMethodArgument:
 
 Lint/UselessAccessModifier:
   Enabled: true
+  
+Lint/UselessRuby2Keywords: # new in 1.23
+  Enabled: true  
 
 Lint/Void:
   Enabled: false
@@ -206,6 +215,9 @@ Naming/ConstantName:
 
 Naming/ClassAndModuleCamelCase:
   Enabled: false
+  
+Naming/BlockForwarding: # new in 1.24
+  Enabled: true  
 
 Naming/BlockParameterName:
   Enabled: true
@@ -278,6 +290,12 @@ Style/ExpandPathArguments:
 
 Style/ExponentialNotation:
   Enabled: true
+  
+Style/FileRead: # new in 1.24
+  Enabled: true  
+
+Style/FileWrite: # new in 1.24
+  Enabled: true
 
 Style/GuardClause:
   Enabled: false
@@ -302,6 +320,9 @@ Style/InPatternThen:
 
 Style/InverseMethods:
   Enabled: false
+  
+Style/MapToHash: # new in 1.24
+  Enabled: true  
 
 Style/MissingRespondToMissing:
   Enabled: false
@@ -310,6 +331,9 @@ Style/MultilineInPatternThen:
   Enabled: true
 
 Style/NegatedIfElseCondition:
+  Enabled: true
+
+Style/NestedFileDirname: # new in 1.26
   Enabled: true
 
 Style/Next:
@@ -326,6 +350,9 @@ Style/NumberedParametersLimit: # new in 1.22
 
 Style/NumericLiterals:
   Enabled: false
+  
+Style/OpenStructUse: # new in 1.23
+  Enabled: true  
 
 Style/QuotedSymbols:
   Enabled: true
@@ -335,6 +362,9 @@ Style/RaiseArgs:
 
 Style/RedundantArgument:
   Enabled: true
+  
+Style/RedundantInitialize: # new in 1.27
+  Enabled: true  
 
 Style/RedundantReturn:
   Enabled: false

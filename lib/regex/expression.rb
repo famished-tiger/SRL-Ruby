@@ -13,9 +13,6 @@ module Regex # This module is used as a namespace
     # @return [NilClass, Anchor]
     attr_accessor :end_anchor
 
-    # Constructor
-    def initialize(); end
-
     # Abstract method. Return true iff the expression is atomic
     # (= doesn't not have any child).
     # @return [Boolean]

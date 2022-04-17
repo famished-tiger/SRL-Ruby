@@ -53,6 +53,7 @@ module Regex # Open this namespace, to get rid of scope qualifiers
       end
     end # context
 
+    # rubocop: disable Style/DocumentDynamicEvalDefinition
     context 'Provided services' do
       it 'Should know its lexeme if created from a string' do
         # Lexeme is defined when the character was initialised from a text
@@ -89,7 +90,6 @@ module Regex # Open this namespace, to get rid of scope qualifiers
 
         # Try with our escape sequence samples
         (SampleDigrams + SampleNumEscs).each do |escape_seq|
-          
           # Build a string from escape sequence literal
           expectation = String.class_eval(%Q|"#{escape_seq}"|, __FILE__, __LINE__)
           new_ch = Character.new(escape_seq).to_str
@@ -115,7 +115,6 @@ module Regex # Open this namespace, to get rid of scope qualifiers
 
         # Try with our escape sequence samples
         (SampleDigrams + SampleNumEscs).each do |escape_seq|
-
           # Get ordinal value of given escape sequence
           expectation = String.class_eval(%Q|"#{escape_seq}".ord()|, __FILE__, __LINE__)
           expect(Character.new(escape_seq).codepoint).to eq(expectation)
@@ -151,7 +150,7 @@ module Regex # Open this namespace, to get rid of scope qualifiers
         # Case 5: test fails with multiple character strings
         expect(newOne).not_to eq('03a3')
 
-        # Case 6: equality testing with arbitray object
+        # Case 6: equality testing with arbitrary object
         expect(newOne).not_to eq(nil)
         expect(newOne).not_to eq(Object.new)
 
@@ -173,6 +172,7 @@ module Regex # Open this namespace, to get rid of scope qualifiers
         expect(ch2.explain).to eq("the character '\u03a3'")
       end
     end # context
+    # rubocop: enable Style/DocumentDynamicEvalDefinition
     # rubocop: enable Lint/ConstantDefinitionInBlock
   end # describe
 end # module

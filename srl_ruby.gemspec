@@ -68,11 +68,11 @@ SUMMARY
   spec.required_ruby_version = '>= 2.5.0'
 
   # Runtime dependencies
-  spec.add_dependency 'rley', '~> 0.8.08'
+  spec.add_dependency 'rley', '~> 0.8.11'
 
   # Development dependencies
-  spec.add_development_dependency 'bundler', '~> 2.2.0'
-  spec.add_development_dependency 'cucumber', '>= 2.2.0'
-  spec.add_development_dependency 'rake', '~> 12.0'
+  spec.add_development_dependency 'bundler', '>= 2.2.0'
+  spec.add_development_dependency 'cucumber', '>= 3.1.2'
+  spec.add_development_dependency 'rake', '>= 12.0'
   spec.add_development_dependency 'rspec', '~> 3.0'
 end
