@@ -19,11 +19,9 @@ module Regex # This module is used as a namespace
     # Conversion method re-definition.
     # Purpose: Return the String representation of the concatented expressions.
     def text_repr
-      outcome = children.inject(+'') do |result, child|
+      children.inject(+'') do |result, child|
         result << child.to_str
       end
-
-      return outcome
     end
   end # class
 end # module

@@ -56,7 +56,7 @@ module Regex # This module is used as a namespace
         possessive: '+'
       }
 
-      return subresult + policy2suffix[policy]
+      subresult + policy2suffix[policy]
     end
 
     private
@@ -66,7 +66,7 @@ module Regex # This module is used as a namespace
       err_msg = "Invalid lower bound of repetition count #{aLowerBound}"
       raise StandardError, err_msg unless aLowerBound.kind_of?(Integer)
 
-      return aLowerBound
+      aLowerBound
     end
 
     # Validation method. Return the validated lower bound value
@@ -76,7 +76,7 @@ module Regex # This module is used as a namespace
         raise StandardError, err_msg
       end
 
-      return anUpperBound
+      anUpperBound
     end
 
     # Validation method. Return the validated policy value.
@@ -85,7 +85,7 @@ module Regex # This module is used as a namespace
       valid_policies = %i[greedy lazy possessive]
       raise StandardError, err_msg unless valid_policies.include? aPolicy
 
-      return aPolicy
+      aPolicy
     end
   end # class
 end # module

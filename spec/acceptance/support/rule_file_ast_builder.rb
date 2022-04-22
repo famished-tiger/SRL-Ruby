@@ -46,7 +46,7 @@ module Acceptance
         end
       end
 
-      return rule_file
+      rule_file
     end
 
     # rule('srl_heading' => %w[SRL: SRL_SOURCE]).as 'srl_source'

@@ -14,7 +14,7 @@ module SrlRuby
     File.open(filename, 'r') { |f| source = f.read }
     return source if source.nil? || source.empty?
 
-    return parse(source)
+    parse(source)
   end
 
   # Compile the given SRL expression into its Regexp equivalent.
@@ -52,6 +52,6 @@ module SrlRuby
     # Now output the regexp literal
     root = ast_ptree.root
     options = root.is_a?(Regex::MatchOption) ? root.combine_opts : nil
-    return Regexp.new(root.to_str, options)
+    Regexp.new(root.to_str, options)
   end
 end # module

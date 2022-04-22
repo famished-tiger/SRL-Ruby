@@ -1,3 +1,11 @@
+## [0.4.12] - 2022-04-22
+- Code refactoring.
+
+### Changed
+- Refactoring class `SrlRuby::Tokenizer`: use of manifest constants, simplified newline and whitespace processing.
+- Updated of `.rubocop.yml` to integrate newer cops (from version 1.28)
+- Code refactoring: removal of redundant `return`
+
 ## [0.4.11] - 2022-04-17
 - Fixed code breaking change in Ruby 3.1+: prime library is no longer part of stdlib.
 

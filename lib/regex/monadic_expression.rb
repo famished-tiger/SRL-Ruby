@@ -32,9 +32,7 @@ module Regex # This module is used as a namespace
 
     # Return the text representation of the child (if any)
     def all_child_text
-      result = child.nil? ? '' : child.to_str
-
-      return result
+      child.nil? ? '' : child.to_str
     end
   end # class
 end # module

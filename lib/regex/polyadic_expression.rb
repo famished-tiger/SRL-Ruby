@@ -24,7 +24,7 @@ module Regex # This module is used as a namespace
     def <<(aChild)
       @children << aChild
 
-      return self
+      self
     end
 
     # Notification that the parse tree construction is complete.
@@ -52,7 +52,7 @@ module Regex # This module is used as a namespace
     def df_visitor
       root = children # The visit will start from the children of this object
 
-      visitor = Enumerator.new do |result| # result is a Yielder
+      Enumerator.new do |result| # result is a Yielder
         # Initialization part: will run once
         visit_stack = [root] # The LIFO queue of nodes to visit
 
@@ -78,8 +78,6 @@ module Regex # This module is used as a namespace
           break if visit_stack.empty?
         end
       end
-
-      return visitor
     end
   end # class
 end # module

@@ -42,8 +42,7 @@ module Regex # This module is used as a namespace
     def to_str
       dir_syntax = (dir == :ahead) ? '' : '<'
       kind_syntax = (kind == :positive) ? '=' : '!'
-      result = "(?#{dir_syntax}#{kind_syntax}#{child.to_str})"
-      return result
+      "(?#{dir_syntax}#{kind_syntax}#{child.to_str})"
     end
   end # class
 end # module

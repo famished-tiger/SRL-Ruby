@@ -5,9 +5,9 @@ AllCops:
 
 Gemspec/DateAssignment:
   Enabled: true
-  
+
 Gemspec/RequireMFA: # new in 1.23
-  Enabled: false  
+  Enabled: false
 
 Layout/ArgumentAlignment:
   Enabled: false
@@ -134,9 +134,9 @@ Lint/RaiseException:
 
 Lint/RedundantDirGlobSort:
   Enabled: true
-  
+
 Lint/RefinementImportMethods: # new in 1.27
-  Enabled: true  
+  Enabled: true
 
 Lint/RequireRelativeSelfPath: # new in 1.22
   Enabled: true
@@ -167,9 +167,9 @@ Lint/UnusedMethodArgument:
 
 Lint/UselessAccessModifier:
   Enabled: true
-  
+
 Lint/UselessRuby2Keywords: # new in 1.23
-  Enabled: true  
+  Enabled: true
 
 Lint/Void:
   Enabled: false
@@ -215,9 +215,9 @@ Naming/ConstantName:
 
 Naming/ClassAndModuleCamelCase:
   Enabled: false
-  
+
 Naming/BlockForwarding: # new in 1.24
-  Enabled: true  
+  Enabled: true
 
 Naming/BlockParameterName:
   Enabled: true
@@ -233,6 +233,9 @@ Naming/MethodName:
 
 Naming/VariableName:
   Enabled: false
+
+Security/CompoundHash: # new in 1.28
+  Enabled: true
 
 Security/IoMethods: # new in 1.22
   Enabled: true
@@ -290,9 +293,12 @@ Style/ExpandPathArguments:
 
 Style/ExponentialNotation:
   Enabled: true
-  
+
+Style/FetchEnvVar: # new in 1.28
+  Enabled: true
+
 Style/FileRead: # new in 1.24
-  Enabled: true  
+  Enabled: true
 
 Style/FileWrite: # new in 1.24
   Enabled: true
@@ -320,9 +326,9 @@ Style/InPatternThen:
 
 Style/InverseMethods:
   Enabled: false
-  
+
 Style/MapToHash: # new in 1.24
-  Enabled: true  
+  Enabled: true
 
 Style/MissingRespondToMissing:
   Enabled: false
@@ -350,9 +356,12 @@ Style/NumberedParametersLimit: # new in 1.22
 
 Style/NumericLiterals:
   Enabled: false
-  
+
+Style/ObjectThen: # new in 1.28
+  Enabled: true
+
 Style/OpenStructUse: # new in 1.23
-  Enabled: true  
+  Enabled: true
 
 Style/QuotedSymbols:
   Enabled: true
@@ -362,12 +371,12 @@ Style/RaiseArgs:
 
 Style/RedundantArgument:
   Enabled: true
-  
+
 Style/RedundantInitialize: # new in 1.27
-  Enabled: true  
+  Enabled: true
 
 Style/RedundantReturn:
-  Enabled: false
+  Enabled: true
 
 Style/RedundantSelf:
   Enabled: true

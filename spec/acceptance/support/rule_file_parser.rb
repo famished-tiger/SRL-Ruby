@@ -14,7 +14,7 @@ module Acceptance # This module is used as a namespace
       File.open(filename, 'r') { |f| source = f.read }
       return source if source.nil? || source.empty?
 
-      return parse(source)
+      parse(source)
     end
 
     # Parse the rule file
@@ -41,8 +41,7 @@ module Acceptance # This module is used as a namespace
       ast_ptree = engine.convert(result)
 
       # Now output the regexp literal
-      root = ast_ptree.root
-      return root
+      ast_ptree.root
     end
   end
 end # module

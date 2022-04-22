@@ -45,7 +45,7 @@ module Regex # This module is used as a namespace
       msg = "Unknown predefined character class \\#{aShortname}"
       raise StandardError, msg unless StandardCClasses.include? aShortname
 
-      return aShortname
+      aShortname
     end
   end # class
 end # module

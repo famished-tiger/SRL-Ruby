@@ -107,9 +107,7 @@ module Regex # This module is used as a namespace
       msg = "Escape sequence #{esc_seq} does not begin with a backslash (\)."
       raise StandardError, msg unless esc_seq[0] == '\\'
 
-      result = (esc_seq.length == 2) ? digram2codepoint(esc_seq) : esc_number2codepoint(esc_seq)
-
-      return result
+      (esc_seq.length == 2) ? digram2codepoint(esc_seq) : esc_number2codepoint(esc_seq)
     end
 
     # Return the character as a String object
@@ -127,7 +125,7 @@ module Regex # This module is used as a namespace
     # newOne == 0x03a3  # true. The Integer is compared to the codepoint value.
     # Will test equality with any Object that knows the to_s method
     def ==(other)
-      result = case other
+      case other
         when Character
           to_str == other.to_str
 
@@ -141,8 +139,6 @@ module Regex # This module is used as a namespace
           # Unknown type: try with a convertion
           self == other.to_s # Recursive call
       end
-
-      return result
     end
 
     # Return a plain English description of the character
@@ -160,7 +156,7 @@ module Regex # This module is used as a namespace
     def text_repr
       return char if lexeme.nil?
 
-      return lexeme.dup
+      lexeme.dup
     end
 
     # Convertion method that returns a codepoint for the given two characters
@@ -178,7 +174,7 @@ module Regex # This module is used as a namespace
       # If it not a special sequence, then escaped character is
       # considered literally (the backslash is 'dummy')
       result = char2codepoint(aDigram[-1]) if result.nil?
-      return result
+      result
     end
 
     private_class_method :digram2codepoint
@@ -199,7 +195,7 @@ module Regex # This module is used as a namespace
 
         # Extract the hexadecimal number
         hexliteral = hexa # shorterSeq.sub(/^[xXu]\{?([0-9a-fA-F]+)}?$/, '\1')
-        return hexliteral.hex
+        hexliteral.hex
       end
     end
 

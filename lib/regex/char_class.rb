@@ -30,9 +30,7 @@ module Regex # This module is used as a namespace
         end
         sub_result << child.to_str
       end
-      result = "[#{negated ? '^' : ''}#{result_children}]"
-
-      return result
+      "[#{negated ? '^' : ''}#{result_children}]"
     end
   end # class
 end # module

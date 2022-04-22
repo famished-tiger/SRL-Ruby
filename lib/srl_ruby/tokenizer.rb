@@ -17,6 +17,16 @@ module SrlRuby
   # Delimiters: parentheses '(' and ')'
   # Separators: comma (optional)
   class Tokenizer
+    PATT_CHAR_CLASS = /[^,"\s]{2,}/.freeze
+    PATT_DIGIT_LIT = /[0-9]((?=\s|,|\))|$)/.freeze
+    PATT_IDENTIFIER = /[a-zA-Z_][a-zA-Z0-9_]+/.freeze
+    PATT_INTEGER = /[0-9]{2,}((?=\s|,|\))|$)/.freeze # An integer has 2..* digits
+    PATT_LETTER_LIT = /[a-zA-Z]((?=\s|,|\))|$)/.freeze
+    PATT_NEWLINE = /(?:\r\n)|\r|\n/.freeze
+    PATT_STR_DBL_QUOTE = /"(?:\\"|[^"])*"/.freeze # Double quotes literal?
+    PATT_STR_SNGL_QUOTE = /'(?:\\'|[^'])*'/.freeze # Single quotes literal?
+    PATT_WHITESPACE = /[ \t\f]+/.freeze
+
     # @return [StringScanner]
     attr_reader(:scanner)
 
@@ -26,14 +36,14 @@ module SrlRuby
     # @return [Integer] offset of start of current line within input
     attr_reader(:line_start)
 
-    @@lexeme2name = {
+    Lexeme2name = {
       '(' => 'LPAREN',
       ')' => 'RPAREN',
       ',' => 'COMMA'
     }.freeze
 
     # Here are all the SRL keywords (in uppercase)
-    @@keywords = %w[
+    Keywords = %w[
       ALL
       ALREADY
       AND
@@ -109,47 +119,55 @@ module SrlRuby
         tok_sequence << token unless token.nil?
       end
 
-      return tok_sequence
+      tok_sequence
     end
 
     private
 
     def _next_token
-      skip_whitespaces
-      curr_ch = scanner.peek(1)
-      return nil if curr_ch.nil? || curr_ch.empty?
-
       token = nil
 
-      if '(),'.include? curr_ch
-        # Delimiters, separators => single character token
-        token = build_token(@@lexeme2name[curr_ch], scanner.getch)
-      elsif (lexeme = scanner.scan(/[0-9]{2,}((?=\s|,|\))|$)/))
-        token = build_token('INTEGER', lexeme) # An integer has 2..* digits
-      elsif (lexeme = scanner.scan(/[0-9]((?=\s|,|\))|$)/))
-      token = build_token('DIGIT_LIT', lexeme)
-      elsif (lexeme = scanner.scan(/"(?:\\"|[^"])*"/)) # Double quotes literal?
-        unquoted = lexeme.gsub(/(^")|("$)/, '')
-        token = build_token('STRING_LIT', unquoted)
-      elsif (lexeme = scanner.scan(/'(?:\\'|[^'])*'/)) # Single quotes literal?
-        unquoted = lexeme.gsub(/(^')|('$)/, '')
-        token = build_token('STRING_LIT', unquoted)
-      elsif (lexeme = scanner.scan(/[a-zA-Z]((?=\s|,|\))|$)/))
-        token = build_token('LETTER_LIT', lexeme)
-      elsif (lexeme = scanner.scan(/[a-zA-Z_][a-zA-Z0-9_]+/))
-        keyw = @@keywords[lexeme.upcase]
-        tok_type = keyw || 'IDENTIFIER'
-        token = build_token(tok_type, lexeme)
-      elsif (lexeme = scanner.scan(/[^,"\s]{2,}/))
-        token = build_token('CHAR_CLASS', lexeme)
-      else # Unknown token
-        erroneous = curr_ch.nil? ? '' : scanner.scan(/./)
-        sequel = scanner.scan(/.{1,20}/)
-        erroneous += sequel unless sequel.nil?
-        raise ScanError, "Unknown token #{erroneous} on line #{lineno}"
-      end
+      # Loop until end of input reached or token found
+      until token || scanner.eos?
 
-      return token
+        if scanner.skip(PATT_NEWLINE)
+          next_line_scanned
+          next
+        end
+        next if scanner.skip(PATT_WHITESPACE) # Skip whitespaces
+
+        curr_ch = scanner.peek(1)
+
+        token = if '(),'.include? curr_ch
+          # Delimiters, separators => single character token
+          build_token(Lexeme2name[curr_ch], scanner.getch)
+        elsif (lexeme = scanner.scan(PATT_INTEGER))
+          build_token('INTEGER', lexeme)
+        elsif (lexeme = scanner.scan(PATT_DIGIT_LIT))
+          build_token('DIGIT_LIT', lexeme)
+        elsif (lexeme = scanner.scan(PATT_STR_DBL_QUOTE))
+          unquoted = lexeme.gsub(/(^")|("$)/, '')
+          build_token('STRING_LIT', unquoted)
+        elsif (lexeme = scanner.scan(PATT_STR_SNGL_QUOTE))
+          unquoted = lexeme.gsub(/(^')|('$)/, '')
+          build_token('STRING_LIT', unquoted)
+        elsif (lexeme = scanner.scan(PATT_LETTER_LIT))
+          build_token('LETTER_LIT', lexeme)
+        elsif (lexeme = scanner.scan(PATT_IDENTIFIER))
+          keyw = Keywords[lexeme.upcase]
+          tok_type = keyw || 'IDENTIFIER'
+          build_token(tok_type, lexeme)
+        elsif (lexeme = scanner.scan(PATT_CHAR_CLASS))
+          build_token('CHAR_CLASS', lexeme)
+        else # Unknown token
+          erroneous = curr_ch.nil? ? '' : scanner.scan(/./)
+          sequel = scanner.scan(/.{1,20}/)
+          erroneous += sequel unless sequel.nil?
+          raise ScanError, "Unknown token #{erroneous} on line #{lineno}"
+        end
+      end # until
+
+      token
     end
 
     def build_token(aSymbolName, aLexeme)
@@ -162,38 +180,13 @@ module SrlRuby
         raise e
       end
 
-      return token
+      token
     end
 
-    def skip_whitespaces
-      pre_pos = scanner.pos
-
-      loop do
-        ws_found = false
-        found = scanner.skip(/[ \t\f]+/)
-        ws_found = true if found
-        found = scanner.skip(/(?:\r\n)|\r|\n/)
-        if found
-          ws_found = true
-          @lineno += 1
-          @line_start = scanner.pos
-        end
-        break unless ws_found
-      end
-
-      curr_pos = scanner.pos
-      return if curr_pos == pre_pos
-      # skipped = scanner.string.slice(Range.new(pre_pos, curr_pos))
-      # triplet = skipped.rpartition(/\n|\r/)
-      # @column = 1 unless triplet[1].empty?
-
-      # Correction for the tabs
-      # tab_count = triplet[2].chars.count { |ch| ch =~ /\t/ }
-      # @column += triplet[2].size + tab_count * (tab_size - 1) - 1
-    end
-
-    def tab_size
-      2
+    # Event: next line detected.
+    def next_line_scanned
+      @lineno += 1
+      @line_start = scanner.pos
     end
   end # class
 end # module

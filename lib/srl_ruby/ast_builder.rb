@@ -59,13 +59,11 @@ module SrlRuby
     # @param aTokenPosition [Integer] Position of token in the input stream
     # @param aToken [Rley::Lexical::Token] The input token
     def new_leaf_node(_production, _terminal, aTokenPosition, aToken)
-      node = Rley::PTree::TerminalNode.new(aToken, aTokenPosition)
-
-      return node
+      Rley::PTree::TerminalNode.new(aToken, aTokenPosition)
     end
 
     def multiplicity(lowerBound, upperBound)
-      return Regex::Multiplicity.new(lowerBound, upperBound, :greedy)
+      Regex::Multiplicity.new(lowerBound, upperBound, :greedy)
     end
 
     # rubocop: disable Style/OptionalBooleanParameter
@@ -88,14 +86,14 @@ module SrlRuby
         result = Regex::Character.new(aString)
       end
 
-      return result
+      result
     end
     # rubocop: enable Style/OptionalBooleanParameter
 
     def char_range(lowerBound, upperBound)
       lower = Regex::Character.new(lowerBound)
       upper = Regex::Character.new(upperBound)
-      return Regex::CharRange.new(lower, upper)
+      Regex::CharRange.new(lower, upper)
     end
 
     def char_class(toNegate, *theChildren)
@@ -283,7 +281,7 @@ module SrlRuby
       end
 
       # TODO check other implementations
-      return Regex::CharClass.new(false, *alternatives)
+      Regex::CharClass.new(false, *alternatives)
     end
 
     # rule('character_class' => %w[NONE OF STRING_LIT]).tag 'none_of'
@@ -337,13 +335,13 @@ module SrlRuby
       # What if literal is empty?...
 
       raw_literal = theChildren[-1].token.lexeme.dup
-      return string_literal(raw_literal)
+      string_literal(raw_literal)
     end
 
     # rule('raw' => %w[RAW STRING_LIT]).tag 'raw_literal'
     def reduce_raw_literal(_production, _range, _tokens, theChildren)
       raw_literal = theChildren[-1].token.lexeme.dup
-      return Regex::RawExpression.new(raw_literal)
+      Regex::RawExpression.new(raw_literal)
     end
 
     # rule('alternation' => %w[ANY OF LPAREN alternatives RPAREN]).tag 'any_of'
@@ -358,12 +356,12 @@ module SrlRuby
         result = Regex::Alternation.new(*theChildren[3])
       end
 
-      return result
+      result
     end
 
     # rule('alternatives' => %w[alternatives separator quantifiable]).tag 'alternative_list'
     def reduce_alternative_list(_production, _range, _tokens, theChildren)
-      return theChildren[0] << theChildren[-1]
+      theChildren[0] << theChildren[-1]
     end
 
     # rule('alternatives' => 'quantifiable').tag 'simple_alternative'
@@ -418,7 +416,7 @@ module SrlRuby
       make_last_repetition_lazy(theChildren[1])
       group = Regex::CapturingGroup.new(theChildren[1], name)
       (_, until_expr) = theChildren[4]
-      return Regex::Concatenation.new(group, until_expr)
+      Regex::Concatenation.new(group, until_expr)
     end
 
     # rule('quantifier' => 'ONCE').tag 'once'

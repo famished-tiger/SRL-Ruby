@@ -58,7 +58,7 @@ module Acceptance
         tok_sequence << token unless token.nil?
       end
 
-      return tok_sequence
+      tok_sequence
     end
 
     private
@@ -68,13 +68,11 @@ module Acceptance
       curr_ch = scanner.peek(1)
       return nil if curr_ch.nil? || curr_ch.empty?
 
-      token = if state == :default
+      if state == :default
         default_mode
       else
         expecting_srl
       end
-
-      return token
     end
 
     def default_mode
@@ -103,7 +101,7 @@ module Acceptance
         raise ScanError, "Unknown token #{erroneous}"
       end
 
-      return token
+      token
     end
 
     def expecting_srl
@@ -123,7 +121,7 @@ module Acceptance
         raise e
       end
 
-      return token
+      token
     end
 
     def skip_noise
@@ -152,7 +150,7 @@ module Acceptance
       end
 
       curr_pos = scanner.pos
-      return curr_pos != pre_pos
+      curr_pos != pre_pos
     end
 
     def skip_comment

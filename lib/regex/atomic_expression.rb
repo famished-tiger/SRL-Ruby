@@ -11,7 +11,7 @@ module Regex # This module is used as a namespace
     # Redefined method.
     # @return [TrueClass] Return true since it may not have any child.
     def atomic?
-      return true
+      true
     end
 
     # Notification that the parse tree construction is complete.

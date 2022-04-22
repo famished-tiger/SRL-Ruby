@@ -26,7 +26,7 @@ module Regex # This module is used as a namespace
       result = 0
       flags.each { |f| result |= f }
 
-      return result
+      result
     end
 
     # Equality operator
@@ -40,7 +40,7 @@ module Regex # This module is used as a namespace
         isEqual = false
       end
 
-      return isEqual
+      isEqual
     end
 
     protected

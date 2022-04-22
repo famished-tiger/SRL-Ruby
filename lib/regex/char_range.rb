@@ -44,7 +44,7 @@ module Regex # This module is used as a namespace
       msg = 'Character range error: lower bound is greater than upper bound.'
       raise StandardError, msg if theLowerBound.codepoint > theUpperBound.codepoint
 
-      return [theLowerBound, theUpperBound]
+      [theLowerBound, theUpperBound]
     end
   end # class
 end # module

@@ -26,8 +26,7 @@ module Regex # This module is used as a namespace
     # @param theParentOptions [Hash] matching options. They are overridden
     # by options with same name that are bound to this object.
     def options(theParentOptions)
-      resulting_options = theParentOptions.merge(@local_options)
-      return resulting_options
+      theParentOptions.merge(@local_options)
     end
 
     # Template method.
@@ -38,7 +37,7 @@ module Regex # This module is used as a namespace
       result << text_repr
       result << suffix
 
-      return result
+      result
     end
 
     protected
