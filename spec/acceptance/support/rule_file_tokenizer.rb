@@ -39,7 +39,7 @@ module Acceptance
       match:
       no
       srl:
-    ].map { |x| [x, x.upcase] }.to_h
+    ].to_h { |x| [x, x.upcase] }
 
     class ScanError < StandardError; end
 

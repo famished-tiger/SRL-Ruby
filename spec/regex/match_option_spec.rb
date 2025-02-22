@@ -9,25 +9,26 @@ require_relative '../../lib/regex/match_option'
 module Regex # This module is used as a namespace
   describe MatchOption do
     let(:sample_child) { double('fake-child') }
-    subject { MatchOption.new(sample_child, [Regexp::MULTILINE, Regexp::IGNORECASE]) }
+
+    subject(:option) { described_class.new(sample_child, [Regexp::MULTILINE, Regexp::IGNORECASE]) }
 
     context 'Creation & initialisation' do
-      it 'should be created with a child and flags' do
-        expect { MatchOption.new(sample_child, []) }.not_to raise_error
+      it 'is created with a child and flags' do
+        expect { described_class.new(sample_child, []) }.not_to raise_error
       end
 
-      it 'should know its child' do
-        expect(subject.child).to eq(sample_child)
+      it 'Knows its child' do
+        expect(option.child).to eq(sample_child)
       end
 
-      it 'should know its flags' do
-        expect(subject.flags).to eq([Regexp::MULTILINE, Regexp::IGNORECASE])
+      it 'Knows its flags' do
+        expect(option.flags).to eq([Regexp::MULTILINE, Regexp::IGNORECASE])
       end
     end # context
 
     context 'Provided services' do
-      it 'should combine the flag bits' do
-        expect(subject.combine_opts).to eq(Regexp::MULTILINE | Regexp::IGNORECASE)
+      it 'Combines the flag bits' do
+        expect(option.combine_opts).to eq(Regexp::MULTILINE | Regexp::IGNORECASE)
       end
     end # context
   end # describe

@@ -24,7 +24,7 @@ RSpec.describe SrlRuby do
   def test_rule_file(aRuleFileRepr)
     regex = SrlRuby::parse(aRuleFileRepr.srl.value)
     # puts regex.source
-    expect(regex).to be_kind_of(Regexp)
+    expect(regex).to be_a(Regexp)
 
     aRuleFileRepr.match_tests.each do |test|
       expect(test.test_string.value).to match(regex)
@@ -47,7 +47,7 @@ RSpec.describe SrlRuby do
       cp_test.expectations.each do |expec|
         expected_name = expec.var_name.value.to_s
         unless actual_names.empty?
-          expect(actual_names).to be_include(expected_name)
+          expect(actual_names).to include(expected_name)
         end
       end
 
@@ -68,77 +68,77 @@ RSpec.describe SrlRuby do
     end
   end
 
-  it 'should match a backslash' do
+  it 'matches a backslash' do
     rule_file_repr = load_file('backslash.rule')
     test_rule_file(rule_file_repr)
   end
 
-  it 'should support named capture group' do
+  it 'supports named capture group' do
     rule_file_repr = load_file('basename_capture_group.rule')
     test_rule_file(rule_file_repr)
   end
 
-  it 'should match uppercase letter(s)' do
+  it 'matches uppercase letter(s)' do
     rule_file_repr = load_file('issue_17_uppercase_letter.rule')
     test_rule_file(rule_file_repr)
   end
 
-  it 'should not trim literal strings' do
+  it "doesn't trim literal strings" do
     rule_file_repr = load_file('literally_spaces.rule')
     test_rule_file(rule_file_repr)
   end
 
-  it 'should support non word boundary' do
+  it 'supports non word boundary' do
     rule_file_repr = load_file('no_word.rule')
     test_rule_file(rule_file_repr)
   end
 
-  it 'should match non digit pattern' do
+  it 'matches non digit pattern' do
     rule_file_repr = load_file('nondigit.rule')
     test_rule_file(rule_file_repr)
   end
 
-  it 'should support negative character class' do
+  it 'supports negative character class' do
     rule_file_repr = load_file('none_of.rule')
     test_rule_file(rule_file_repr)
   end
 
-  it 'should support negative character class' do
+  it 'supports negative character class' do
     rule_file_repr = load_file('sample_capture.rule')
     test_rule_file(rule_file_repr)
   end
 
-  it 'should match a tab' do
+  it 'matches a tab' do
     rule_file_repr = load_file('tab.rule')
     test_rule_file(rule_file_repr)
   end
 
-  it 'should match mail address' do
+  it 'matches mail address' do
     rule_file_repr = load_file('website_example_email.rule')
     test_rule_file(rule_file_repr)
   end
 
-  it 'should match mail address' do
+  it 'matches mail address' do
     rule_file_repr = load_file('website_example_email_capture.rule')
     test_rule_file(rule_file_repr)
   end
 
-  it 'should support lookahead' do
+  it 'supports lookahead' do
     rule_file_repr = load_file('website_example_lookahead.rule')
     test_rule_file(rule_file_repr)
   end
 
-  it 'should not trim literal strings' do
+  it "doesn't trim literal strings" do
     rule_file_repr = load_file('website_example_password.rule')
     test_rule_file(rule_file_repr)
   end
 
-  it 'should process an URL' do
+  it 'processes an URL' do
     rule_file_repr = load_file('website_example_url.rule')
     test_rule_file(rule_file_repr)
   end
 
-  it 'should match a word boundary' do
+  it 'matches a word boundary' do
     rule_file_repr = load_file('word.rule')
     test_rule_file(rule_file_repr)
   end

@@ -8,31 +8,32 @@ require_relative '../../lib/regex/monadic_expression'
 module Regex # This module is used as a namespace
   describe MonadicExpression do
     let(:sample_child) { double('fake_regex') }
-    subject { MonadicExpression.new(sample_child) }
+
+    subject(:monadic_expr) { described_class.new(sample_child) }
 
     context 'Creation & initialisation' do
-      it 'should be created with a child expression' do
-        expect { MonadicExpression.new(sample_child) }.not_to raise_error
+      it 'is created with a child expression' do
+        expect { described_class.new(sample_child) }.not_to raise_error
       end
 
-      it 'should know its child' do
-         expect(subject.child).to eq(sample_child)
+      it 'Knows its child' do
+         expect(monadic_expr.child).to eq(sample_child)
       end
 
-      it 'should know that it is not atomic' do
-        expect(subject).not_to be_atomic
+      it 'Know that it is not atomic' do
+        expect(monadic_expr).not_to be_atomic
       end
     end # context
 
     context 'Provided services' do
-      it 'should propagate done! notification' do
-        expect(sample_child).to receive(:done!)
-        expect { subject.done! }.not_to raise_error
+      it 'Propagates done! notification' do
+        allow(sample_child).to receive(:done!)
+        expect { monadic_expr.done! }.not_to raise_error
       end
 
-      it 'should be unchanged by a lazy! notification' do
-        expect(sample_child).to receive(:lazy!)
-        expect { subject.lazy! }.not_to raise_error
+      it 'is unchanged by a lazy! notification' do
+        allow(sample_child).to receive(:lazy!)
+        expect { monadic_expr.lazy! }.not_to raise_error
       end
     end # context
   end # describe

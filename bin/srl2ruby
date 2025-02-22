@@ -62,7 +62,7 @@ class Srl2RubyProg
       t_filepath = "#{def_template_dir}/#{DefTemplate}"
     end
     path = Pathname.new(t_filepath)
-    ERB.new(path.read, nil, '<>')
+    ERB.new(path.read, trim_mode: '<>')
   end
 
   def validate_filename(raw_fname)

@@ -17,15 +17,15 @@ module SrlRuby
   # Delimiters: parentheses '(' and ')'
   # Separators: comma (optional)
   class Tokenizer
-    PATT_CHAR_CLASS = /[^,"\s]{2,}/.freeze
-    PATT_DIGIT_LIT = /[0-9]((?=\s|,|\))|$)/.freeze
-    PATT_IDENTIFIER = /[a-zA-Z_][a-zA-Z0-9_]+/.freeze
-    PATT_INTEGER = /[0-9]{2,}((?=\s|,|\))|$)/.freeze # An integer has 2..* digits
-    PATT_LETTER_LIT = /[a-zA-Z]((?=\s|,|\))|$)/.freeze
-    PATT_NEWLINE = /(?:\r\n)|\r|\n/.freeze
-    PATT_STR_DBL_QUOTE = /"(?:\\"|[^"])*"/.freeze # Double quotes literal?
-    PATT_STR_SNGL_QUOTE = /'(?:\\'|[^'])*'/.freeze # Single quotes literal?
-    PATT_WHITESPACE = /[ \t\f]+/.freeze
+    PATT_CHAR_CLASS = /[^,"\s]{2,}/
+    PATT_DIGIT_LIT = /[0-9]((?=\s|,|\))|$)/
+    PATT_IDENTIFIER = /[a-zA-Z_][a-zA-Z0-9_]+/
+    PATT_INTEGER = /[0-9]{2,}((?=\s|,|\))|$)/ # An integer has 2..* digits
+    PATT_LETTER_LIT = /[a-zA-Z]((?=\s|,|\))|$)/
+    PATT_NEWLINE = /(?:\r\n)|\r|\n/
+    PATT_STR_DBL_QUOTE = /"(?:\\"|[^"])*"/ # Double quotes literal?
+    PATT_STR_SNGL_QUOTE = /'(?:\\'|[^'])*'/ # Single quotes literal?
+    PATT_WHITESPACE = /[ \t\f]+/
 
     # @return [StringScanner]
     attr_reader(:scanner)
@@ -100,7 +100,7 @@ module SrlRuby
       WHITESPACE
       WITH
       WORD
-    ].map { |x| [x, x] }.to_h
+    ].to_h { |x| [x, x] }
 
     class ScanError < StandardError; end
 

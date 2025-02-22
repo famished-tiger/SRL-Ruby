@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# File: character_spec.rb
+# File: described_class_spec.rb
 require_relative '../spec_helper' # Use the RSpec test framework
 require_relative '../../lib/regex/character'
 
@@ -8,13 +8,13 @@ module Regex # Open this namespace, to get rid of scope qualifiers
   describe Character do
   # rubocop: disable Lint/ConstantDefinitionInBlock
 
-    # This constant holds an arbitrary selection of characters
+    # This constant holds an arbitrary selection of described_classs
     SampleChars = [?a, ?\0, ?\u0107].freeze
 
-    # This constant holds the codepoints of the character selection
+    # This constant holds the codepoints of the described_class selection
     SampleInts = [0x61, 0, 0x0107].freeze
 
-    # This constant holds an arbitrary selection of two characters (digrams)
+    # This constant holds an arbitrary selection of two described_classs (digrams)
     # escape sequences
     SampleDigrams = %w[\n \e \0 \6 \k].freeze
 
@@ -28,63 +28,63 @@ module Regex # Open this namespace, to get rid of scope qualifiers
     end
 
     context 'Creation & initialization' do
-      it 'should be created with a with an integer value (codepoint) or...' do
+      it 'is created with a with an integer value (codepoint) or...' do
         SampleInts.each do |codepoint|
-          expect { Character.new(codepoint) }.not_to raise_error
+          expect { described_class.new(codepoint) }.not_to raise_error
         end
       end
 
-      it '...could be created with a single character String or...' do
+      it '... is created with a single described_class String or...' do
         SampleChars.each do |ch|
-          expect { Character.new(ch) }.not_to raise_error
+          expect { described_class.new(ch) }.not_to raise_error
         end
       end
 
-      it '...could be created with an escape sequence' do
+      it '... is created with an escape sequence' do
         # Case 1: escape sequence is a digram
         SampleDigrams.each do |escape_seq|
-          expect { Character.new(escape_seq) }.not_to raise_error
+          expect { described_class.new(escape_seq) }.not_to raise_error
         end
 
         # Case 2: escape sequence is an escaped octal or hexadecimal literal
         SampleNumEscs.each do |escape_seq|
-          expect { Character.new(escape_seq) }.not_to raise_error
+          expect { described_class.new(escape_seq) }.not_to raise_error
         end
       end
     end # context
 
     # rubocop: disable Style/DocumentDynamicEvalDefinition
     context 'Provided services' do
-      it 'Should know its lexeme if created from a string' do
-        # Lexeme is defined when the character was initialised from a text
+      it 'knows its lexeme if created from a string' do
+        # Lexeme is defined when the described_class was initialised from a text
         SampleChars.each do |ch|
-          ch = Character.new(ch)
+          ch = described_class.new(ch)
           expect(ch.lexeme).to eq(ch)
         end
       end
 
-      it 'Should not know its lexeme representation from a codepoint' do
+      it 'does not know its lexeme representation from a codepoint' do
         SampleInts.each do |ch|
-          ch = Character.new(ch)
+          ch = described_class.new(ch)
           expect(ch.lexeme).to be_nil
         end
       end
 
-      it 'should know its String representation' do
-        # Try for one character
-        newOne = Character.new(?\u03a3)
+      it 'knows its String representation' do
+        # Try for one described_class
+        newOne = described_class.new(?\u03a3)
         expect(newOne.char).to eq('Σ')
         expect(newOne.to_str).to eq("\u03A3")
 
         # Try with our chars sample
         SampleChars.each do |ch|
-          new_ch = Character.new(ch).to_str
+          new_ch = described_class.new(ch).to_str
           new_ch == ch
         end
 
         # Try with our codepoint sample
         mapped_chars = SampleInts.map do |codepoint|
-          Character.new(codepoint).char
+          described_class.new(codepoint).char
         end
         expect(mapped_chars).to eq(SampleChars)
 
@@ -92,32 +92,32 @@ module Regex # Open this namespace, to get rid of scope qualifiers
         (SampleDigrams + SampleNumEscs).each do |escape_seq|
           # Build a string from escape sequence literal
           expectation = String.class_eval(%Q|"#{escape_seq}"|, __FILE__, __LINE__)
-          new_ch = Character.new(escape_seq).to_str
+          new_ch = described_class.new(escape_seq).to_str
           new_ch == expectation
         end
       end
 
-      it 'should know its codepoint' do
-        # Try for one character
-        newOne = Character.new(?\u03a3)
+      it 'knows its codepoint' do
+        # Try for one described_class
+        newOne = described_class.new(?\u03a3)
         expect(newOne.codepoint).to eq(0x03a3)
 
         # Try with our chars sample
         allCodepoints = SampleChars.map do |ch|
-          Character.new(ch).codepoint
+          described_class.new(ch).codepoint
         end
         expect(allCodepoints).to eq(SampleInts)
 
         # Try with our codepoint sample
         SampleInts.each do |codepoint|
-          expect(Character.new(codepoint).codepoint).to eq(codepoint)
+          expect(described_class.new(codepoint).codepoint).to eq(codepoint)
         end
 
         # Try with our escape sequence samples
         (SampleDigrams + SampleNumEscs).each do |escape_seq|
           # Get ordinal value of given escape sequence
           expectation = String.class_eval(%Q|"#{escape_seq}".ord()|, __FILE__, __LINE__)
-          expect(Character.new(escape_seq).codepoint).to eq(expectation)
+          expect(described_class.new(escape_seq).codepoint).to eq(expectation)
         end
       end
 
@@ -128,26 +128,26 @@ module Regex # Open this namespace, to get rid of scope qualifiers
         end
       end # module
 
-      it 'should known whether it is equal to another Object' do
-        newOne = Character.new(?\u03a3)
+      it 'knows whether it is equal to another Object' do
+        newOne = described_class.new(?\u03a3)
 
         # Case 1: test equality with itself
         expect(newOne).to eq(newOne)
 
-        # Case 2: test equality with another Character
-        expect(newOne).to eq(Character.new(?\u03a3))
-        expect(newOne).not_to eq(Character.new(?\u0333))
+        # Case 2: test equality with another described_class
+        expect(newOne).to eq(described_class.new(?\u03a3))
+        expect(newOne).not_to eq(described_class.new(?\u0333))
 
         # Case 3: test equality with an integer value
         # (equality based on codepoint value)
         expect(newOne).to eq(0x03a3)
         expect(newOne).not_to eq(0x0333)
 
-        # Case 4: test equality with a single-character String
+        # Case 4: test equality with a single-described_class String
         expect(newOne).to eq(?\u03a3)
         expect(newOne).not_to eq(?\u0333)
 
-        # Case 5: test fails with multiple character strings
+        # Case 5: test fails with multiple described_class strings
         expect(newOne).not_to eq('03a3')
 
         # Case 6: equality testing with arbitrary object
@@ -156,7 +156,7 @@ module Regex # Open this namespace, to get rid of scope qualifiers
 
         # In case 6, equality is based on to_s method.
         simulator = double('fake')
-        expect(simulator).to receive(:to_s).and_return(?\u03a3)
+        allow(simulator).to receive(:to_s).and_return(?\u03a3)
         expect(newOne).to eq(simulator)
 
         weird = Object.new
@@ -164,11 +164,11 @@ module Regex # Open this namespace, to get rid of scope qualifiers
         expect(newOne).to eq(weird)
       end
 
-      it 'should know its readable description' do
-        ch1 = Character.new('a')
+      it 'knows its readable description' do
+        ch1 = described_class.new('a')
         expect(ch1.explain).to eq("the character 'a'")
 
-        ch2 = Character.new(?\u03a3)
+        ch2 = described_class.new(?\u03a3)
         expect(ch2.explain).to eq("the character '\u03a3'")
       end
     end # context

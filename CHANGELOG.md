@@ -1,4 +1,10 @@
 ## [0.4.13] - 2025-02-22
+- Tested against rubocop-rspec 3.5.0
+
+### Fixed
+- Fixed most "offences" reported by rubocop-rspec 
+
+## [0.4.13] - 2025-02-22
 - Tested against MRI Ruby 3.4.1
 
 ### Changed

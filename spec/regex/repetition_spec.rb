@@ -9,23 +9,24 @@ module Regex # This module is used as a namespace
   describe Repetition do
     let(:optional) { Multiplicity.new(0, 1, :possessive) }
     let(:sample_child) { double('fake_regex') }
-    subject { Repetition.new(sample_child, optional) }
+
+    subject(:repetition) { described_class.new(sample_child, optional) }
 
     context 'Creation & initialisation' do
-      it 'should be created with a child expression and a multiplicity' do
-        expect { Repetition.new(sample_child, optional) }.not_to raise_error
+      it 'is created with a child expression and a multiplicity' do
+        expect { described_class.new(sample_child, optional) }.not_to raise_error
       end
 
-      it 'should its multiplicity' do
-        expect(subject.multiplicity).to eq(optional)
+      it 'Knows its multiplicity' do
+        expect(repetition.multiplicity).to eq(optional)
       end
     end # context
 
     context 'Provided services' do
-      it 'should change its policy with lazy! notification' do
-        expect(sample_child).to receive(:lazy!)
-        expect { subject.lazy! }.not_to raise_error
-        expect(subject.multiplicity.policy).to eq(:lazy)
+      it 'Changes its policy with lazy! notification' do
+        allow(sample_child).to receive(:lazy!)
+        expect { repetition.lazy! }.not_to raise_error
+        expect(repetition.multiplicity.policy).to eq(:lazy)
       end
     end # context
   end # describe
