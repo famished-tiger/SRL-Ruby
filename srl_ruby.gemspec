@@ -65,7 +65,7 @@ SUMMARY
   spec.require_paths = ['lib']
   PkgExtending.pkg_files(spec)
   PkgExtending.pkg_documentation(spec)
-  spec.required_ruby_version = '>= 2.5.0'
+  spec.required_ruby_version = '>= 3.2.0'
 
   # Runtime dependencies
   spec.add_dependency 'rley', '~> 0.8.11'
@@ -75,4 +75,5 @@ SUMMARY
   spec.add_development_dependency 'cucumber', '>= 3.1.2'
   spec.add_development_dependency 'rake', '>= 12.0'
   spec.add_development_dependency 'rspec', '~> 3.0'
+  spec.metadata = { 'rubygems_mfa_required' => 'true' }
 end

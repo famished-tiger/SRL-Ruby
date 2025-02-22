@@ -1,3 +1,12 @@
+## [0.4.13] - 2025-02-22
+- Tested against MRI Ruby 3.4.1
+
+### Changed
+- Shortened `.rubocop.yml` file
+
+### Fixed
+- Fixed all "offences" reported by Rubocop 1.72.2 
+
 ## [0.4.12] - 2022-04-22
 - Code refactoring.
 

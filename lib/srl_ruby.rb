@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require_relative './srl_ruby/version'
-require_relative './srl_ruby/tokenizer'
-require_relative './srl_ruby/grammar'
-require_relative './srl_ruby/ast_builder'
+require_relative 'srl_ruby/version'
+require_relative 'srl_ruby/tokenizer'
+require_relative 'srl_ruby/grammar'
+require_relative 'srl_ruby/ast_builder'
 
 module SrlRuby
   # Compile the SRL expression in given filename into a Regexp object.

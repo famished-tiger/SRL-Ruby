@@ -17,7 +17,7 @@ module AbstractMethod
   # end
   def abstract_method
     # Determine the short class name of self
-    className = self.class.name.split(/::/).last
+    className = self.class.name.split('::').last
 
     # Retrieve the top text line of the call stack
     top_line = caller(1..1)

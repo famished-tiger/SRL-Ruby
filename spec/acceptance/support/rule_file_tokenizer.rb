@@ -4,7 +4,6 @@
 # Tokenizer for SimpleRegex Test-Rule files
 # [File format](https://github.com/SimpleRegex/Test-Rules/blob/master/README.md)
 require 'strscan'
-require 'pp'
 require 'rley'
 
 module Acceptance

@@ -19,7 +19,7 @@ module SrlRuby
     # Create a new AST builder instance.
     # @param theTokens [Array<Token>] The sequence of input tokens.
     def initialize(theTokens)
-      super(theTokens)
+      super
       @options = []
     end
 

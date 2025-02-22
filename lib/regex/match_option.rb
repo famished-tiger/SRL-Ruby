@@ -35,7 +35,7 @@ module Regex # This module is used as a namespace
       return true if object_id == other.object_id
 
       if other.kind_of?(MatchOption)
-        isEqual = ((flags == other.flags) && (child == other.child))
+        isEqual = (flags == other.flags) && (child == other.child)
       else
         isEqual = false
       end

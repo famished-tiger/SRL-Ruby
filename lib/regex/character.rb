@@ -93,7 +93,7 @@ module Regex # This module is used as a namespace
       aChar.ord
     end
 
-    # Convertion method that returns the codepoint for the given escape
+    # Conversion method that returns the codepoint for the given escape
     # sequence (a String).
     # Recognized escaped characters are: \a (alarm, 0x07), \n (newline, 0xA),
     # \r (carriage return, 0xD), \t (tab, 0x9), \e (escape, 0x1B), \f (form feed,
@@ -104,7 +104,7 @@ module Regex # This module is used as a namespace
     # Example:
     # RegAn::Character::esc2codepoint('\n') # Returns: 0xd
     def self.esc2codepoint(esc_seq)
-      msg = "Escape sequence #{esc_seq} does not begin with a backslash (\)."
+      msg = "Escape sequence #{esc_seq} does not begin with a backslash (\\)."
       raise StandardError, msg unless esc_seq[0] == '\\'
 
       (esc_seq.length == 2) ? digram2codepoint(esc_seq) : esc_number2codepoint(esc_seq)
