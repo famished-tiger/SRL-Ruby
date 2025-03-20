@@ -70,6 +70,7 @@ module Regex # This module is used as a namespace
     end
 
     # Validation method. Return the validated lower bound value
+    # @param anUpperBound [Integer, Symbol] integer or :more symbol
     def valid_upper_bound(anUpperBound)
       err_msg = "Invalid upper bound of repetition count #{anUpperBound}"
       unless anUpperBound.kind_of?(Integer) || (anUpperBound == :more)

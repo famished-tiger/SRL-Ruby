@@ -12,8 +12,10 @@ module SrlRuby
   # (say, a parse tree) from simpler objects (terminal and non-terminal
   # nodes) and using a step by step approach.
   class ASTBuilder < Rley::ParseRep::ASTBaseBuilder
+    # @return [Hash]
     Terminal2NodeClass = {}.freeze
 
+    # @return [Array<Symbol>] Options for the regular expression
     attr_reader :options
 
     # Create a new AST builder instance.
@@ -24,6 +26,7 @@ module SrlRuby
     end
 
     # Notification that the parse tree construction is complete.
+    # @return [void]
     def done!
       apply_options
       super
@@ -31,10 +34,12 @@ module SrlRuby
 
     protected
 
+    # @return [Hash]
     def terminal2node
       Terminal2NodeClass
     end
 
+    # @return [void]
     def apply_options
       tree_root = result.root
       regexp_opts = []
@@ -62,12 +67,17 @@ module SrlRuby
       Rley::PTree::TerminalNode.new(aToken, aTokenPosition)
     end
 
+    # @param lowerBound [Integer]
+    # @param upperBound [Integer, Symbol]
+    # @return [Regex::Multiplicity]
     def multiplicity(lowerBound, upperBound)
       Regex::Multiplicity.new(lowerBound, upperBound, :greedy)
     end
 
     # rubocop: disable Style/OptionalBooleanParameter
 
+    # @param aString [String]
+    # @param [Array<Regex::Character>, Regex::Concatenation, Regex::Character]
     def string_literal(aString, to_escape = true)
       if aString.size > 1
         chars = []
@@ -90,6 +100,8 @@ module SrlRuby
     end
     # rubocop: enable Style/OptionalBooleanParameter
 
+    # @param lowerBound [Integer]
+    # @param upperBound [Integer]
     def char_range(lowerBound, upperBound)
       lower = Regex::Character.new(lowerBound)
       upper = Regex::Character.new(upperBound)

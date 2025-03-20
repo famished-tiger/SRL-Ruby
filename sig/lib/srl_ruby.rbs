@@ -1,0 +1,19 @@
+module SrlRuby
+  # Compile the SRL expression in given filename into a Regexp object.
+  # @param filename [String] Name of SRL file to parse
+  # @return [Regexp] A regexp object equivalent to the SRL expression.
+  def self.load_file: (String filename) -> Regexp
+
+  # Compile the given SRL expression into its Regexp equivalent.
+  # @param source [String] SRL expression to parse
+  # @return [Regexp] A regexp object equivalent to the SRL expression.
+  # @example Matching a (signed) integer literal
+  #   some_srl =<<-SRL
+  #     begin with
+  #       (one of "+-") optional,
+  #       digit once or more,
+  #     must end
+  #   SRL
+  #   regex = SrlRuby::API.parse(some_srl) # => regex == /^[+\-]?\d+$/
+  def self.parse: (String source) -> Regexp
+end

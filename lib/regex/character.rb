@@ -41,13 +41,13 @@ module Regex # This module is used as a namespace
     # codepoint value.
     # Examples:
     # Initializing with codepoint value...
-    # RegAn::Character.new(0x3a3) # Represents: Σ
+    # Regex::Character.new(0x3a3) # Represents: Σ
     # (Unicode GREEK CAPITAL LETTER SIGMA)
-    # RegAn::Character.new(931)   # Also represents: Σ (931 dec == 3a3 hex)
+    # Regex::Character.new(931)   # Also represents: Σ (931 dec == 3a3 hex)
     #
     # Initializing with a single character string
-    # RegAn::Character.new(?\u03a3) # Also represents: Σ
-    # RegAn::Character.new('Σ')   # Obviously, represents a Σ
+    # Regex::Character.new(?\u03a3) # Also represents: Σ
+    # Regex::Character.new('Σ')   # Obviously, represents a Σ
     #
     # Initializing with an escape sequence string
     # Recognized escaped characters are: \a (alarm, 0x07), \n (newline, 0xA),
@@ -56,8 +56,8 @@ module Regex # This module is used as a namespace
     # \uXXXX where XXXX is a 4 hex digits integer value, \u{X...}, \ooo (octal)
     # \xXX (hex)
     # Any other escaped character will be treated as a literal character
-    # RegAn::Character.new('\n')    # Represents a newline
-    # RegAn::Character.new('\u03a3')  # Represents a Σ
+    # Regex::Character.new('\n')    # Represents a newline
+    # Regex::Character.new('\u03a3')  # Represents a Σ
     def initialize(aValue)
       super()
       case aValue
@@ -80,7 +80,7 @@ module Regex # This module is used as a namespace
 
     # Convertion method that returns a character given a codepoint (integer) value.
     # Example:
-    # RegAn::Character::codepoint2char(0x3a3) # Returns: Σ (
+    # Regex::Character::codepoint2char(0x3a3) # Returns: Σ (
     # The Unicode GREEK CAPITAL LETTER SIGMA)
     def self.codepoint2char(aCodepoint)
       [aCodepoint].pack('U') # Remark: chr() fails with codepoints > 256
@@ -88,7 +88,7 @@ module Regex # This module is used as a namespace
 
     # Convertion method that returns the codepoint for the given single character.
     # Example:
-    # RegAn::Character::char2codepoint('Σ') # Returns: 0x3a3
+    # Regex::Character::char2codepoint('Σ') # Returns: 0x3a3
     def self.char2codepoint(aChar)
       aChar.ord
     end
@@ -102,7 +102,7 @@ module Regex # This module is used as a namespace
     # \xXX (hex)
     # Any other escaped character will be treated as a literal character
     # Example:
-    # RegAn::Character::esc2codepoint('\n') # Returns: 0xd
+    # Regex::Character::esc2codepoint('\n') # Returns: 0xd
     def self.esc2codepoint(esc_seq)
       msg = "Escape sequence #{esc_seq} does not begin with a backslash (\\)."
       raise StandardError, msg unless esc_seq[0] == '\\'

@@ -68,12 +68,12 @@ SUMMARY
   spec.required_ruby_version = '>= 3.2.0'
 
   # Runtime dependencies
-  spec.add_dependency 'rley', '~> 0.8.11'
+  spec.add_dependency 'rley', '~> 0.9', '>= 0.9.02'
 
   # Development dependencies
-  spec.add_development_dependency 'bundler', '>= 2.2.0'
-  spec.add_development_dependency 'cucumber', '>= 3.1.2'
-  spec.add_development_dependency 'rake', '>= 12.0'
-  spec.add_development_dependency 'rspec', '~> 3.0'
+  spec.add_development_dependency 'bundler', '~> 2.2', '>= 2.2.0'
+  spec.add_development_dependency 'cucumber', '~> 9'
+  spec.add_development_dependency 'rake', '~> 13'
+  spec.add_development_dependency 'rspec', '~> 3', '>= 3.10.0'
   spec.metadata = { 'rubygems_mfa_required' => 'true' }
 end

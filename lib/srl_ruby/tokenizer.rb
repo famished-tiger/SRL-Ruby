@@ -17,14 +17,31 @@ module SrlRuby
   # Delimiters: parentheses '(' and ')'
   # Separators: comma (optional)
   class Tokenizer
+    # @return [Regexp] Matches a SRL character class
     PATT_CHAR_CLASS = /[^,"\s]{2,}/
+
+    # @return [Regexp] Matches single digit
     PATT_DIGIT_LIT = /[0-9]((?=\s|,|\))|$)/
+
+    # @return [Regexp] Matches a SRL identifier
     PATT_IDENTIFIER = /[a-zA-Z_][a-zA-Z0-9_]+/
-    PATT_INTEGER = /[0-9]{2,}((?=\s|,|\))|$)/ # An integer has 2..* digits
+
+    # @return [Regexp] Matches a decimal integer. An integer has 2..* digits
+    PATT_INTEGER = /[0-9]{2,}((?=\s|,|\))|$)/
+
+    # @return [Regexp] Matches a single letter.
     PATT_LETTER_LIT = /[a-zA-Z]((?=\s|,|\))|$)/
+
+    # @return [Regexp] Matches a new line (cross-platform)
     PATT_NEWLINE = /(?:\r\n)|\r|\n/
-    PATT_STR_DBL_QUOTE = /"(?:\\"|[^"])*"/ # Double quotes literal?
-    PATT_STR_SNGL_QUOTE = /'(?:\\'|[^'])*'/ # Single quotes literal?
+
+    # @return [Regexp] Matches a text enclosed in double quotes
+    PATT_STR_DBL_QUOTE = /"(?:\\"|[^"])*"/
+
+    # @return [Regexp] Matches a text enclosed in single quotes
+    PATT_STR_SNGL_QUOTE = /'(?:\\'|[^'])*'/
+
+    # @return [Regexp] Matches SRL blank(s)
     PATT_WHITESPACE = /[ \t\f]+/
 
     # @return [StringScanner]
@@ -36,6 +53,7 @@ module SrlRuby
     # @return [Integer] offset of start of current line within input
     attr_reader(:line_start)
 
+    # @return [{String => String}] Mapping special single characters to symbolic names.
     Lexeme2name = {
       '(' => 'LPAREN',
       ')' => 'RPAREN',
@@ -43,6 +61,7 @@ module SrlRuby
     }.freeze
 
     # Here are all the SRL keywords (in uppercase)
+    # @return [{String => String}]
     Keywords = %w[
       ALL
       ALREADY
@@ -102,6 +121,7 @@ module SrlRuby
       WORD
     ].to_h { |x| [x, x] }
 
+    # Exception class for scanner/tokenizer failures.
     class ScanError < StandardError; end
 
     # Constructor. Initialize a tokenizer for SRL.
@@ -112,6 +132,8 @@ module SrlRuby
       @line_start = 0
     end
 
+    # Returns the sequence of tokens recognized from the input text given at initialization.
+    # @return [Array<Rley::Lexical::Token>]
     def tokens
       tok_sequence = []
       until @scanner.eos?
@@ -124,6 +146,7 @@ module SrlRuby
 
     private
 
+    # @return [Rley::Lexical::Token]
     def _next_token
       token = nil
 
@@ -170,6 +193,9 @@ module SrlRuby
       token
     end
 
+    # @param aSymbolName [String]
+    # @param aLexeme [String]
+    # @return [Rley::Lexical::Token]
     def build_token(aSymbolName, aLexeme)
       begin
         col = scanner.pos - aLexeme.size - @line_start + 1
@@ -184,6 +210,7 @@ module SrlRuby
     end
 
     # Event: next line detected.
+    # @return [Integer] Current scanning position (offset)
     def next_line_scanned
       @lineno += 1
       @line_start = scanner.pos

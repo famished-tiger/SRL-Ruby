@@ -1,0 +1,5 @@
+module SrlRuby
+  # And now build the grammar and make it accessible via a global constant
+  # @return [Rley::Syntax::Grammar]
+  Grammar: Rley::Syntax::Grammar
+end

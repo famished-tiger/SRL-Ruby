@@ -1,4 +1,9 @@
-## [0.4.13] - 2025-02-22
+## [0.4.15] - 2025-03-20
+- Tested against rley  0.9.02 and rubocop 1.74.0
+### Changed
+- File `srl_ruby.gemspec`: make dependencies more lenient
+
+## [0.4.14] - 2025-02-22
 - Tested against rubocop-rspec 3.5.0
 
 ### Fixed

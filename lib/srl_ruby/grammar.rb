@@ -111,6 +111,6 @@ module SrlRuby
   end
 
   # And now build the grammar and make it accessible via a global constant
-  # [Rley::Syntax::Grammar]
+  # @return [Rley::Syntax::Grammar]
   Grammar = builder.grammar
 end # module

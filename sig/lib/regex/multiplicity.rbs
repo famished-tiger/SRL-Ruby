@@ -1,0 +1,42 @@
+module Regex
+  # The multiplicity specifies by how much a given expression can be repeated.
+  class Multiplicity
+    @lower_bound: Integer
+
+    @upper_bound: Integer
+
+    @policy: untyped
+
+    # @return [Integer] The lowest acceptable repetition count
+    attr_reader lower_bound: Integer
+
+    # @return [Integer, Symbol] The highest possible repetition count
+    attr_reader upper_bound: Integer
+
+    # @return [Symbol] An indicator that specifies how to repeat
+    # @see initialize
+    attr_accessor policy: Symbol
+
+    # @param aLowerBound [Integer]
+    # @param anUpperBound [Integer, Symbol] integer or :more symbol
+    # @param aPolicy [Symbol] One of: (:greedy, :lazy, :possessive)
+    # @option aPolicy [Symbol] :greedy
+    # @option aPolicy [Symbol] :lazy
+    # @option aPolicy [Symbol] :possessive
+    def initialize: (Integer aLowerBound, Integer|Symbol anUpperBound, Symbol aPolicy) -> void
+
+    # @return [String] String representation of the multiplicity.
+    def to_str: () -> String
+
+    private
+
+    # Validation method. Return the validated lower bound value
+    def valid_lower_bound: (Integer aLowerBound) -> Integer
+
+    # Validation method. Return the validated lower bound value
+    def valid_upper_bound: (Integer|Symbol anUpperBound) -> Integer
+
+    # Validation method. Return the validated policy value.
+    def valid_policy: (Symbol aPolicy) -> Symbol
+  end
+end
